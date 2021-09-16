@@ -1,17 +1,17 @@
+* {
+  margin:0px;
+  padding: 0px;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
 .App {
-  text-align: center;
+  text-align: left; 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
   background-color: #282c34;
@@ -24,15 +24,116 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+a {
+  text-decoration: none;
+  color: inherit
+}
+/* Sidebar */
+
+.sidebar {
+  position: fixed;
+  background-color: #2e2e2e;
+  height: 100%;
+  width: 10rem;
+  left: 0rem;
+  text-align: left;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar-banner {
+  background-color: #fffbf7;
+  height: 5rem;  
+}
+.sideImg {
+  height: 100%
+}
+
+.sidebar-link {
+  color: #757575;
+  padding: 1rem 1rem 1rem 1rem;
+  border-bottom: 1px solid black;
+}
+
+/* Sidebar Effects*/
+
+.sidebar-link:hover {
+  color: #ffffff;
+  background-color: #2a2a2a;
+}
+
+/* Course */
+
+.coursebar {
+  background-color: #ffffff;
+  height: 12.5rem;
+  width: 10rem;
+  text-align: left;
+  margin: 2rem
+}
+
+.coursebar-link {
+  color: #757575;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  border: 1px solid black;
+}
+
+.coursebar-header {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  text-align:center;
+  border: 1px solid black;
+}
+
+.coursebar-link:hover {
+  color: #2a2a2a ;
+  background-color: skyblue;
+}
+
+/* courseDetail  */
+.Portait {
+  width: 5rem;
+  border-radius: 50%;
+  margin: 0.5rem;
+}
+
+.courseDetail {
+  background-color: #ffffff;
+  text-align: center;
+  margin: 2rem;
+  border: 1px solid black;
+}
+
+.courseDetail-instructor {
+  color: blue;
+  font-weight: 900;
+  border-bottom: 1px solid black;
+  padding: 0.5rem;
+}
+
+.courseDetail-others {
+  padding: 1rem;
+}
+/* courseInfo  */
+.courseInfo {
+  display: flex;
+}
+
+.leftSection {
+  top: 10rem;
+  width: 70%;
+  padding-left: 11rem;
+  text-align: left;
+
+}
+
+.courseInfo-Banner {
+  padding: 3rem 1rem 3rem 11rem;
+  background-color: #ffffff;
+}
+
+.courseInfo-Section {
+  padding: 2rem
+}
+
+ul {
+  list-style: none;
 }
