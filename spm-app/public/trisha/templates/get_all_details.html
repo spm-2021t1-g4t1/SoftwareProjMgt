@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get all engineer details</title>
+
+</head>
+<body>
+    <button onclick="retrieve()">Get engineer details</button>
+    <div id = 'results'></div>
+</body>
+    <script>
+        function retrieve() {
+        //     url = "http://localhost:5000/engineers";
+        //     fetch(url, {
+        //         method: 'GET',
+        //         'Content-Type': 'application/json'
+        //     }).then(results => console.log(results))
+
+            var results = '{{results|tojson}}';
+            var results_json = JSON.parse(results);
+            var engineers = results_json['engineers'];
+            var node = document.createElement('table');
+
+            node.innerHTML = `
+            <table border=1>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Senior / Junior</th>
+                    <th>Email</th>
+                </tr>
+            `;
+            for (let engineer in engineers) {
+                let value = engineers[engineer];
+                let email = value['email'];
+                let engineer_id = value['engineer_id'];
+                let name = value['name'];
+                let type = value['type'];
+                var row = document.createElement('tr');
+
+                row.innerHTML += `
+                <tr>
+                    <td>${engineer_id}</td>
+                    <td>${name}</td>
+                    <td>${type}</td>
+                    <td>${email}</td>
+                </tr>
+                `;
+
+                node.appendChild(row);
+            }
+
+            node.setAttribute("border", "1");
+            document.getElementById('results').appendChild(node);
+            }
+        
+
+
+
+
+
+
+        
+            
+
+    </script>
+</html>
