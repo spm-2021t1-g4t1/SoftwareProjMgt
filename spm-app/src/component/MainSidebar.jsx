@@ -27,7 +27,7 @@ const MainSidebar = () => {
                     <FontAwesomeIcon icon ={faComment} />  Forum
                 </div>
             </Link>
-            <Link to = '/'>
+            <Link to = '/account'>
                 <div className = 'sidebar-link'>
                 <FontAwesomeIcon icon ={faUser} /> Account
                 </div>
