@@ -6,7 +6,7 @@ const CourseDetail = (prop) => {
     return (
          <div className = 'courseDetail'>
             <div className = 'courseDetail-instructor'>
-                <img className = 'Portait'src = '/images/logo.png' />
+                <img className = 'Portait'src = '/images/logo.png' alt = 'Trainer Pic' />
                 <p>{prop.data.instructor}</p>
             </div>
             <div className= 'courseDetail-others'>
