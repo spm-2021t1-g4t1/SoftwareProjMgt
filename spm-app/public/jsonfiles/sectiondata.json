@@ -5,55 +5,64 @@
                 "course_code": "ENG101",
                 "section_code": "S01",
                 "section_name": "Introduction to Printers 101",
-                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG101",
                 "section_code": "S02",
                 "section_name": "Introduction to Printers 102",
-                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG101",
                 "section_code": "S03",
                 "section_name": "Introduction to Printers 103",
-                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG102",
                 "section_code": "S01",
-                "course_name": "Troubleshooting 101",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Troubleshooting 101",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG102",
                 "section_code": "S02",
-                "course_name": "Troubleshooting 102",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Troubleshooting 102",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG102",
                 "section_code": "S03",
-                "course_name": "Troubleshooting 103",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Troubleshooting 103",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },
             {
                 "course_code": "ENG103",
                 "section_code": "S01",
-                "course_name": "Angular Programming 101",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Angular Programming 101",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },       
             {
                 "course_code": "ENG103",
                 "section_code": "S02",
-                "course_name": "Angular Programming 102",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Angular Programming 102",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             },       
             {
                 "course_code": "ENG103",
                 "section_code": "S03",
-                "course_name": "Angular Programming 103",
-                "course_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna."
+                "section_name": "Angular Programming 103",
+                "section_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ultricies. Sed vulputate velit a metus aliquet placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae congue arcu. Nam laoreet elit pretium lacus pellentesque condimentum. Phasellus faucibus lectus magna, vel rhoncus nibh fermentum in. Morbi gravida ut leo et egestas. Integer pretium quam arcu, vitae mollis purus dapibus ut. Proin at rhoncus urna.",
+                "course_material": [ "material 1", "material 2","material 3" ]
             }
         ]
     }

@@ -113,8 +113,10 @@ a {
   padding: 1rem;
 }
 /* courseInfo  */
-.courseInfo {
+.course {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .leftSection {
@@ -131,9 +133,50 @@ a {
 }
 
 .courseInfo-Section {
-  padding: 2rem
+  margin: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px solid black;
 }
 
 ul {
   list-style: none;
+}
+
+
+
+/* section */
+
+.sectionCon {
+  margin : 1rem;
+  padding : 1rem;
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 25px;
+}
+
+.sectionCon-Top {
+  padding: 1rem;
+  border-bottom: 1px solid black ;
+}
+
+.sectionCon-Content {
+  display: flex ;
+  flex-wrap: wrap;
+}
+
+.sectionCon-Description {
+  width:60% ;
+  padding: 1rem
+
+}
+
+.sectionCon-Material {
+  padding: 1rem
+}
+
+.sectionCon-Quiz {
+  position: relative;
+    left: 100%;
+    top: 50%;
 }

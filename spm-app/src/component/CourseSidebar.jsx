@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from "react-router-dom"
+
 
 const CourseSidebar = () => {
 
@@ -9,18 +11,26 @@ const CourseSidebar = () => {
                 Resource
             </div>
             <div>
-                <div className ='coursebar-link'>
-                    Overview
-                </div>
-                <div className ='coursebar-link'>
-                    Curriculum
-                </div>
-                <div className ='coursebar-link'>
-                    Course Forum
-                </div>
-                <div className ='coursebar-link'>
-                    Take Quiz
-                </div>
+                <Link to = "./overview"> 
+                    <div className ='coursebar-link'>
+                        Overview
+                    </div>
+                </Link>
+                <Link to = "./curriculum"> 
+                    <div className ='coursebar-link'>
+                        Curriculum
+                    </div>
+                </Link>
+                <Link to = "./forum"> 
+                    <div className ='coursebar-link'>
+                        Course Forum
+                    </div>
+                </Link>
+                <Link to = "./quiz"> 
+                    <div className ='coursebar-link'>
+                        Take Quiz
+                    </div>
+                </Link>
             </div>
         </div>
     )
