@@ -7,7 +7,7 @@ CORS(app)
 
 url = 'https://spm-g4t1.hasura.app/v1/graphql?'
 
-@app.route("/view_section/<string:course_code>") ###
+@app.route("/view_section/<string:course_code>") 
 def view_section(course_code):
     filter = '{course_code: {_eq: "' + course_code +'"}}'
     query = """
