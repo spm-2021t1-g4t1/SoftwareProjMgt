@@ -17,6 +17,11 @@ const MainSidebar = () => {
                     <FontAwesomeIcon icon ={faHome} /> Home
                 </div>
             </Link>
+            <Link to = '/catalog'>
+                <div className = 'sidebar-link'>
+                 <FontAwesomeIcon icon ={faBookReader} />  Catalog
+                </div>
+            </Link>
             <Link to = '/course'>
                 <div className = 'sidebar-link'>
                  <FontAwesomeIcon icon ={faBookReader} />  Course
