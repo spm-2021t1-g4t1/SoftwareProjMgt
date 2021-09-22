@@ -1,12 +1,32 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import "../App.css";
 
 const Catalog = () => {
     const endpoint = "https://spm-g4t1.hasura.app/v1/graphql";
+    // const endpoint = "http://localhost:4000/get_course";        // TODO: update URL when microservices are hosted properly somewhere
+
     const [courses, setCourses] = useState([])
+    
+    // CALL MICROSERVICE - use if you're running microservice locally 
+    // useEffect(() => {axios.get(endpoint)
+    //     .then(res => {
+    //         // console.log(res)
+    //         setCourses(res.data.course_schema_course)
+    //     })}, [])
+
+    // return (
+    //     <div style={{ margin: "auto", width: "75vw" }}>
+    //         <h1>Course catalog</h1>
+    //         {courses.map(course => <CourseCard courseSchema={course} key={course.course_code}/>)}
+    //     </div>
+    // )
+
+    //  ----------------------- 
+
+    // CALL DB DIRECTLY
     useEffect(() => {axios.post(endpoint, {
         query: `query getAllCourses {
             course_schema_course {
@@ -25,7 +45,6 @@ const Catalog = () => {
         }
     })
         .then(res => {
-            console.log(res.data.data)
             setCourses(res.data.data.course_schema_course)
         })}, [])
 
