@@ -3,57 +3,81 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
 db = SQLAlchemy(app)
 
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    completed = db.Column(db.Integer, default=0)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+class CourseEnrolment(db.Model):
+    __tablename__ ="course_enrolment"
+    staff_email = db.Column(db.String(255), primary_key=True)
+    course_id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return '<Task %r>' % self.id
+    def __init__(self, staff_email, course_id):
+        self.staff_email = staff_email
+        self.course_id = course_id
 
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    if request.method == 'POST':
-        task_content = request.form['content']
-        new_task = Todo(content=task_content)
+    def json(self):
+        return {
+            "staff_email": self.staff_email,
+            "course_id": self.course_id
+        }
+
+    def add_enrolment(self):
         try:
-            db.session.add(new_task)
+            db.session.add(self)
             db.session.commit()
-            return redirect('/')
+            return "Added!"
         except:
-            return 'There was an issue adding your task'
-    else:
-        tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html', tasks=tasks)
+            return "Failed to add"
 
-@app.route('/delete/<int:id>')
-def delete(id):
-    task_to_delete = Todo.query.get_or_404(id)
-    try:
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        return redirect('/')
-    except:
-        return 'There was a problem deleting that task'
+class Staff(db.Model):
+    __tablename__ = "staff"
+
+    staff_email = db.Column(db.String(255), primary_key=True)
+    years_of_service = db.Column(db.Integer)
+
+    def __init__(self, staff_email, years_of_service):
+        self.staff_email = staff_email
+        self.years_of_service = years_of_service
+    
+    def json(self):
+        return {
+            "staff_email": self.staff_email,
+            "years_of_service": self.years_of_service
+        }
+
+    @classmethod
+    def get_all_staff(cls):
+        return cls.query.all() # Returns a list of Staff Object [<staff1]
+
+    @classmethod
+    def get_specific_staff(cls, staff_email):
+        return cls.query.filter_by(staff_email=staff_email).first() #Returns a Staff Object
+
+    # @classmethod
+    # def get_enrolment_by_staff_email(cls, staff_email):
+    #     enrolment = CourseEnrolment.query.filter_by(staff_email=staff_email).all() ##CourseEnrolment type
+    #     return enrolment
 
 
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
-def update(id):
-    task = Todo.query.get_or_404(id)
+@app.route('/list_of_staff')
+def list_of_staff():
+    staff_list = Staff.get_all_staff()
+    staff_email_list = []
+    for staff in staff_list:
+        staff_email_list.append(staff.staff_email)
+    return {'data': staff_email_list}
 
-    if request.method == 'POST':
-        task.content = request.form['content']
-        try:
-            db.session.commit()
-            return redirect('/')
-        except:
-            return 'There was an issue updating your task'
-    else:
-        return render_template('update.html', task=task)
+@app.route('/staff/<string:staff_email>')
+def staff(staff_email):
+    staff = Staff.get_specific_staff(staff_email).json()
+    return staff
+
+
+@app.route('/enrolment/<string:course_id>/<string:staff_email>') #enroll a staff to a specific course
+def enrolment(course_id, staff_email):
+    #staff_to_enroll = Staff.get_specific_staff(staff_email).staff_email
+    commit = CourseEnrolment(staff_email, course_id).add_enrolment()
+    return commit
 
 if __name__ == "__main__":
     app.run(debug=True)
