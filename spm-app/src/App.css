@@ -180,3 +180,10 @@ ul {
     left: 100%;
     top: 50%;
 }
+
+/* Engineer Details */
+.EngineerDetails {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 20rem;
+}
