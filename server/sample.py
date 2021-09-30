@@ -76,7 +76,7 @@ def staff(staff_email):
 @app.route('/enrolment/<string:course_id>/<string:staff_email>') #enroll a staff to a specific course
 def enrolment(course_id, staff_email):
     #staff_to_enroll = Staff.get_specific_staff(staff_email).staff_email
-    commit = CourseEnrolment(staff_email, course_id).add_enrolment()
+    commit = CourseEnrolment(staff_email,course_id).add_enrolment()
     return commit
 
 if __name__ == "__main__":

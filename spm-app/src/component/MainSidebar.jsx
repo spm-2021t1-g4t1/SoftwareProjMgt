@@ -9,9 +9,6 @@ import React from 'react'
 const MainSidebar = () => {
     return (
         <div className = "sidebar">
-            <div className = 'sidebar-banner'>
-                <img className ='sideImg' src ='/images/logo.png' alt = 'logo'/>
-            </div>
             <Link  to = '/'> 
                 <div className = 'sidebar-link'>
                     <FontAwesomeIcon icon ={faHome} /> Home
