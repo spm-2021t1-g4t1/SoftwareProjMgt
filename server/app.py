@@ -1,3 +1,4 @@
+
 #Import external modules
 from flask import Flask
 from db import db
@@ -33,9 +34,6 @@ def get_all_course():
 @app.route('/course/<int:course_id>')
 def get_one_course(course_id):
     return course.get_specificCourse(course_id)
-
-
-
 
 
 
