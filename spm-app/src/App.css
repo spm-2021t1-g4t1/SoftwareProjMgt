@@ -11,7 +11,15 @@ body {
   text-align: left; 
 }
 
+.App-body {
+  top: 5rem;
+  position: relative;
+  margin: auto;
+  width: 75vw;
+  left: 5rem;
 
+  transition: all 1000ms ease-in;
+}
 
 .App-header {
   background-color: #282c34;
@@ -28,24 +36,63 @@ a {
   text-decoration: none;
   color: inherit
 }
+
+.profile-pic {
+  height:75%;
+  border-radius: 100px;
+  padding: 5%
+}
+
+/* Header */
+
+header {
+  position: fixed;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  background-color: white;
+  justify-content: space-between;
+}
+
+.left-header {
+  height:inherit;
+  display: inline-flex
+}
+
+.right-header {
+  height:inherit;
+  display: inline-flex
+}
+
+.header-icon {
+  height: 75%;
+  padding: 5%;
+}
+
+.collapse-menu {
+  width: 4rem;
+  height: 100%;
+  background-color: #2e2e2e;
+  color:ivory
+}
+
+.sideImg {
+  max-height: inherit;
+  height: 100%
+}
+
+
 /* Sidebar */
 
 .sidebar {
   position: fixed;
   background-color: #2e2e2e;
+  top:4rem;
   height: 100%;
   width: 10rem;
   left: 0rem;
   text-align: left;
 
-}
-
-.sidebar-banner {
-  background-color: #fffbf7;
-  height: 5rem;  
-}
-.sideImg {
-  height: 100%
 }
 
 .sidebar-link {
@@ -143,7 +190,29 @@ ul {
   list-style: none;
 }
 
+/* Catalog */
+.Catalog-Section{
+  margin: 1rem 1rem 0rem 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px solid black;
+}
 
+.class-timing {
+  display: flex
+  
+}
+
+.class-text{
+  padding: 0.5rem
+}
+
+.class-Section {
+  background-color: #ffffff;
+  border: 1px solid black;
+  margin: 0rem 1rem 0rem 1rem;
+  padding: 1rem;
+}
 
 /* section */
 
@@ -179,4 +248,46 @@ ul {
   position: relative;
     left: 100%;
     top: 50%;
+}
+
+/* Engineer Details */
+.EngineerDetails {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 20rem;
+}
+
+
+
+
+.slider-sidebar-enter-done {
+  transform: translateX(0%);
+}
+.slider-sidebar-enter-active {
+  left: -10rem;
+  transform: translateX(100%);
+  transition: transform 1000ms ease-in;
+}
+
+.slider-sidebar-exit-done {
+  transform: translateX(-100%);
+}
+.slider-sidebar-exit-active {
+  transform: translateX(-100%);
+  transition: transform 1000ms ease-out;
+}
+
+
+.slider-body-enter-done {
+  left: 5rem;
+}
+.slider-body-enter-active {
+  left: 5rem;
+}
+
+.slider-body-exit-done {
+  left: 0rem;
+}
+.slider-body-exit-active {
+  left: 0rem;
 }

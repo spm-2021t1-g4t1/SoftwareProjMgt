@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 27, 2021 at 05:15 PM
+-- Generation Time: Sep 30, 2021 at 04:56 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -40,29 +40,55 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `class_size` int NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
-  KEY `fk_1` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `fk_1` (`course_id`),
+  KEY `class_fk_2` (`trainer_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `classes`
 --
 
 INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`) VALUES
-(1, 2, '2021-09-01', '2021-09-30', '10:01:40', '19:01:40', 40, NULL);
+(1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs@lms.aio.sg'),
+(2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jack.ma@lms.aio.sg'),
+(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
+(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
+(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
+(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
+(1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs@lms.aio.sg'),
+(2, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jack.ma@lms.aio.sg'),
+(3, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
+(4, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
+(5, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
+(6, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `class_assignment`
+-- Table structure for table `class_enrolment`
 --
 
-DROP TABLE IF EXISTS `class_assignment`;
-CREATE TABLE IF NOT EXISTS `class_assignment` (
+DROP TABLE IF EXISTS `class_enrolment`;
+CREATE TABLE IF NOT EXISTS `class_enrolment` (
+  `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `course_id` int NOT NULL,
   `class_no` int NOT NULL,
-  `staff_email` varchar(255) NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`)
+  PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
+  KEY `staff_email` (`staff_username`),
+  KEY `fk4` (`class_no`,`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `class_enrolment`
+--
+
+INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
+('corey.roberts@lms.aio.sg', 1, 2),
+('darrel.wilde@lms.aio.sg', 1, 2),
+('hanan.hyde@lms.aio.sg', 1, 2),
+('rojin.clark@lms.aio.sg', 1, 2),
+('sallie.east@lms.aio.sg', 1, 2),
+('sannah.rossi@lms.aio.sg', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -83,26 +109,12 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `description`) VALUES
-(1, 'Fundamentals of Xerox WorkCentre 784', 'Fundamentals of Xerox WorkCentre FIRST PART'),
-(2, 'Programming for Xerox WorkCentre with CardAccess and Integration', 'CardAccess and integration to Xerox -- basics'),
-(3, 'Embedded Systems Essentials with ARM: Getting Started', 'Introduction of embedded systems'),
-(4, 'IoT System Design, Software and hardware integration', 'Introduction to IoT basics'),
-(5, 'IT Fundamentals for Business ', 'Hardware IT Fundamentals bassic course'),
-(6, 'Hardware and Operating Systems for Canon', 'Canon Hardware HW and OS ');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `course_enrolment`
---
-
-DROP TABLE IF EXISTS `course_enrolment`;
-CREATE TABLE IF NOT EXISTS `course_enrolment` (
-  `staff_email` varchar(255) NOT NULL,
-  `course_id` int NOT NULL,
-  KEY `fk4` (`course_id`),
-  KEY `staff_email` (`staff_email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+(1, 'Fundamentals of Xerox WorkCentre 784', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(2, 'Programming for Xerox WorkCentre with CardAccess and Integration', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(3, 'Embedded Systems Essentials with ARM: Getting Started', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(4, 'IoT System Design, Software and hardware integration', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(5, 'IT Fundamentals for Business ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(6, 'Hardware and Operating Systems for Canon', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul');
 
 -- --------------------------------------------------------
 
@@ -127,7 +139,22 @@ INSERT INTO `learning_objective` (`course_id`, `learning_objective`) VALUES
 (1, 'Fundamentals of working with Angular'),
 (1, 'Testing with Angular'),
 (1, 'Understanding Dependency Injection'),
-(1, 'Working with the Angular CLI');
+(1, 'Working with the Angular CLI'),
+(2, 'Create complete Angular applications'),
+(2, 'Fundamentals of working with Angular'),
+(2, 'Working with the Angular CLI'),
+(3, 'Create complete Angular applications'),
+(3, 'Fundamentals of working with Angular'),
+(3, 'Working with the Angular CLI'),
+(4, 'Create complete Angular applications'),
+(4, 'Fundamentals of working with Angular'),
+(4, 'Working with the Angular CLI'),
+(5, 'Create complete Angular applications'),
+(5, 'Fundamentals of working with Angular'),
+(5, 'Working with the Angular CLI'),
+(6, 'Create complete Angular applications'),
+(6, 'Fundamentals of working with Angular'),
+(6, 'Working with the Angular CLI');
 
 -- --------------------------------------------------------
 
@@ -140,7 +167,8 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `course_id` int NOT NULL,
   `class_no` int NOT NULL,
   `lesson_no` int NOT NULL,
-  `section_description` varchar(255) NOT NULL,
+  `lesson_name` varchar(255) NOT NULL,
+  `lesson_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -148,8 +176,13 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 -- Dumping data for table `lesson`
 --
 
-INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `section_description`) VALUES
-(1, 2, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul');
+INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`) VALUES
+(1, 2, 1, 'Fundamentals of Xerox WorkCentre 784 101', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(1, 2, 2, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(1, 2, 3, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(2, 1, 1, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(2, 1, 2, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
+(2, 1, 3, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul');
 
 -- --------------------------------------------------------
 
@@ -268,24 +301,27 @@ CREATE TABLE IF NOT EXISTS `quiz_questions` (
 
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE IF NOT EXISTS `staff` (
-  `staff_email` varchar(255) NOT NULL,
-  `years_of_service` int NOT NULL,
-  PRIMARY KEY (`staff_email`)
+  `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `staff_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'Learner',
+  `department` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `current_designation` varchar(255) NOT NULL,
+  PRIMARY KEY (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_email`, `years_of_service`) VALUES
-('bakayaro@lms.aio.sg', 3),
-('bambooo@lms.aio.sg', 7),
-('jackma@lms.aio.sg', 8),
-('juniornew@lms.aio.sg', 2),
-('seniortest@lms.aio.sg', 11),
-('stevejobs@lms.aio.sg', 4),
-('test111@lms.aio.sg', 5),
-('test123@lms.aio.sg', 5);
+INSERT INTO `staff` (`staff_username`, `staff_name`, `role`, `department`, `current_designation`) VALUES
+('corey.roberts@lms.aio.sg', 'Corey Roberts', 'Learner', 'Operation', 'Engineer'),
+('darrel.wilde@lms.aio.sg', 'Darrel Wilde', 'Learner', 'Development', 'Engineer'),
+('hanan.hyde@lms.aio.sg', 'Hanan Hyde', 'Administrator', 'Human Resources', 'Executive'),
+('jack.ma@lms.aio.sg', 'Jack Ma', 'Trainer', 'Development', 'Engineer'),
+('rojin.clark@lms.aio.sg', 'Rojin Clark', 'Learner', 'Operation', 'Engineer'),
+('sallie.east@lms.aio.sg', 'Sallie East', 'Learner', 'Operation', 'Engineer'),
+('sannah.rossi@lms.aio.sg', 'Sannah Rossi', 'Learner', 'Development', 'Engineer'),
+('stevejobs@lms.aio.sg', 'Steve Jobs', 'Trainer', 'Operation', 'Engineer');
 
 --
 -- Constraints for dumped tables
@@ -295,20 +331,15 @@ INSERT INTO `staff` (`staff_email`, `years_of_service`) VALUES
 -- Constraints for table `classes`
 --
 ALTER TABLE `classes`
-  ADD CONSTRAINT `fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`);
+  ADD CONSTRAINT `class_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `classes_fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `class_assignment`
+-- Constraints for table `class_enrolment`
 --
-ALTER TABLE `class_assignment`
-  ADD CONSTRAINT `fk3` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`);
-
---
--- Constraints for table `course_enrolment`
---
-ALTER TABLE `course_enrolment`
-  ADD CONSTRAINT `fk4` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
-  ADD CONSTRAINT `staff_email` FOREIGN KEY (`staff_email`) REFERENCES `staff` (`staff_email`);
+ALTER TABLE `class_enrolment`
+  ADD CONSTRAINT `fk4` FOREIGN KEY (`class_no`,`course_id`) REFERENCES `classes` (`class_no`, `course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `staff_email` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --
 -- Constraints for table `learning_objective`
@@ -320,7 +351,7 @@ ALTER TABLE `learning_objective`
 -- Constraints for table `lesson`
 --
 ALTER TABLE `lesson`
-  ADD CONSTRAINT `fk7` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`);
+  ADD CONSTRAINT `lesson_fk1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `lesson_completion`

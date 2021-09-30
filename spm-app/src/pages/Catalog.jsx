@@ -5,19 +5,9 @@ import { useState, useEffect } from 'react';
 import "../App.css";
 
 const Catalog = () => {
-    const endpoint = "https://spm-g4t1.hasura.app/v1/graphql";
+    const endpoint = "http://127.0.0.1:5000/course";
     const [courses, setCourses] = useState([])
-    useEffect(() => {axios.post(endpoint, {
-        query: `query getAllCourses {
-            course_schema_course {
-                course_code
-                course_description
-                course_name
-                end_date
-                start_date
-            }
-        }`
-    }, {
+    useEffect(() => {axios.get(endpoint, {
         headers:
         {
             'content-type': 'application/json',
@@ -25,12 +15,12 @@ const Catalog = () => {
         }
     })
         .then(res => {
-            console.log(res.data.data)
-            setCourses(res.data.data.course_schema_course)
+            // console.log(res.data.data)
+            setCourses(res.data.data)
         })}, [])
 
     return (
-        <div style={{ margin: "auto", width: "75vw" }}>
+        <div>
             <h1>Course catalog</h1>
             {courses.map(course => <CourseCard courseSchema={course} key={course.course_code}/>)}
         </div>
@@ -39,12 +29,37 @@ const Catalog = () => {
 
 const CourseCard = ({courseSchema}) => {
 
+    // console.log(courseSchema)
+
     return(
-        <div className="courseInfo-Section">
-            <h2>{courseSchema.course_code} - {courseSchema.course_name}</h2>
-            <p>Description: {courseSchema.course_description}</p>
-            <p>Start date: {courseSchema.start_date}</p>
-            <p>End date: {courseSchema.end_date}</p>
+        <div> 
+            <div className="Catalog-Section">    
+                <h2>{courseSchema.course_id} - {courseSchema.course_name}</h2>
+                <p>Description: {courseSchema.description}</p>
+            </div>
+            {courseSchema.classes.map(classes => <ClassCard classSchema={classes} key={courseSchema.course_code - classes.class_no}/>)}
+        </div>
+        
+    )
+}
+
+const ClassCard = ({classSchema}) => {
+    console.log(classSchema)
+
+    return(
+        <div className="class-Section">
+            <h2>Class {classSchema.class_no}</h2>
+            <p className = 'class-text'>Slot: {classSchema.class_size}</p>
+            <div className = 'class-timing'>
+                <div className = 'class-text'>
+                    <p>Start date: {classSchema.start_date}</p>
+                    <p>End date: {classSchema.end_date}</p>
+                </div>
+                <div className = 'class-text'>
+                    <p>Start Time: {classSchema.start_time}</p>
+                    <p>End Time: {classSchema.end_time}</p>
+                </div>
+            </div>
         </div>
     )
 }
