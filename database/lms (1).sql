@@ -1,11 +1,18 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
+<<<<<<< Updated upstream:database/LMS.sql
 -- Host: 127.0.0.1:3306
 -- Generation Time: Sep 27, 2021 at 05:15 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
+=======
+-- Host: localhost:8889
+-- Generation Time: Oct 02, 2021 at 05:59 PM
+-- Server version: 5.7.34
+-- PHP Version: 7.4.21
+>>>>>>> Stashed changes:database/lms (1).sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +27,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms`
 --
-CREATE DATABASE IF NOT EXISTS `lms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `lms`;
 
 -- --------------------------------------------------------
 
@@ -29,19 +34,24 @@ USE `lms`;
 -- Table structure for table `classes`
 --
 
-DROP TABLE IF EXISTS `classes`;
-CREATE TABLE IF NOT EXISTS `classes` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `classes` (
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
+<<<<<<< Updated upstream:database/LMS.sql
   `class_size` int NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
   KEY `fk_1` (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+=======
+  `class_size` int(11) NOT NULL,
+  `trainer_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+>>>>>>> Stashed changes:database/lms (1).sql
 
 --
 -- Dumping data for table `classes`
@@ -56,12 +66,19 @@ INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start
 -- Table structure for table `class_assignment`
 --
 
+<<<<<<< Updated upstream:database/LMS.sql
 DROP TABLE IF EXISTS `class_assignment`;
 CREATE TABLE IF NOT EXISTS `class_assignment` (
   `course_id` int NOT NULL,
   `class_no` int NOT NULL,
   `staff_email` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`)
+=======
+CREATE TABLE `class_enrolment` (
+  `staff_username` varchar(255) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL
+>>>>>>> Stashed changes:database/lms (1).sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -70,13 +87,11 @@ CREATE TABLE IF NOT EXISTS `class_assignment` (
 -- Table structure for table `course`
 --
 
-DROP TABLE IF EXISTS `course`;
-CREATE TABLE IF NOT EXISTS `course` (
-  `course_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course` (
+  `course_id` int(11) NOT NULL,
   `course_name` text NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `course`
@@ -110,12 +125,9 @@ CREATE TABLE IF NOT EXISTS `course_enrolment` (
 -- Table structure for table `learning_objective`
 --
 
-DROP TABLE IF EXISTS `learning_objective`;
-CREATE TABLE IF NOT EXISTS `learning_objective` (
-  `course_id` int NOT NULL,
-  `learning_objective` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`course_id`,`learning_objective`),
-  KEY `fk6` (`course_id`)
+CREATE TABLE `learning_objective` (
+  `course_id` int(11) NOT NULL,
+  `learning_objective` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -135,6 +147,7 @@ INSERT INTO `learning_objective` (`course_id`, `learning_objective`) VALUES
 -- Table structure for table `lesson`
 --
 
+<<<<<<< Updated upstream:database/LMS.sql
 DROP TABLE IF EXISTS `lesson`;
 CREATE TABLE IF NOT EXISTS `lesson` (
   `course_id` int NOT NULL,
@@ -142,6 +155,14 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `lesson_no` int NOT NULL,
   `section_description` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
+=======
+CREATE TABLE `lesson` (
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
+  `lesson_name` varchar(255) NOT NULL,
+  `lesson_description` varchar(255) NOT NULL
+>>>>>>> Stashed changes:database/lms (1).sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -157,14 +178,12 @@ INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `section_description
 -- Table structure for table `lesson_completion`
 --
 
-DROP TABLE IF EXISTS `lesson_completion`;
-CREATE TABLE IF NOT EXISTS `lesson_completion` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+CREATE TABLE `lesson_completion` (
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `staff_email` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
+  `quiz_score` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -173,14 +192,12 @@ CREATE TABLE IF NOT EXISTS `lesson_completion` (
 -- Table structure for table `lesson_materials`
 --
 
-DROP TABLE IF EXISTS `lesson_materials`;
-CREATE TABLE IF NOT EXISTS `lesson_materials` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+CREATE TABLE `lesson_materials` (
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
-  `link` text NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`)
+  `link` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -196,14 +213,12 @@ INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_ma
 -- Table structure for table `materials_viewed`
 --
 
-DROP TABLE IF EXISTS `materials_viewed`;
-CREATE TABLE IF NOT EXISTS `materials_viewed` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+CREATE TABLE `materials_viewed` (
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
-  `staff_email` varchar(255) NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`)
+  `staff_email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -212,15 +227,13 @@ CREATE TABLE IF NOT EXISTS `materials_viewed` (
 -- Table structure for table `quiz`
 --
 
-DROP TABLE IF EXISTS `quiz`;
-CREATE TABLE IF NOT EXISTS `quiz` (
-  `quiz_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `quiz` (
+  `quiz_id` int(11) NOT NULL,
   `quiz_name` varchar(255) NOT NULL DEFAULT 'Untitiled',
   `description` text NOT NULL,
   `uploader` varchar(255) NOT NULL,
-  `duration` time NOT NULL,
-  PRIMARY KEY (`quiz_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `duration` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `quiz`
@@ -236,13 +249,11 @@ INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration
 -- Table structure for table `quiz_options`
 --
 
-DROP TABLE IF EXISTS `quiz_options`;
-CREATE TABLE IF NOT EXISTS `quiz_options` (
-  `qid` int DEFAULT NULL,
-  `ques_id` int DEFAULT NULL,
+CREATE TABLE `quiz_options` (
+  `qid` int(11) DEFAULT NULL,
+  `ques_id` int(11) DEFAULT NULL,
   `optionz` text,
-  `is_right` tinyint(1) DEFAULT NULL,
-  KEY `qid` (`qid`,`ques_id`)
+  `is_right` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -251,14 +262,22 @@ CREATE TABLE IF NOT EXISTS `quiz_options` (
 -- Table structure for table `quiz_questions`
 --
 
-DROP TABLE IF EXISTS `quiz_questions`;
-CREATE TABLE IF NOT EXISTS `quiz_questions` (
-  `qid` int NOT NULL,
-  `ques_id` int NOT NULL,
+CREATE TABLE `quiz_questions` (
+  `qid` int(11) NOT NULL,
+  `ques_id` int(11) NOT NULL,
   `question` text NOT NULL,
-  `question_type` varchar(255) NOT NULL,
-  PRIMARY KEY (`qid`,`ques_id`)
+  `question_type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_questions`
+--
+
+INSERT INTO `quiz_questions` (`qid`, `ques_id`, `question`, `question_type`) VALUES
+(1, 1, 'A Company is migrating an application to its AWS environment. The implementation requires the company to deploy up to 40 m4.4xlarge instances. What should a Cloud engineer do prior to launching the instances? ', 'mcq'),
+(1, 2, 'An organization recently expanded its AWS infrastructure for its public website into two regions. US East (Ohio) and ASIA Pacific (Mumbai), to better serve growing demand in Asia. What should the SysOps administrator implement to ensure that users are consistently directed to the best performing region?', 'mcq'),
+(1, 3, 'A SysOps administrator has an Amazon EC2 instance using IPv6. Which VPC feature allows the instance to communicate with the internet but prevents inbound traffic?', 'mcq'),
+(1, 4, 'An Organization has implemented a file gateway to keep copies of users’ home drives in Amazon S3. Which conducting an analysis, an Administrator notice that most files are no longer accessed after 45 days. What is the BEST way for the Administrator to reduce storage costs while continuing to provide access to the files for the users?', 'mcq');
 
 -- --------------------------------------------------------
 
@@ -266,11 +285,20 @@ CREATE TABLE IF NOT EXISTS `quiz_questions` (
 -- Table structure for table `staff`
 --
 
+<<<<<<< Updated upstream:database/LMS.sql
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE IF NOT EXISTS `staff` (
   `staff_email` varchar(255) NOT NULL,
   `years_of_service` int NOT NULL,
   PRIMARY KEY (`staff_email`)
+=======
+CREATE TABLE `staff` (
+  `staff_username` varchar(255) NOT NULL,
+  `staff_name` varchar(255) DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'Learner',
+  `department` varchar(255) NOT NULL,
+  `current_designation` varchar(255) NOT NULL
+>>>>>>> Stashed changes:database/lms (1).sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -288,6 +316,109 @@ INSERT INTO `staff` (`staff_email`, `years_of_service`) VALUES
 ('test123@lms.aio.sg', 5);
 
 --
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `classes`
+--
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
+  ADD KEY `fk_1` (`course_id`),
+  ADD KEY `class_fk_2` (`trainer_name`);
+
+--
+-- Indexes for table `class_enrolment`
+--
+ALTER TABLE `class_enrolment`
+  ADD PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
+  ADD KEY `staff_email` (`staff_username`),
+  ADD KEY `fk4` (`class_no`,`course_id`);
+
+--
+-- Indexes for table `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`course_id`);
+
+--
+-- Indexes for table `learning_objective`
+--
+ALTER TABLE `learning_objective`
+  ADD PRIMARY KEY (`course_id`,`learning_objective`),
+  ADD KEY `fk6` (`course_id`);
+
+--
+-- Indexes for table `lesson`
+--
+ALTER TABLE `lesson`
+  ADD PRIMARY KEY (`course_id`,`class_no`,`lesson_no`);
+
+--
+-- Indexes for table `lesson_completion`
+--
+ALTER TABLE `lesson_completion`
+  ADD PRIMARY KEY (`course_id`,`class_no`,`lesson_no`);
+
+--
+-- Indexes for table `lesson_materials`
+--
+ALTER TABLE `lesson_materials`
+  ADD PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`);
+
+--
+-- Indexes for table `materials_viewed`
+--
+ALTER TABLE `materials_viewed`
+  ADD PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`);
+
+--
+-- Indexes for table `quiz`
+--
+ALTER TABLE `quiz`
+  ADD PRIMARY KEY (`quiz_id`);
+
+--
+-- Indexes for table `quiz_options`
+--
+ALTER TABLE `quiz_options`
+  ADD KEY `qid` (`qid`,`ques_id`);
+
+--
+-- Indexes for table `quiz_questions`
+--
+ALTER TABLE `quiz_questions`
+  ADD PRIMARY KEY (`qid`,`ques_id`);
+
+--
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`staff_username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `classes`
+--
+ALTER TABLE `classes`
+  MODIFY `class_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `course`
+--
+ALTER TABLE `course`
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `quiz`
+--
+ALTER TABLE `quiz`
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -295,6 +426,7 @@ INSERT INTO `staff` (`staff_email`, `years_of_service`) VALUES
 -- Constraints for table `classes`
 --
 ALTER TABLE `classes`
+<<<<<<< Updated upstream:database/LMS.sql
   ADD CONSTRAINT `fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`);
 
 --
@@ -302,13 +434,23 @@ ALTER TABLE `classes`
 --
 ALTER TABLE `class_assignment`
   ADD CONSTRAINT `fk3` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`);
+=======
+  ADD CONSTRAINT `class_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`),
+  ADD CONSTRAINT `classes_fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`);
+>>>>>>> Stashed changes:database/lms (1).sql
 
 --
 -- Constraints for table `course_enrolment`
 --
+<<<<<<< Updated upstream:database/LMS.sql
 ALTER TABLE `course_enrolment`
   ADD CONSTRAINT `fk4` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
   ADD CONSTRAINT `staff_email` FOREIGN KEY (`staff_email`) REFERENCES `staff` (`staff_email`);
+=======
+ALTER TABLE `class_enrolment`
+  ADD CONSTRAINT `fk4` FOREIGN KEY (`class_no`,`course_id`) REFERENCES `classes` (`class_no`, `course_id`),
+  ADD CONSTRAINT `staff_email` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
+>>>>>>> Stashed changes:database/lms (1).sql
 
 --
 -- Constraints for table `learning_objective`
@@ -320,7 +462,11 @@ ALTER TABLE `learning_objective`
 -- Constraints for table `lesson`
 --
 ALTER TABLE `lesson`
+<<<<<<< Updated upstream:database/LMS.sql
   ADD CONSTRAINT `fk7` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`);
+=======
+  ADD CONSTRAINT `lesson_fk1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`);
+>>>>>>> Stashed changes:database/lms (1).sql
 
 --
 -- Constraints for table `lesson_completion`
