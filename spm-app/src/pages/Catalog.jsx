@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import "../App.css";
 
+import CourseCard from '../component/CourseCard';
+
+
 const Catalog = () => {
     const endpoint = "http://127.0.0.1:5000/course";
     const [courses, setCourses] = useState([])
+    
     useEffect(() => {axios.get(endpoint, {
         headers:
         {
@@ -15,9 +18,10 @@ const Catalog = () => {
         }
     })
         .then(res => {
-            // console.log(res.data.data)
+            console.log(res.data.data)
             setCourses(res.data.data)
         })}, [])
+    
 
     return (
         <div>
@@ -27,41 +31,5 @@ const Catalog = () => {
     )
 }
 
-const CourseCard = ({courseSchema}) => {
-
-    // console.log(courseSchema)
-
-    return(
-        <div> 
-            <div className="Catalog-Section">    
-                <h2>{courseSchema.course_id} - {courseSchema.course_name}</h2>
-                <p>Description: {courseSchema.description}</p>
-            </div>
-            {courseSchema.classes.map(classes => <ClassCard classSchema={classes} key={courseSchema.course_code - classes.class_no}/>)}
-        </div>
-        
-    )
-}
-
-const ClassCard = ({classSchema}) => {
-    console.log(classSchema)
-
-    return(
-        <div className="class-Section">
-            <h2>Class {classSchema.class_no}</h2>
-            <p className = 'class-text'>Slot: {classSchema.class_size}</p>
-            <div className = 'class-timing'>
-                <div className = 'class-text'>
-                    <p>Start date: {classSchema.start_date}</p>
-                    <p>End date: {classSchema.end_date}</p>
-                </div>
-                <div className = 'class-text'>
-                    <p>Start Time: {classSchema.start_time}</p>
-                    <p>End Time: {classSchema.end_time}</p>
-                </div>
-            </div>
-        </div>
-    )
-}
 
 export default Catalog

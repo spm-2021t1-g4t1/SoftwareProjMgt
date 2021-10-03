@@ -61,7 +61,8 @@ header {
 
 .right-header {
   height:inherit;
-  display: inline-flex
+  display: inline-flex;
+  justify-content: flex-end
 }
 
 .header-icon {
@@ -169,7 +170,6 @@ header {
 .leftSection {
   top: 10rem;
   width: 70%;
-  padding-left: 11rem;
   text-align: left;
 
 }

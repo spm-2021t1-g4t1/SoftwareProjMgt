@@ -6,30 +6,18 @@ import SectionContainer from '../component/SectionContainer'
 
 const Section = (prop) => {
 
-    // console.log(prop.data)
+    console.log(prop.data.classes[0].lesson)
 
     //useState
     const[sectionArrs, setSectionArrs] = useState([])
 
-
+   
     // pull api only once
+    
     useEffect(() => {
-        fetch('/jsonfiles/sectiondata.json')
-        .then(res => res.json()) 
-        .then (
-            (result) => {
-                let section_Array = result.data.section_schema_section
-                let section_list = []
-                for ( let i of section_Array) {
-                    if (i.course_code === prop.data) {              
-                        section_list.push(i)
-                    }
-                }
-                setSectionArrs(section_list)
-                // console.log(section_list)
-            }
-        )
-    }, [prop.data])
+        setSectionArrs(prop.data.classes[0].lesson)
+        // console.log(sectionArrs)
+    },[])
 
     return (
         <div className = 'leftSection'>

@@ -47,16 +47,21 @@ class classEnrolment(db.Model):
         }
 
     @classmethod
-    def getClasslist(self,course_id, class_no):
-        ClassListDAO = self.query.filter_by(course_id = course_id, class_no = class_no).all()
+    def getClasslist(cls,course_id, class_no):
+        ClassListDAO = cls.query.filter_by(course_id = course_id, class_no = class_no).all()
         classList = {'data':{}}
         for index, Student in enumerate(ClassListDAO):
             classList['data'][index] = Student.staff.json()
         return classList
 
 
-
-
+    @classmethod
+    def getStaffEnrollment(cls, staff_username):
+        ClassListDAO = cls.query.filter_by(staff_username = staff_username).all()
+        classList = {'data':{}}
+        for index, classes in enumerate(ClassListDAO):
+            classList['data'][index] = classes.json()
+        return classList
 
 # class classAssignment(db.Model):
 #     __tablename__ = 'class_assignment'
