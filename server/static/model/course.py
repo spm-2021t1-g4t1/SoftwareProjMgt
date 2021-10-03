@@ -9,7 +9,7 @@ class course(db.Model):
     learning_objective = db.relationship('learningObjective', backref='course', lazy = True)
     classes = db.relationship('classes', backref='course', lazy = True)
 
-    def viewjson(self):
+    def view_all_json(self):
         learn_obj = []
         for index,learning in enumerate(self.learning_objective):
             learn_obj.append(learning.viewstring())
@@ -25,18 +25,28 @@ class course(db.Model):
             "learning_objective": learn_obj,
             "classes": all_classes
         }
+    
+    def json(self):
+        learn_obj = []
+        for index,learning in enumerate(self.learning_objective):
+            learn_obj.append(learning.viewstring())
 
+        return {
+            "course_id": self.course_id,
+            "course_name": self.course_name,
+            "description": self.description,
+            "learning_objective": learn_obj,
+        }
 
     @classmethod
     def get_listOfCourse(cls):
         courses = cls.query.all()
-        return {'data': [one_course.viewjson() for one_course in courses]}
+        return {'data': [one_course.view_all_json() for one_course in courses]}
 
     @classmethod
     def get_specificCourse(cls,course_id):
         courses = cls.query.filter_by(course_id= course_id).first()
-        return {'data': [one_course.viewjson() for one_course in courses]}
-
+        return {'data': courses.json()}
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class learningObjective(db.Model):
@@ -66,11 +76,22 @@ class classes(db.Model):
         ),
     )
 
+    def json(self):
+        return {
+            "course_id": self.course_id,
+            "class_no": self.class_no,
+            "start_date": str(self.start_date),
+            "end_date": str(self.end_date),
+            "start_time": str(self.start_time),
+            "end_time": str(self.end_time),
+            "class_size": self.class_size,
+            "trainer_name": self.trainer_name,
+        }
 
     def viewjson(self):
         section_obj = []
         for section in self.section:
-            section_obj.append(section.viewjson())
+            section_obj.append(section.json())
         
         return {
             "course_id": self.course_id,
@@ -83,6 +104,12 @@ class classes(db.Model):
             "trainer_name": self.trainer_name,
             'section' : section_obj
         }
+
+
+    @classmethod
+    def get_specificClass(cls,course_id, class_no):
+        courses = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
+        return {'data': courses.json()}
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson(db.Model):
@@ -100,10 +127,10 @@ class lesson(db.Model):
         ),
     )
 
-    def viewjson(self):
+    def json(self):
         lesson_mat_obj = []
         for lesson_material in self.lesson_materials:
-            lesson_mat_obj.append(lesson_material.viewjson())
+            lesson_mat_obj.append(lesson_material.json())
 
         return {
             'course_id':self.course_id,
@@ -129,7 +156,7 @@ class lesson_materials(db.Model):
         ),
     )
 
-    def viewjson(self):
+    def json(self):
         return {
             'course_id':self.course_id,
             'class_no':self.class_no,

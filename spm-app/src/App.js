@@ -47,7 +47,7 @@ function App() {
               <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
-              <Route path = '/course/:courseid' component = {Course} />
+              <Route path = '/course/:courseid/:classid/' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
             </div>
           </CSSTransition>

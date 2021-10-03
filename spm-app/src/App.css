@@ -61,7 +61,8 @@ header {
 
 .right-header {
   height:inherit;
-  display: inline-flex
+  display: inline-flex;
+  justify-content: flex-end
 }
 
 .header-icon {
