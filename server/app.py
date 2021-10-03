@@ -3,15 +3,21 @@
 from flask import Flask
 from db import db
 from flask_cors import CORS
+import json
+
 
 #Import your classes here
 from static.model.staff import *
 from static.model.course import *
+from static.model.quiz import *
+
 
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
+
 
 @app.route('/staff')
 def list_of_staff():
@@ -41,8 +47,6 @@ def getStaff_Enrollment(staff_username):
 
     return classEnrolments
 
-
-
 @app.route('/course')
 def get_all_course():
     return course.get_listOfCourse()
@@ -69,6 +73,30 @@ def get_specificCourseDetail(course_id,class_no):
     return ClassDetail
 
 
+
+
+@app.route('/quiz', methods=['POST', 'GET'])
+def get_all():
+    quiz = Quiz.query.all()
+    json_thing = {
+        "code": 200,
+        "data": {
+            "quiz": [q.json() for q in quiz]
+        }
+    }
+    return json.dumps(json_thing, default=str)
+
+@app.route('/quiz_ques/<int:qid>', methods=['POST', 'GET'])
+def get_all_ques(qid):
+    ques = Question.query.filter_by(qid=qid).all()
+    json_thing = {
+        "code": 200,
+        "data": {
+            "ques": [q.json() for q in ques]
+        }
+    }
+
+    return json.dumps(json_thing, default=str)
 
 if __name__ == "__main__":
     db.init_app(app)
