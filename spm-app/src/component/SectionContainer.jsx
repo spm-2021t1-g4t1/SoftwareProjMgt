@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 
 const SectionContainer = (props) => {
-    // console.log(props)
+    console.log(props.data)
     
-    let sectionArr = props.data;
+    let sectionArr = props.data
     // eslint-disable-next-line
-    const[sectionArrs, setSectionArrs] = useState({
-        section_name: sectionArr.section_name,
-        section_description: sectionArr.section_description,
-        course_material: sectionArr.course_material})
+    const[sectionArrs, setSectionArrs] = useState(props.data)
 
     const sectionNumber = props.number
 
@@ -18,19 +15,19 @@ const SectionContainer = (props) => {
     return (
         <div className = 'sectionCon'>
             <div className =' sectionCon-Top'>
-                <h1>{ sectionNumber } {sectionArrs['section_name']}</h1>
+                <h1>{ sectionNumber } {sectionArrs['lesson_name']}</h1>
             </div>
             <div className = 'sectionCon-Content'>
                 <div className = 'sectionCon-Description'>
                     <h2>Description</h2>
                     <p>
-                        {sectionArrs['section_description']}
+                        {sectionArrs['lesson_description']}
                     </p>
                 </div>
                 <div className = 'sectionCon-Material'>
                     <h2>Course Material</h2>
                     <ul>
-                        {sectionArrs['course_material'].map((mat, index) =>
+                        {sectionArrs['lesson_materials'].map((mat, index) =>
                             <li key={index}>{mat}</li>                        
                         )}
                     </ul>

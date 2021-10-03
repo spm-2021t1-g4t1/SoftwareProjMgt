@@ -68,7 +68,7 @@ class classes(db.Model):
     end_time = db.Column(db.DateTime)
     class_size   = db.Column(db.Integer)
     trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_email'), nullable=True)
-    section = db.relationship('lesson', backref='classes', lazy = True)
+    lesson = db.relationship('lesson', backref='classes', lazy = True)
     
     __table_args__ = (
     db.PrimaryKeyConstraint(
@@ -89,9 +89,9 @@ class classes(db.Model):
         }
 
     def viewjson(self):
-        section_obj = []
-        for section in self.section:
-            section_obj.append(section.json())
+        lesson_obj = []
+        for lesson in self.lesson:
+            lesson_obj.append(lesson.json())
         
         return {
             "course_id": self.course_id,
@@ -102,14 +102,19 @@ class classes(db.Model):
             "end_time": str(self.end_time),
             "class_size": self.class_size,
             "trainer_name": self.trainer_name,
-            'section' : section_obj
+            'lesson' : lesson_obj
         }
 
 
     @classmethod
     def get_specificClass(cls,course_id, class_no):
-        courses = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
-        return {'data': courses.json()}
+        classobj = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
+        return {'data': classobj.json()}
+
+    @classmethod
+    def get_specificClassDetail(cls,course_id, class_no):
+        classobj = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
+        return {'data': classobj.viewjson()}
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson(db.Model):

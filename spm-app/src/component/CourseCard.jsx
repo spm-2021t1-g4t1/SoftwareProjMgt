@@ -13,6 +13,7 @@ const CourseCard = ({courseSchema}) => {
                 <p>Description: {courseSchema.description}</p>
             </div>
             {courseSchema.classes.map(classes => <ClassCard classSchema={classes} key={courseSchema.course_code - classes.class_no}/>)}
+
         </div>
         
     )

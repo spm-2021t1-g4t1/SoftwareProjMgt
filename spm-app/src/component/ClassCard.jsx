@@ -4,6 +4,8 @@ import React from 'react';
 const ClassCard = ({classSchema}) => {
     console.log(classSchema)
 
+    const link = `course/${classSchema.course_id}/${classSchema.class_no}/overview`
+    
     return(
         <div className="class-Section">
             <h2>Class {classSchema.class_no}</h2>
@@ -17,6 +19,7 @@ const ClassCard = ({classSchema}) => {
                     <p>Start Time: {classSchema.start_time}</p>
                     <p>End Time: {classSchema.end_time}</p>
                 </div>
+                <a href = {link}><button className ='class-button'>Enter Course</button></a>
             </div>
         </div>
     )

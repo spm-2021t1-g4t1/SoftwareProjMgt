@@ -5,7 +5,7 @@ import { faAward } from '@fortawesome/free-solid-svg-icons'
 
 const CourseInfo = ( prop ) => {
     console.log(prop)
-    const courseDescription = prop.data.course_description 
+    const courseDescription = prop.data.description 
     const learningObjective = prop.data.learning_objective
 
     return (
