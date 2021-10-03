@@ -1,9 +1,10 @@
-from flask import Flask, render_template, url_for, request, redirect
-from datetime import datetime
-from db import db
 
+#Import external modules
+from flask import Flask
+from db import db
 from flask_cors import CORS
 import json
+
 
 #Import your classes here
 from static.model.staff import *
@@ -11,11 +12,14 @@ from static.model.course import *
 from static.model.quiz import *
 
 
+
 app = Flask(__name__)
 CORS(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
 
-@app.route('/list_of_staff')
+
+@app.route('/staff')
 def list_of_staff():
     return course.get_staffList()
 

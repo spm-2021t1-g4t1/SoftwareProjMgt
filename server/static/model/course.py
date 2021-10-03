@@ -1,24 +1,13 @@
-#import external package
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+from db import db
 
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
-db = SQLAlchemy(app)
-
-
-
-class Course(db.Model):
+#-----------------------------------------------------------------------------------------------------------------------#
+class course(db.Model):
     __tablename__ ="course"
     course_id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.String(255))
     description = db.Column(db.String(255))
     learning_objective = db.relationship('learningObjective', backref='course', lazy = True)
     classes = db.relationship('classes', backref='course', lazy = True)
-
-    def __repr__(self):
-        return '<Course %r>' % self.course_id
 
     def viewjson(self):
         learn_obj = []
@@ -31,12 +20,25 @@ class Course(db.Model):
 
         return {
             "course_id": self.course_id,
-            "coure_name": self.course_name,
+            "course_name": self.course_name,
             "description": self.description,
             "learning_objective": learn_obj,
             "classes": all_classes
         }
 
+
+    @classmethod
+    def get_listOfCourse(cls):
+        courses = cls.query.all()
+        return {'data': [one_course.viewjson() for one_course in courses]}
+
+    @classmethod
+    def get_specificCourse(cls,course_id):
+        courses = cls.query.filter_by(course_id= course_id).first()
+        return {'data': [one_course.viewjson() for one_course in courses]}
+
+
+#-----------------------------------------------------------------------------------------------------------------------#
 class learningObjective(db.Model):
     __tablename__ ="learning_objective"
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
@@ -44,6 +46,7 @@ class learningObjective(db.Model):
 
     def viewstring(self):
         return self.learning_objective
+
 
 class classes(db.Model):
     __tablename__ ="classes"
@@ -54,7 +57,7 @@ class classes(db.Model):
     start_time  = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     class_size   = db.Column(db.Integer)
-    trainer_name  = db.Column(db.String(255), nullable=True)
+    trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_email'), nullable=True)
     section = db.relationship('lesson', backref='classes', lazy = True)
     
     __table_args__ = (
@@ -81,12 +84,14 @@ class classes(db.Model):
             'section' : section_obj
         }
 
+#-----------------------------------------------------------------------------------------------------------------------#
 class lesson(db.Model):
     __tablename__ = 'lesson'
     course_id = db.Column(db.Integer, primary_key=True)
     class_no = db.Column(db.Integer, primary_key=True)
     lesson_no = db.Column(db.Integer, primary_key=True)
-    section_description = db.Column(db.String(255))
+    lesson_name = db.Column(db.String(255))
+    lesson_description = db.Column(db.String(255))
     lesson_materials = db.relationship('lesson_materials', backref='lesson', lazy = True)
 
     __table_args__ = (
@@ -99,14 +104,17 @@ class lesson(db.Model):
         lesson_mat_obj = []
         for lesson_material in self.lesson_materials:
             lesson_mat_obj.append(lesson_material.viewjson())
+
         return {
             'course_id':self.course_id,
             'class_no':self.class_no,
             'lesson_no':self.lesson_no,
-            'section_description':self.section_description,
+            'lesson_name': self.lesson_name,
+            'lesson_description':self.lesson_description,
             'lesson_materials': lesson_mat_obj
         }
 
+#-----------------------------------------------------------------------------------------------------------------------#
 class lesson_materials(db.Model):
     __tablename__ = 'lesson_materials'
     course_id = db.Column(db.Integer, primary_key=True)
@@ -129,19 +137,3 @@ class lesson_materials(db.Model):
             'course_material_title':self.course_material_title,
             'link':self.link
         }
-
-
-@app.route('/course')
-def get_all_course():
-    all_course = {}
-    courses = Course.query.all()
-    for index,course in enumerate(courses):
-        all_course[index] = course.viewjson()
-    return all_course
-
-@app.route('/course/<int:course_id>')
-def get_one_course(course_id):
-    return Course.query.filter_by(course_id= course_id).first().viewjson()
-
-if __name__ == "__main__":
-    app.run(debug=True)
