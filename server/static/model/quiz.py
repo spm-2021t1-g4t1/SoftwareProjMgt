@@ -18,7 +18,6 @@ class Quiz(db.Model):
         self.uploader = uploader
         self.duration = duration
 
-
     def getQuiz_id(self):
         return self.quiz_id
     
@@ -35,13 +34,6 @@ class Quiz(db.Model):
         return self.duration
 
     def viewjson(self):
-        # learn_obj = []
-        # for index,learning in enumerate(self.learning_objective):
-        #     learn_obj.append(learning.viewstring())
-        
-        # all_classes = []
-        # for one_class in self.classes:
-        #     all_classes.append(one_class.viewjson())
         return {
             "quiz_id": self.quiz_id,
             "quiz_name": self.quiz_name,
@@ -51,12 +43,6 @@ class Quiz(db.Model):
         }
 
 
-    # def json(self):
-    #     return {"quiz_id": self.quiz_id, 
-    #     "quiz_name": self.quiz_name, 
-    #     "description": self.description, 
-    #     "uploader": self.uploader,
-    #     "duration": self.duration}
 
     @classmethod
     def get_listofQuiz(cls):
