@@ -25,9 +25,27 @@ def list_of_staff():
 
 
 @app.route('/enrolment/<int:course_id>/<int:class_no>')
-def testing(course_id,class_no):
+def getClasslist(course_id,class_no):
     return classEnrolment.getClasslist(course_id,class_no)
 
+@app.route('/enrolment/<string:staff_username>')
+def getStaff_Enrollment(staff_username):
+    classEnrolments = {'data':[]}
+    ClassList = classEnrolment.getStaffEnrollment(staff_username)
+
+    for classesObj in ClassList['data'].values():
+        # print(classesObj)
+        Courses = course.get_specificCourse(classesObj['course_id'])['data']
+        classObj = classes.get_specificClass(classesObj['course_id'],classesObj['class_no'])['data']
+        
+        classEnrolments['data'].append({
+            'course_id' : Courses['course_id'],
+            'course_name': Courses['course_name'],
+            'description': Courses['description'],
+            'classes': [classObj]
+        })
+
+    return classEnrolments
 
 @app.route('/course')
 def get_all_course():
@@ -50,6 +68,23 @@ def get_spec_quiz(quiz_id):
 def get_all_ques(qid):
     # return json.loads(str(Question.get_courseQues(qid)))
     return Question.get_courseQues(qid)
+
+@app.route('/course/<int:course_id>/<int:class_no>')
+def get_specificCourseDetail(course_id,class_no):
+    ClassDetail = {'data':[]}
+
+    Courses = course.get_specificCourse(course_id)['data']
+    classObj = classes.get_specificClassDetail(course_id,class_no)['data']
+        
+    ClassDetail['data'] ={
+            'course_id' : Courses['course_id'],
+            'course_name': Courses['course_name'],
+            'description': Courses['description'],
+            "learning_objective": Courses['learning_objective'],
+            'classes': [classObj]
+    }
+
+    return ClassDetail
 
 if __name__ == "__main__":
     db.init_app(app)
