@@ -48,7 +48,6 @@ class course(db.Model):
         courses = cls.query.filter_by(course_id= course_id).first()
         return {'data': courses.json()}
 
-#-----------------------------------------------------------------------------------------------------------------------#
 class learningObjective(db.Model):
     __tablename__ ="learning_objective"
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
@@ -57,6 +56,7 @@ class learningObjective(db.Model):
     def viewstring(self):
         return self.learning_objective
 
+#-----------------------------------------------------------------------------------------------------------------------#
 
 class classes(db.Model):
     __tablename__ ="classes"
