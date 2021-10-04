@@ -55,6 +55,20 @@ def get_all_course():
 def get_one_course(course_id):
     return course.get_specificCourse(course_id)
 
+@app.route('/quiz', methods=['POST', 'GET'])
+def get_all_quiz():
+    return Quiz.get_listofQuiz()
+
+@app.route('/quiz/<int:quiz_id>', methods=['POST', 'GET'])
+def get_spec_quiz(quiz_id):
+    return Quiz.get_quiz_details(quiz_id)
+
+
+@app.route('/quiz_ques/<int:qid>', methods=['POST', 'GET'])
+def get_all_ques(qid):
+    # return json.loads(str(Question.get_courseQues(qid)))
+    return Question.get_courseQues(qid)
+
 @app.route('/course/<int:course_id>/<int:class_no>')
 def get_specificCourseDetail(course_id,class_no):
     ClassDetail = {'data':[]}
@@ -71,32 +85,6 @@ def get_specificCourseDetail(course_id,class_no):
     }
 
     return ClassDetail
-
-
-
-
-@app.route('/quiz', methods=['POST', 'GET'])
-def get_all():
-    quiz = Quiz.query.all()
-    json_thing = {
-        "code": 200,
-        "data": {
-            "quiz": [q.json() for q in quiz]
-        }
-    }
-    return json.dumps(json_thing, default=str)
-
-@app.route('/quiz_ques/<int:qid>', methods=['POST', 'GET'])
-def get_all_ques(qid):
-    ques = Question.query.filter_by(qid=qid).all()
-    json_thing = {
-        "code": 200,
-        "data": {
-            "ques": [q.json() for q in ques]
-        }
-    }
-
-    return json.dumps(json_thing, default=str)
 
 if __name__ == "__main__":
     db.init_app(app)

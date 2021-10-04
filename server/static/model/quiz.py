@@ -1,4 +1,5 @@
 from db import db
+from json import dumps, loads
 
 class Quiz(db.Model):
     __tablename__ = 'quiz'
@@ -33,13 +34,39 @@ class Quiz(db.Model):
     def getDuration(self):
         return self.duration
 
+    def viewjson(self):
+        # learn_obj = []
+        # for index,learning in enumerate(self.learning_objective):
+        #     learn_obj.append(learning.viewstring())
+        
+        # all_classes = []
+        # for one_class in self.classes:
+        #     all_classes.append(one_class.viewjson())
+        return {
+            "quiz_id": self.quiz_id,
+            "quiz_name": self.quiz_name,
+            "description": self.description,
+            "uploader": self.uploader,
+            "duration": self.duration
+        }
 
-    def json(self):
-        return {"quiz_id": self.quiz_id, 
-        "quiz_name": self.quiz_name, 
-        "description": self.description, 
-        "uploader": self.uploader,
-        "duration": self.duration}
+
+    # def json(self):
+    #     return {"quiz_id": self.quiz_id, 
+    #     "quiz_name": self.quiz_name, 
+    #     "description": self.description, 
+    #     "uploader": self.uploader,
+    #     "duration": self.duration}
+
+    @classmethod
+    def get_listofQuiz(cls):
+        quizzes = cls.query.all()
+        return {'data': [loads(dumps(quiz.viewjson(), default=str)) for quiz in quizzes]}
+
+    @classmethod
+    def get_quiz_details(cls,quiz_id):
+        quiz_details = cls.query.filter_by(quiz_id=quiz_id)
+        return {'data': [loads(dumps(quiz.viewjson(), default=str)) for quiz in quiz_details]}
 
 # class Quiz(db.Model):
 #     __tablename__ = "quiz"
@@ -89,13 +116,19 @@ class Question(db.Model):
     def getQuestion_type(self):
         return self.question_type
 
-    def json(self):
+    def viewjson(self):
         return {
             "qid": self.qid, 
         "ques_id": self.ques_id, 
         "question": self.question, 
         "question_type": self.question_type
         }
+
+    @classmethod
+    def get_courseQues(cls,ques_id):
+        questionsbank = cls.query.filter_by(ques_id=ques_id)
+        return {'data': [loads(dumps(ques.viewjson(), default=str)) for ques in questionsbank]}
+    
     # def viewjson(self):
     #     options = []
     #     for index, option in enumerate(self.options):
