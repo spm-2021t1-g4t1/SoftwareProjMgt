@@ -18,11 +18,17 @@ class staff(db.Model):
             "current_designation": self.current_designation
         }
 
+
     @classmethod
     def get_staffList(cls):
         staffList = cls.query.all()
         return {'data': [staff.viewjson() for staff in staffList]}
 
+    @classmethod
+    def get_staff_by_username(cls, username):
+        staffDAO = cls.query.filter_by(staff_username = username).first()
+        if staffDAO is None: return {'data': None}
+        return {'data': staffDAO.json()}
 
 
 class classEnrolment(db.Model):

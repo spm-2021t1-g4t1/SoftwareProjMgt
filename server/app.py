@@ -25,6 +25,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = configstr
 def list_of_staff():
     return staff.get_staffList()
 
+@app.route('/login/<string:username>')
+def get_staff_by_username(username):
+    return staff.get_staff_by_username(username)
+
 
 @app.route('/enrolment/<int:course_id>/<int:class_no>')
 def getClasslist(course_id,class_no):
