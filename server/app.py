@@ -4,7 +4,7 @@ from flask import Flask
 from db import db
 from flask_cors import CORS
 import json
-
+import platform
 
 #Import your classes here
 from static.model.staff import *
@@ -16,7 +16,10 @@ from static.model.quiz import *
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
+configstr = 'mysql+mysqlconnector://root@localhost:3306/lms'
+if platform.system() == 'Darwin': configstr = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = configstr
 
 
 @app.route('/staff')
