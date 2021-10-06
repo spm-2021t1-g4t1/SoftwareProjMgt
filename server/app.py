@@ -16,8 +16,7 @@ from static.model.quiz import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = 'mysql+mysqlconnector://root@localhost:3306/lms'
-if platform.system() == 'Darwin': configstr = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
+configstr = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = configstr
 
