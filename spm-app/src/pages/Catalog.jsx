@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
+
 import "../App.css";
 
 import CourseCard from '../component/CourseCard';
@@ -9,7 +10,7 @@ import CourseCard from '../component/CourseCard';
 const Catalog = () => {
     const endpoint = "http://127.0.0.1:5000/course";
     const [courses, setCourses] = useState([])
-    
+
     useEffect(() => {axios.get(endpoint, {
         headers:
         {
@@ -25,8 +26,12 @@ const Catalog = () => {
 
     return (
         <div>
+            
+
+
+            
             <h1>Course catalog</h1>
-            {courses.map(course => <CourseCard courseSchema={course} key={course.course_code}/>)}
+            {courses.map(course => <CourseCard courseSchema={course} key={course.course_id}/>)}
         </div>
     )
 }

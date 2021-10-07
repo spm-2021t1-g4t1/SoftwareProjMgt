@@ -11,6 +11,7 @@ import { BrowserRouter ,Route } from "react-router-dom"
 import { CSSTransition } from 'react-transition-group' 
 
 
+
 import './App.css';
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
               <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
-              <Route path = '/course/:courseid/:classno/' component = {Course} />
+              <Route path = '/course/:courseid/:classno/*' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
             </div>
           </CSSTransition>

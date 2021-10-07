@@ -4,7 +4,10 @@ import { faAward } from '@fortawesome/free-solid-svg-icons'
 
 
 const CourseInfo = ( prop ) => {
-    console.log(prop)
+    // console.log(prop)
+    if (prop == null) {
+        console.log("im null")
+    }
     const courseDescription = prop.data.description 
     const learningObjective = prop.data.learning_objective
 

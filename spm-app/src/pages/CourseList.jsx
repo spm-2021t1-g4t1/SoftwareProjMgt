@@ -7,7 +7,7 @@ const CourseList = () => {
     let endpoint = 'http://127.0.0.1:5000/enrolment/darrelwilde'
     
     const [coursesDetail, setCoursesDetail] = useState([])
-    console.log(coursesDetail)
+    // console.log(coursesDetail)
     useEffect(() => {    
         fetch(endpoint)
         .then((res) => res.json())
@@ -23,8 +23,8 @@ const CourseList = () => {
 
     return (
         <div>
-            <h1>Course catalog</h1>
-            {coursesDetail.map(course => <CourseCard courseSchema={course} key={coursesDetail.course_code}/>)}
+            <h1>My Course</h1>
+            {coursesDetail.map(course => <CourseCard courseSchema={course} key={course.course_id}/>)}
         </div>
     )
 }
