@@ -1,6 +1,7 @@
 
 #Import external modules
-from flask import Flask
+from logging import exception
+from flask import request, Flask
 from db import db
 from flask_cors import CORS
 import json
@@ -10,6 +11,7 @@ import platform
 from static.model.staff import *
 from static.model.course import *
 from static.model.quiz import *
+from static.model.classEnrollment_queue import *
 
 
 
@@ -58,7 +60,7 @@ def get_all_course():
 def get_one_course(course_id):
     return course.get_specificCourse(course_id)
 
-@app.route('/course/<int:course_id>/<int:class_no>')
+@app.route('/course/<int:course_id>/<int:class_no>' )
 def get_specificCourseDetail(course_id,class_no):
     ClassDetail = {'data':[]}
 
@@ -89,6 +91,29 @@ def get_spec_quiz(quiz_id):
 def get_all_ques(qid):
     # return json.loads(str(Question.get_courseQues(qid)))
     return Question.get_courseQues(qid)
+
+
+
+@app.route('/queue/<string:staff_username>/<int:course_id>',  methods=['POST', 'GET'])
+def get_classQueue(staff_username, course_id):
+    if request.method == 'GET':
+        return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
+    if request.method == 'POST':
+        try:
+            class_no = request.json['class_no']
+            CE_Queue = classEnrolmentQueue(staff_username = staff_username, course_id = course_id, class_no = class_no)
+            db.session.add(CE_Queue)
+            db.session.commit()
+            return {"Data": {"status": 200 , "message": "Enrollment successful"}}
+        except:
+            return {"Data": {"status": 400 ,"message": "Enrollment failed"}}
+        # print(request.data)
+        # class_no = request.json['class_no']
+        # CE_Queue = classEnrolmentQueue(staff_username = staff_username, course_id = course_id, class_no = class_no)
+        # db.session.add(CE_Queue)
+        # db.session.commit()
+
+# @app.route('/queue/add', )
 
 if __name__ == "__main__":
     db.init_app(app)

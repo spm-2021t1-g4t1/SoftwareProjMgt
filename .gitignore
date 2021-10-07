@@ -2,4 +2,6 @@
 
 # dependencies
 /Personal
+/server/__pycache__
+/server/static/model/__pycache__
 node_modules

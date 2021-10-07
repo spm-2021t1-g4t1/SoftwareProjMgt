@@ -39,7 +39,7 @@ const Course = () => {
     
                 setCourseDetailArr(result.data)
                         // console.log(courseDetailArr)
-
+                console.log("API Call")
                     }
                 
             

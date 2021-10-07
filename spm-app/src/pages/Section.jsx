@@ -6,7 +6,7 @@ import SectionContainer from '../component/SectionContainer'
 
 const Section = (prop) => {
 
-    console.log(prop.data.classes[0].lesson)
+    // console.log(prop.data.classes[0].lesson)
 
     //useState
     const[sectionArrs, setSectionArrs] = useState([])

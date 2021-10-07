@@ -3,6 +3,11 @@
   padding: 0px;
 }
 
+.redtext {
+  color: red;
+  font-weight: bolder;
+}
+
 body {
   background-color: #f5f5f5;
 }
@@ -52,6 +57,7 @@ header {
   display: flex;
   background-color: white;
   justify-content: space-between;
+  z-index: 100;
 }
 
 .left-header {
@@ -199,12 +205,42 @@ ul {
 }
 
 .class-timing {
-  display: flex
-  
+  display: flex;
+  align-items: center;
+}
+
+.class-button {
+
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.blue-button {
+  background: #337ab7;
+  border-color: #2e6da4;
+  color: #fff;
 }
 
 .class-text{
-  padding: 0.5rem
+  padding: 0.5rem;
+  margin-right: 4rem;
 }
 
 .class-Section {

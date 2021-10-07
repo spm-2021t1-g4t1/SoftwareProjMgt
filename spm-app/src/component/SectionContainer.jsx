@@ -9,8 +9,8 @@ const SectionContainer = (props) => {
 
     const sectionNumber = props.number
 
-    // console.log(sectionArrs)
-
+    console.log(props.data.lesson_materials)
+    
     
     return (
         <div className = 'sectionCon'>
@@ -28,7 +28,9 @@ const SectionContainer = (props) => {
                     <h2>Course Material</h2>
                     <ul>
                         {sectionArrs['lesson_materials'].map((mat, index) =>
-                            <li key={index}>{mat}</li>                        
+                            <li key={mat['lesson_no']-mat['course_material_title']}>
+                                <a href = {mat['link']}>{mat['course_material_title']}</a>
+                            </li>                        
                         )}
                     </ul>
 
