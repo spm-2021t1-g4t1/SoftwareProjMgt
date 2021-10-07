@@ -1,6 +1,7 @@
 import React from 'react'
 import {List, Header} from "semantic-ui-react";
 import { Button, Dropdown } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const Quizzes = ({ quizzes }) => {
 
@@ -22,12 +23,18 @@ const Quizzes = ({ quizzes }) => {
             {quizzes.map(quiz => {
             return(
                 <Dropdown.Item key={quiz.quiz_name}>
-                    <Button variant="outline-secondary" size='lg' onClick={() => goToQuizDetails(quiz.quiz_id)}>{quiz.quiz_name}</Button>{' '}
+                    <Link to={{
+                                pathname: "/IndividualQuiz",
+                                state: quiz 
+                            }}>
+                    <Button variant="outline-secondary" size='lg'  onClick={() => goToQuizDetails(quiz.quiz_id)}>{quiz.quiz_name}</Button>{' '}
+                    </Link>
                 </Dropdown.Item>
                 )
             })}
             </Dropdown.Menu>
             </Dropdown>
+            
     )
 }
 

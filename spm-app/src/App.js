@@ -13,6 +13,7 @@ import { CSSTransition } from 'react-transition-group'
 
 
 import './App.css';
+import IndividualQuiz from './component/IndividualQuiz.jsx';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
               <Route path = '/catalog' component = {Catalog} exact/>
               <Route path = '/course/:courseid/:classno/*' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
+              <Route path= '/IndividualQuiz' component = {IndividualQuiz} exact/>
             </div>
           </CSSTransition>
       </div>
