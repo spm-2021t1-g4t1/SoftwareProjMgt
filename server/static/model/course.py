@@ -1,5 +1,6 @@
 from db import db
 
+
 #-----------------------------------------------------------------------------------------------------------------------#
 class course(db.Model):
     __tablename__ ="course"
@@ -145,6 +146,16 @@ class lesson(db.Model):
             'lesson_description':self.lesson_description,
             'lesson_materials': lesson_mat_obj
         }
+    
+    @classmethod
+    def get_allLessonByClass(cls, course_id, class_no):
+        lessons = cls.query.filter_by(course_id=course_id, class_no=class_no).all()
+        return {'data': [one_lesson.json() for one_lesson in lessons]}
+
+    @classmethod
+    def get_specificLesson(cls,course_id,class_no, lesson_no):
+        lessonobj = cls.query.filter_by(course_id=course_id,class_no=class_no,lesson_no=lesson_no).first()
+        return {'data': lessonobj.json()}
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson_materials(db.Model):
@@ -169,3 +180,61 @@ class lesson_materials(db.Model):
             'course_material_title':self.course_material_title,
             'link':self.link
         }
+
+#-----------------------------------------------------------------------------------------------------------------------#
+class quiz_attempts(db.Model):
+    __tablename__ = 'quiz_attempts'
+    course_id = db.Column(db.Integer, primary_key=True)
+    class_no = db.Column(db.Integer, primary_key=True)
+    lesson_no = db.Column(db.Integer,  primary_key=True)
+    staff_username = db.Column(db.String(255))
+    quiz_score = db.Column(db.Integer)
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ['course_id', 'class_no', "lesson_no"], ["lesson.course_id",'lesson.class_no', "lesson.lesson_no"]
+        ),
+    )
+
+    def json(self):
+        return {
+            'course_id':self.course_id,
+            'class_no':self.class_no,
+            'lesson_no':self.lesson_no,
+            'staff_username':self.staff_username,
+            'quiz_score':self.quiz_score
+        }
+    @classmethod
+    def get_listOfQuizAttemptsByStaff(cls, course_id, class_no, staff_username):
+        attempts = cls.query.filter_by(course_id=course_id, class_no=class_no,staff_username=staff_username).first()
+        return {'data': attempts.json()}
+
+#-----------------------------------------------------------------------------------------------------------------------#
+class materials_viewed(db.Model):
+    __tablename__ = 'materials_viewed'
+    course_id = db.Column(db.Integer, primary_key=True)
+    class_no = db.Column(db.Integer, primary_key=True)
+    lesson_no = db.Column(db.Integer,  primary_key=True)
+    course_material_title = db.Column(db.String(255), primary_key=True)
+    staff_username = db.Column(db.String(255), primary_key=True) # It should be a PK
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ['course_id', 'class_no', "lesson_no", "course_material_title"], ["lesson_materials.course_id",'lesson_materials.class_no', "lesson_materials.lesson_no", "lesson_materials.course_material_title"]
+        ),
+    )
+
+    def json(self):
+        return {
+            'course_id':self.course_id,
+            'class_no':self.class_no,
+            'lesson_no':self.lesson_no,
+            'course_material_title':self.course_material_title,
+            'staff_username':self.staff_username
+
+        }
+    @classmethod
+    def get_listOfMaterialsViewedByStaff(cls, course_id, class_no, lesson_no, staff_username):
+        materials = cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no, staff_username=staff_username).all()
+        return {'data': [one_material.json() for one_material in materials]}
+
