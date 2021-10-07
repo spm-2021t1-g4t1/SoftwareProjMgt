@@ -1,7 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #Import external modules
 from logging import exception
 from flask import request, Flask
+=======
+# Import external modules
+from flask import Flask, request, jsonify
+>>>>>>> Stashed changes
 =======
 # Import external modules
 from flask import Flask, request, jsonify
@@ -17,7 +22,6 @@ from static.model.staff import *
 from static.model.course import *
 from static.model.quiz import *
 from static.model.classEnrollment_queue import *
-
 
 app = Flask(__name__)
 CORS(app)
@@ -73,6 +77,7 @@ def get_one_course(course_id):
     return course.get_specificCourse(course_id)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 @app.route('/course/<int:course_id>/<int:class_no>' )
 def get_specificCourseDetail(course_id,class_no):
     ClassDetail = {'data':[]}
@@ -87,6 +92,8 @@ def get_specificCourseDetail(course_id,class_no):
             "learning_objective": Courses['learning_objective'],
             'classes': [classObj]
 =======
+=======
+>>>>>>> Stashed changes
 
 @app.route("/course/<int:course_id>/<int:class_no>")
 def get_specificCourseDetail(course_id, class_no):
@@ -101,6 +108,9 @@ def get_specificCourseDetail(course_id, class_no):
         "description": Courses["description"],
         "learning_objective": Courses["learning_objective"],
         "classes": [classObj],
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 
@@ -114,6 +124,7 @@ def get_lessons(course_id, class_no, staff_username):
     classObj = classes.get_specificClassDetail(course_id,class_no)['data']
         
 
+<<<<<<< Updated upstream
     all_lessons = lesson.get_allLessonByClass(course_id, class_no)['data']
     LessonDetail = {'data': []}
     LessonDetail['data'].append(all_lessons[0])
@@ -140,6 +151,8 @@ def get_lessons(course_id, class_no, staff_username):
     return ClassDetail
 
 
+=======
+>>>>>>> Stashed changes
 @app.route("/quiz", methods=["POST", "GET"])
 def get_all_quiz():
     return Quiz.get_listofQuiz()
@@ -156,6 +169,7 @@ def get_all_ques(qid):
     return Question.get_courseQues(qid)
 
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 @app.route('/queue/<string:staff_username>/<int:course_id>',  methods=['POST', 'GET'])
@@ -179,6 +193,8 @@ def get_classQueue(staff_username, course_id):
 
 # @app.route('/queue/add', )
 =======
+=======
+>>>>>>> Stashed changes
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
 def get_the_options(quiz_id, ques_id):
     # return json.loads(str(Question.get_courseQues(qid)))
@@ -225,6 +241,9 @@ def update_options(quiz_id, ques_id):
             db.session.commit()
     return "Boop"
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 if __name__ == "__main__":
