@@ -5,7 +5,7 @@ from flask import request, Flask
 from db import db
 from flask_cors import CORS
 import json
-import platform
+
 
 #Import your classes here
 from static.model.staff import *
@@ -18,10 +18,7 @@ from static.model.classEnrollment_queue import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = 'mysql+mysqlconnector://root@localhost:3306/lms'
-if platform.system() == 'Darwin': configstr = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = configstr
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
 
 
 @app.route('/staff')
@@ -74,8 +71,42 @@ def get_specificCourseDetail(course_id,class_no):
             "learning_objective": Courses['learning_objective'],
             'classes': [classObj]
     }
-
     return ClassDetail
+
+@app.route('/lesson/<int:course_id>/<int:class_no>/<string:staff_username>') ######
+def get_lessons(course_id, class_no, staff_username):
+    ClassDetail = {'data':[]}
+
+    Courses = course.get_specificCourse(course_id)['data']
+    classObj = classes.get_specificClassDetail(course_id,class_no)['data']
+        
+
+    all_lessons = lesson.get_allLessonByClass(course_id, class_no)['data']
+    LessonDetail = {'data': []}
+    LessonDetail['data'].append(all_lessons[0])
+    curr_index = 0
+    for each_lesson in all_lessons:
+        material_count_for_current_lesson = len(each_lesson['lesson_materials'])
+        list_of_material_viewed_by_staff = materials_viewed.get_listOfMaterialsViewedByStaff(course_id, class_no, each_lesson['lesson_no'], staff_username)['data']
+        if material_count_for_current_lesson == len(list_of_material_viewed_by_staff) and material_count_for_current_lesson != 0:
+            current_staff_quiz_score = quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)['data']['quiz_score']
+            if current_staff_quiz_score >= 80 and curr_index+1 < len(all_lessons):   
+                LessonDetail['data'].append(all_lessons[curr_index+1])
+        curr_index = curr_index + 1
+    
+    classObj['lesson'] = LessonDetail['data']
+    ClassDetail['data'] ={
+            'course_id' : Courses['course_id'],
+            'course_name': Courses['course_name'],
+            'description': Courses['description'],
+            "learning_objective": Courses['learning_objective'],
+            'classes': [classObj]
+    }
+    
+    
+    return ClassDetail
+
+
 
 
 @app.route('/quiz', methods=['POST', 'GET'])
