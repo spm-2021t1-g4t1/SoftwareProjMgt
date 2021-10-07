@@ -1,10 +1,9 @@
-
 #Import external modules
 from flask import Flask
 from db import db
 from flask_cors import CORS
 import json
-
+import platform
 
 #Import your classes here
 from static.model.staff import *
@@ -16,7 +15,10 @@ from static.model.quiz import *
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/lms'
+configstr = 'mysql+mysqlconnector://root@localhost:3306/lms'
+if platform.system() == 'Darwin': configstr = 'mysql+mysqlconnector://root:root@localhost:3306/lms'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = configstr
 
 
 @app.route('/staff')
@@ -69,8 +71,9 @@ def get_specificCourseDetail(course_id,class_no):
             "learning_objective": Courses['learning_objective'],
             'classes': [classObj]
     }
-    return ClassDetail
 
+    return ClassDetail
+    
 @app.route('/lesson/<int:course_id>/<int:class_no>/<string:staff_username>') ######
 def get_lessons(course_id, class_no, staff_username):
     ClassDetail = {'data':[]}
@@ -103,8 +106,6 @@ def get_lessons(course_id, class_no, staff_username):
     
     
     return ClassDetail
-
-
 
 
 @app.route('/quiz', methods=['POST', 'GET'])
