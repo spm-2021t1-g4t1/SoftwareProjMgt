@@ -207,6 +207,15 @@ def update_options(quiz_id, ques_id):
     return "Boop"
 
 
+@app.route("/ques_opt_delete/<int:quiz_id>/<int:ques_id>/<int:opts_id>", methods=["POST","GET"])
+def delete_options(quiz_id, ques_id, opts_id):
+    row_to_delete = QuizOptions.query.filter_by(
+            quiz_id=quiz_id, ques_id=ques_id, opts_id=opts_id
+        ).first()
+    db.session.delete(row_to_delete)
+    db.session.commit()
+    return "Deleted!"
+
 if __name__ == "__main__":
     db.init_app(app)
     app.run(debug=True)

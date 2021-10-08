@@ -2,7 +2,7 @@ import { React, useEffect, useState } from 'react'
 import { Button, Stack, Card } from 'react-bootstrap';
 import { useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faArrowDown, faArrowUp, faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowDown, faArrowUp, faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import QuestionCard from './QuestionCard';
 
 const IndividualQuiz = (props) => {
@@ -43,14 +43,27 @@ const IndividualQuiz = (props) => {
             <br></br>
 
             <Stack gap={2}>
-            
             {quizDetails.map(quiz => {
             return(
                     <QuestionCard key={quiz.ques_id} quizCard={quiz}/> 
                 )
             })}
-           
             </Stack>
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <div>
+            <h1 className="col-md-4 mx-auto"> Add a Question </h1>
+            <Stack gap={2} direction="horizontal" className="col-md-4 mx-auto">
+                <Button variant="outline-primary">Multiple Choice</Button>{' '}<Button variant="outline-success">True / False</Button>{' '}
+            </Stack>
+            </div>
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             <br></br>
         </div>
     )
