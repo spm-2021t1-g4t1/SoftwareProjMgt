@@ -2,40 +2,69 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from 'react';
-// import "../App.css";
+import "../App.css";
+import SearchBox from './SearchBox';
 
 
 function ViewEngineerDetails() {
-    const endpoint = 'https://human-resource.hasura.app/v1/graphql';
+    const endpoint = 'http://127.0.0.1:5000/staff';
     const [engineers, setEngineers] = useState([])
-    useEffect(() => {axios.post(endpoint, { 
-        query:  `query MyQuery {
-            engineers {
-                name
-                type
-                engineer_id
-                email
-            }
-        }`
-    }, {
-        headers: {
-            'x-hasura-admin-secret': 'R4q79TU2Z13Q22LVeawbwkhBynR4pbHUK8zZY5V4KhCw0Unse0zhh6h7hTtnpJHm',
-            'content-type': 'application/json'
-        }
-    })
-        .then(res => {
-            console.log('hi');
-            console.log(res.data.data);
-            setEngineers(res.data.data.engineers);
+    const [searchTerm, setSearchTerm] = useState('')
+    useEffect(() => {fetch(endpoint).then(
+        response => response.json()
+        .then(data => {
+            // console.log(data.data)
+            const engArr = data.data
+            setEngineers(engArr)
+            console.log('ji')
+            console.log(engineers)
+            
         })
-}, [])
+    ).catch()
+    }, [])
+
     return (
         <div className="EngineerDetails">
             <h1>Engineer Details</h1>
+            <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
+
+            <table border='1' >
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Department</th>
+                        <th>Current Designation</th>
+                    </tr>
+
+
+                
             
-            <div>
-                <EngTable data={engineers} />
-            </div>
+            
+            {engineers.filter((val) => {
+                if (searchTerm == "") {
+                    return val
+                } else if (val.staff_name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    return val
+                }
+            }).map((val) => {
+                return (
+                    // <div>{val.staff_name}</div>
+
+                        <tr>
+                            <td>{val.staff_name}</td>
+                            <td>{val.staff_username}</td>
+                            <td>{val.role}</td>
+                            <td>{val.department}</td>
+                            <td>{val.current_designation}</td>
+                        </tr>
+
+                    
+                )
+            })}
+
+            </table>
             
             
             
@@ -43,26 +72,5 @@ function ViewEngineerDetails() {
     );
 }
 
-const EngTable = ({data}) => {
-    return (
-        <table border='1'>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Senior / Junior</th>
-                <th>Email</th>
-            </tr>
-            {data.map(el => (
-                <tr>
-                    <td>{el.engineer_id}</td>
-                    <td>{el.name}</td>
-                    <td>{el.type}</td>
-                    <td>{el.email}</td>
-                </tr>
-            ))}
-        </table>
-    )
-}
-    
 
 export default ViewEngineerDetails;
