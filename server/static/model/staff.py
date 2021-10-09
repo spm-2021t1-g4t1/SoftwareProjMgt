@@ -9,7 +9,7 @@ class staff(db.Model):
     department = db.Column(db.String(255))
     current_designation = db.Column(db.String(255))
     
-    def json(self):
+    def viewjson(self):
         return {
             "staff_email": self.staff_username,
             "staff_name": self.staff_name,
