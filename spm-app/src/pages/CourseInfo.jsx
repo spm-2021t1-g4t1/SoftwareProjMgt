@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAward } from '@fortawesome/free-solid-svg-icons'
-
+import { Container } from 'react-bootstrap'
 
 const CourseInfo = ( prop ) => {
     // console.log(prop)
@@ -12,19 +12,19 @@ const CourseInfo = ( prop ) => {
     const learningObjective = prop.data.learning_objective
 
     return (
-                <div className = 'leftSection'>
-                    <div className = 'courseInfo-Section'>
+                <div className = 'col col-lg-9 col-md-8'>
+                    <Container className = 'border border-info container-bg my-3'>
                         <h2>About this course</h2>
                         {courseDescription}
-                    </div>
-                    <div className = 'courseInfo-Section'>
+                    </Container>
+                    <Container className = 'border border-info container-bg my-3'>
                         <h2>Training Objective</h2>
-                        <ul>
+                        <ul className = 'list-group my-3'>
                         {learningObjective.map((objective,index) => 
-                            <li key ={index}><FontAwesomeIcon icon ={faAward} />  {objective}</li>
+                            <li className = 'list-group-item' key ={index}><FontAwesomeIcon icon ={faAward} />  {objective}</li>
                         )}
                         </ul>
-                    </div>
+                    </Container>
                 </div>
         
     )

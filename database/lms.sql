@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 04, 2021 at 01:18 PM
+-- Generation Time: Oct 09, 2021 at 03:55 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -22,6 +22,21 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `lms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `lms`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classenrollment_queue`
+--
+
+DROP TABLE IF EXISTS `classenrollment_queue`;
+CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
+  `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
+  KEY `CE_Queue_fk_1` (`course_id`,`class_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -197,22 +212,6 @@ INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `less
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quiz_attempts`
---
-
-DROP TABLE IF EXISTS `quiz_attempts`;
-CREATE TABLE IF NOT EXISTS `quiz_attempts` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
-  `staff_username` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `lesson_materials`
 --
 
@@ -231,7 +230,12 @@ CREATE TABLE IF NOT EXISTS `lesson_materials` (
 --
 
 INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`) VALUES
-(1, 2, 1, 'material 1', 'material1.txt');
+(1, 2, 1, 'material 1', 'material1.txt'),
+(2, 1, 1, '211A', 'www.google.com'),
+(2, 1, 1, '211B', 'www.yahoo.com'),
+(2, 1, 2, '212A', 'www.youtube.com'),
+(2, 1, 2, '212B', 'www.jewtube.com'),
+(2, 1, 3, '213A', 'www.stormfront.com');
 
 -- --------------------------------------------------------
 
@@ -246,8 +250,17 @@ CREATE TABLE IF NOT EXISTS `materials_viewed` (
   `lesson_no` int NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`,`staff_username`)
+  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`,`staff_username`),
+  KEY `fk11` (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `materials_viewed`
+--
+
+INSERT INTO `materials_viewed` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `staff_username`) VALUES
+(2, 1, 1, '211A', 'darrelwilde'),
+(2, 1, 1, '211B', 'darrelwilde');
 
 -- --------------------------------------------------------
 
@@ -276,17 +289,51 @@ INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quiz_attempts`
+--
+
+DROP TABLE IF EXISTS `quiz_attempts`;
+CREATE TABLE IF NOT EXISTS `quiz_attempts` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `lesson_no` int NOT NULL,
+  `staff_username` varchar(255) NOT NULL,
+  `quiz_score` int NOT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`),
+  KEY `staff_username_fk1` (`staff_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_attempts`
+--
+
+INSERT INTO `quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff_username`, `quiz_score`) VALUES
+(2, 1, 1, 'darrelwilde', 89);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quiz_options`
 --
 
 DROP TABLE IF EXISTS `quiz_options`;
 CREATE TABLE IF NOT EXISTS `quiz_options` (
-  `qid` int DEFAULT NULL,
-  `ques_id` int DEFAULT NULL,
-  `optionz` text,
-  `is_right` tinyint(1) DEFAULT NULL,
-  KEY `qid` (`qid`,`ques_id`)
+  `quiz_id` int NOT NULL,
+  `ques_id` int NOT NULL,
+  `opts_id` int NOT NULL,
+  `qopt` text NOT NULL,
+  `is_right` tinyint(1) NOT NULL,
+  PRIMARY KEY (`quiz_id`,`ques_id`,`opts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `quiz_options`
+--
+
+INSERT INTO `quiz_options` (`quiz_id`, `ques_id`, `opts_id`, `qopt`, `is_right`) VALUES
+(1, 1, 1, 'Increase service limit from AWS Trusted Advisor before launching new instances', 0),
+(1, 1, 2, 'Submit a service limit increase to AWS Support specifying the instance type and region. ', 1),
+(1, 1, 3, 'BOOOOOP', 0);
 
 -- --------------------------------------------------------
 
@@ -348,11 +395,18 @@ INSERT INTO `staff` (`staff_username`, `staff_name`, `role`, `department`, `curr
 --
 
 --
+-- Constraints for table `classenrollment_queue`
+--
+ALTER TABLE `classenrollment_queue`
+  ADD CONSTRAINT `CE_Queue_fk_1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `CE_Queue_fk_2` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
 -- Constraints for table `classes`
 --
 ALTER TABLE `classes`
-  ADD CONSTRAINT `class_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `classes_fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `classes_fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `classes_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `class_enrolment`
@@ -374,13 +428,6 @@ ALTER TABLE `lesson`
   ADD CONSTRAINT `lesson_fk1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `quiz_attempts`
---
-ALTER TABLE `quiz_attempts`
-  ADD CONSTRAINT `fk8` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
-  ADD CONSTRAINT `staff_username_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
-
---
 -- Constraints for table `lesson_materials`
 --
 ALTER TABLE `lesson_materials`
@@ -394,10 +441,11 @@ ALTER TABLE `materials_viewed`
   ADD CONSTRAINT `fk11` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --
--- Constraints for table `quiz_options`
+-- Constraints for table `quiz_attempts`
 --
-ALTER TABLE `quiz_options`
-  ADD CONSTRAINT `quiz_options_ibfk_1` FOREIGN KEY (`qid`,`ques_id`) REFERENCES `quiz_questions` (`qid`, `ques_id`);
+ALTER TABLE `quiz_attempts`
+  ADD CONSTRAINT `fk8` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
+  ADD CONSTRAINT `staff_username_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --
 -- Constraints for table `quiz_questions`

@@ -1,12 +1,12 @@
 import React from 'react';
 // testing engineer details
 import ViewEngineerDetails from '../component/EngineerDetails';
-import "../App.css";
+// import "../App.css";
 const Home = () => {
     return (
         <div>
             <p>Home Page</p>
-            {/* <ViewEngineerDetails /> */}
+            <ViewEngineerDetails />
         </div>
     )
 }

@@ -1,45 +1,57 @@
 //Imports
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faHome, faBookReader, faComment, faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom"
+import { FaHome , FaBookReader, FaComment, FaUser, FaCommentDots} from "react-icons/fa";
+
+import { ProSidebar, Menu, MenuItem, SubMenu, SidebarContent ,SidebarFooter } from 'react-pro-sidebar';
+import 'react-pro-sidebar/dist/css/styles.css';
 
 // Modules
-import React from 'react'
+import React, { useState } from 'react'
 
 const MainSidebar = () => {
+    const [hovered, setHovered] = useState(false);
+    const toggleHover = () => setHovered(!hovered);
+    
     return (
-        <div className = "sidebar">
-            <Link  to = '/'> 
-                <div className = 'sidebar-link'>
-                    <FontAwesomeIcon icon ={faHome} /> Home
+        <ProSidebar className={hovered ? 'md': 'md collapsed'}
+                onMouseEnter={toggleHover}
+                onMouseLeave={toggleHover}>
+            <SidebarContent>
+                <Menu iconShape="circle">
+                    <MenuItem icon={<FaHome />}>
+                        Dashboard
+                        <Link to="/" />
+                    </MenuItem>
+                    <SubMenu title="Course" icon={<FaBookReader />}>
+                        <MenuItem>
+                            Catalog
+                            <Link to="/catalog" />
+                        </MenuItem>
+                        <MenuItem>
+                            Course
+                            <Link to="/course" />
+                        </MenuItem>
+                    </SubMenu>
+                    <MenuItem icon={<FaComment />}>
+                        Forum
+                        <Link to="/" />
+                    </MenuItem>
+                    <MenuItem icon={<FaUser />}>
+                        Account
+                        <Link to="/account" />
+                    </MenuItem>
+                    <MenuItem icon={<FaCommentDots />}>
+                        Mesages
+                        <Link to="/" />
+                    </MenuItem>
+                </Menu>
+            </SidebarContent>
+            <SidebarFooter>
+                <div className = 'sidebar-btn-wrapper'>
+                    Done by G4T1
                 </div>
-            </Link>
-            <Link to = '/catalog'>
-                <div className = 'sidebar-link'>
-                 <FontAwesomeIcon icon ={faBookReader} />  Catalog
-                </div>
-            </Link>
-            <Link to = '/course'>
-                <div className = 'sidebar-link'>
-                 <FontAwesomeIcon icon ={faBookReader} />  Course
-                </div>
-            </Link>
-            <Link to = '/'> 
-                <div className = 'sidebar-link'>
-                    <FontAwesomeIcon icon ={faComment} />  Forum
-                </div>
-            </Link>
-            <Link to = '/account'>
-                <div className = 'sidebar-link'>
-                <FontAwesomeIcon icon ={faUser} /> Account
-                </div>
-            </Link>
-            <Link to = '/'>
-                <div className = 'sidebar-link'>
-                    <FontAwesomeIcon icon ={faCommentDots} /> Mesages
-                </div>
-            </Link>
-        </div>
+            </SidebarFooter>
+        </ProSidebar>
     )
 }
 

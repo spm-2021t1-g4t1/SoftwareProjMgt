@@ -9,7 +9,7 @@ class staff(db.Model):
     department = db.Column(db.String(255))
     current_designation = db.Column(db.String(255))
     
-    def json(self):
+    def viewjson(self):
         return {
             "staff_email": self.staff_username,
             "staff_name": self.staff_name,
@@ -51,7 +51,7 @@ class classEnrolment(db.Model):
         ClassListDAO = cls.query.filter_by(course_id = course_id, class_no = class_no).all()
         classList = {'data':{}}
         for index, Student in enumerate(ClassListDAO):
-            classList['data'][index] = Student.staff.json()
+            classList['data'][index] = Student.staff.viewjson()
         return classList
 
 

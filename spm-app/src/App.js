@@ -5,15 +5,14 @@ import Account from './pages/Account.jsx';
 import Course from './pages/Course.jsx';
 import Catalog from './pages/Catalog.jsx';
 import Header from './component/Header.jsx';
+import IndividualQuiz from './component/IndividualQuiz.jsx';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
 import { CSSTransition } from 'react-transition-group' 
 
 
-
 import './App.css';
-import IndividualQuiz from './component/IndividualQuiz.jsx';
 
 function App() {
 
@@ -31,29 +30,16 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Header func = {toggleSide}/>
       <div className="App">
-        <Header func = {toggleSide}/>
-          <CSSTransition 
-              in= {showMenu}
-              classNames="slider-sidebar"
-              timeout={{ enter: 1000, exit: 1000 }}
-              >
-              <MainSidebar />
-          </CSSTransition>
-          <CSSTransition 
-              in= {showMenu}
-              classNames="slider-body"
-              timeout={{ enter: 1000, exit: 1000 }}
-              >
-            <div className = 'App-body'>
+        <MainSidebar />
+        <main>
               <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
-              <Route path = '/course/:courseid/:classno/*' component = {Course} />
+              <Route path = '/course/:courseid/:classno/' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
-              <Route path= '/IndividualQuiz' component = {IndividualQuiz} exact/>
-            </div>
-          </CSSTransition>
+        </main>
       </div>
     </BrowserRouter>
     
