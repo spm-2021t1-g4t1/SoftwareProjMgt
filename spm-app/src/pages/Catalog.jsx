@@ -8,7 +8,7 @@ import CourseCard from '../component/CourseCard';
 
 
 const Catalog = () => {
-    const endpoint = "http://127.0.0.1:5000/course";
+    const endpoint = "http://127.0.0.1:5000/catalog/darrelwilde";
     const [courses, setCourses] = useState([])
 
     useEffect(() => {axios.get(endpoint, {

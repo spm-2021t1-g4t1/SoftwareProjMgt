@@ -40,8 +40,8 @@ class course(db.Model):
         }
 
     @classmethod
-    def get_listOfCourse(cls):
-        courses = cls.query.all()
+    def get_listOfCourse(cls,course_list):
+        courses = cls.query.filter(cls.course_id.notin_(course_list))
         return {'data': [one_course.view_all_json() for one_course in courses]}
 
     @classmethod
