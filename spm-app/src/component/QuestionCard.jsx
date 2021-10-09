@@ -53,8 +53,31 @@ const QuestionCard = (props) => {
 
 
     const AddOption = () => {
-        let no = optionsList.length + 1
-        setoptionsList([...optionsList, {opts_id: no, ques_id: props.quizCard.ques_id, quiz_id: props.quizCard.qid, is_right: 0 }])
+        console.log(props.quizCard.question_type)
+        let num_of_ques = optionsList.length
+        if(props.quizCard.question_type === "mcq"){
+            let no = optionsList.length + 1
+            setoptionsList([...optionsList, {opts_id: no, ques_id: props.quizCard.ques_id, quiz_id: props.quizCard.qid, is_right: 0 }])
+        } else if(props.quizCard.question_type === "tf" && num_of_ques < 2){
+            console.log("boop!")
+            let no = optionsList.length + 1
+            setoptionsList([...optionsList, {opts_id: no, ques_id: props.quizCard.ques_id, quiz_id: props.quizCard.qid, is_right: 0 }])
+        }
+    }
+
+
+    const removeQues = (quiz_id, ques_id) => {
+        try {
+            fetch("http://127.0.0.1:5000/ques_delete/" + quiz_id + "/" + ques_id).then(response => response.json()
+            .then(data => {
+                // console.log(data.data)
+                console.log(data)
+                window.location.reload(false);
+            })).catch(err => console.log(err))
+        }
+        catch(err){
+            console.log(err) 
+        }
     }
 
     const RemoveOpt = (OptID) => {
@@ -88,8 +111,10 @@ const QuestionCard = (props) => {
             };
         fetch(`http://127.0.0.1:5000/ques_opt_update/${props.quizCard.qid}/${props.quizCard.ques_id}`, requestOptions)
             .then(response => response.json())
-            .then(data => console.log(data));
-            toggleEdit();
+            .then(toggleEdit())
+            .catch(err => console.log(err))
+            
+            
     }
 
     let result;
@@ -143,12 +168,14 @@ const QuestionCard = (props) => {
                 )
             })}
             <br></br>
+            <br></br>
+            <br></br>
             <Stack gap={2} direction="horizontal" className="col-md-2 mx-auto">
                 <Button type="button" onClick={toggleEdit} variant="primary"><FontAwesomeIcon icon={faEdit}/></Button>
                 <Button type="button" variant="primary"><FontAwesomeIcon icon={faArrowUp}/></Button>
                 <Button type="button" variant="primary"><FontAwesomeIcon icon={faArrowDown}/></Button>
-                <Button type="button" variant="primary"><FontAwesomeIcon icon={faTrash}/></Button>
-                <Button type="button" variant="primary"><FontAwesomeIcon icon={faCopy}/></Button>
+                <Button type="button" onClick={() => removeQues(props.quizCard.qid,props.quizCard.ques_id)} variant="danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                <Button type="button" variant="secondary"><FontAwesomeIcon icon={faCopy}/></Button>
             </Stack>
             </Card.Body>
         </Card>
