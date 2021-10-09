@@ -20,7 +20,7 @@ const Section = (prop) => {
     },[])
 
     return (
-        <div className = 'col-8'>
+        <div className = 'col col-lg-9 col-md-8'>
             {sectionArrs.map((sectionArr,index) =>
                 <SectionContainer key= {index } data = {sectionArr} number = {index+1}/>
             )}
