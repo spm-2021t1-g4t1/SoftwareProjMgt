@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
 
-import "../App.css";
+// import "../App.css";
 
 import CourseCard from '../component/CourseCard';
 
@@ -26,10 +26,6 @@ const Catalog = () => {
 
     return (
         <div>
-            
-
-
-            
             <h1>Course catalog</h1>
             {courses.map(course => <CourseCard courseSchema={course} key={course.course_id}/>)}
         </div>

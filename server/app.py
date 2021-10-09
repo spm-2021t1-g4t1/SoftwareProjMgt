@@ -1,20 +1,13 @@
 #Import external modules
 from logging import exception
-from flask import request, Flask
-
-# Import external modules
-from flask import Flask, request, jsonify
-
-# Import external modules
-from flask import Flask, request, jsonify
-
-from db import db
+from flask import request, Flask, jsonify
 from flask_cors import CORS
 import json
 import platform
 
 
 # Import your classes here
+from db import db
 from static.model.staff import *
 from static.model.course import *
 from static.model.quiz import *
@@ -88,6 +81,7 @@ def get_specificCourseDetail(course_id,class_no):
             'classes': [classObj]
 
     }
+    return ClassDetail
 
 @app.route('/lesson/<int:course_id>/<int:class_no>/<string:staff_username>') ######
 def get_lessons(course_id, class_no, staff_username):
@@ -118,7 +112,6 @@ def get_lessons(course_id, class_no, staff_username):
             "learning_objective": Courses['learning_objective'],
             'classes': [classObj]
     }
-    
     
     return ClassDetail
 
@@ -152,13 +145,7 @@ def get_classQueue(staff_username, course_id):
             return {"Data": {"status": 200 , "message": "Enrollment successful"}}
         except:
             return {"Data": {"status": 400 ,"message": "Enrollment failed"}}
-        # print(request.data)
-        # class_no = request.json['class_no']
-        # CE_Queue = classEnrolmentQueue(staff_username = staff_username, course_id = course_id, class_no = class_no)
-        # db.session.add(CE_Queue)
-        # db.session.commit()
 
-# @app.route('/queue/add', )
 
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
 def get_the_options(quiz_id, ques_id):

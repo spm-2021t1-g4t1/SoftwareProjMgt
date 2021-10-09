@@ -68,6 +68,7 @@ const Course = () => {
                 }
             )
     }, [courseid])
+    
     return (
         <BrowserRouter>
 
@@ -75,7 +76,7 @@ const Course = () => {
                 <div className='courseInfo-Banner'>
                     <h2 className='courseName-Banner'>{courseDetailArr['course_name']}</h2>
                 </div>
-                <div className='course'>
+                <div className= 'd-flex justify-content-between'>
                     <Route path='/course/:courseid/:classno/overview' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
@@ -89,7 +90,7 @@ const Course = () => {
                         <CourseInfo data={courseDetailArr} />
                     </Route>
 
-                    <div className='rightSection'>
+                    <div className='col-3'>
                         <CourseSidebar />
                         <CourseDetail data={courseDetailArr.classes[0]} />
                     </div>

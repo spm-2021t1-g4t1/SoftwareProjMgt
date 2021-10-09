@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Button } from 'react-bootstrap';
 
 const ClassCard = (prop) => {
     console.log(prop.inQueue.inQueue)
@@ -30,23 +30,28 @@ const ClassCard = (prop) => {
 
 
     return(
-        <div className="class-Section">
-            <h2>Class {classSchema.class_no}</h2>
-            <p className = 'class-text'>Slot: {classSchema.class_size}</p>
-            <div className = 'class-timing'>
-                <div className = 'class-text'>
-                    <p>Start date: {classSchema.start_date}</p>
-                    <p>End date: {classSchema.end_date}</p>
+        <div className="border border-info container-fluid container-bg">
+            <div className = 'd-flex justify-content-between'>
+                <h2>Class {classSchema.class_no}</h2>
+                <p className = 'class-text'>Slot: {classSchema.class_size}</p>
+            </div>
+            
+            <div className = 'd-flex justify-content-around'>
+                <div className = 'container-fluid'>
+                    <p className = 'm-1'>Start date: {classSchema.start_date}</p>
+                    <p className = 'm-1'>End date: {classSchema.end_date}</p>
+                </div>  
+
+                <div className = 'container-fluid'>
+                    <p className = 'm-1'>Start Time: {classSchema.start_time}</p>
+                    <p className = 'm-1'>End Time: {classSchema.end_time}</p>
                 </div>
-                <div className = 'class-text'>
-                    <p>Start Time: {classSchema.start_time}</p>
-                    <p>End Time: {classSchema.end_time}</p>
-                </div>
+
                 {isCatalog 
                 ? prop.inQueue.inQueue 
                     ? (<p className = 'redtext' >Awaiting Confirmation </p>)
-                    : (<button  onClick = {enrolClass} className ='class-button blue-button'>Enroll</button>)
-                : (<a href = {link}><button className ='class-button blue-button'>Enter Course</button></a>)}
+                    : (<Button variant="primary"  onClick = {enrolClass}>Enroll</Button>)
+                : (<a href = {link}> <Button variant="primary">Enter Course</Button></a>)}
                 
             </div>
         </div>

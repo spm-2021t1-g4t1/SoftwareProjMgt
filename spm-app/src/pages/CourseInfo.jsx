@@ -12,12 +12,12 @@ const CourseInfo = ( prop ) => {
     const learningObjective = prop.data.learning_objective
 
     return (
-                <div className = 'leftSection'>
-                    <div className = 'courseInfo-Section'>
+                <div className = 'col-8'>
+                    <div className = 'border border-info container-bg my-3'>
                         <h2>About this course</h2>
                         {courseDescription}
                     </div>
-                    <div className = 'courseInfo-Section'>
+                    <div className = 'border border-info container-bg my-3'>
                         <h2>Training Objective</h2>
                         <ul>
                         {learningObjective.map((objective,index) => 
