@@ -1,38 +1,37 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import { ProSidebar, Menu, MenuItem, SubMenu, SidebarContent } from 'react-pro-sidebar';
+import { FaBookReader} from "react-icons/fa";
 
 
 const CourseSidebar = () => {
 
-    // console.log(props)
     return (
-        <div className = 'coursebar'>
-            <div className = 'coursebar-header'>
-                Resource
-            </div>
-            <div>
-                <Link to = "./overview"> 
-                    <div className ='coursebar-link'>
+
+        <ProSidebar className = 'classSideBar'>
+            <SidebarContent>
+            <Menu iconShape="circle">
+                <SubMenu title="Class Sidebar" icon={<FaBookReader />}>
+                    <MenuItem>
                         Overview
-                    </div>
-                </Link>
-                <Link to = "./curriculum"> 
-                    <div className ='coursebar-link'>
+                        <Link to="./overview" />
+                    </MenuItem>
+                    <MenuItem>
                         Curriculum
-                    </div>
-                </Link>
-                <Link to = "./forum"> 
-                    <div className ='coursebar-link'>
+                        <Link to="./curriculum" />
+                    </MenuItem>
+                    <MenuItem>
                         Course Forum
-                    </div>
-                </Link>
-                <Link to = "./quiz"> 
-                    <div className ='coursebar-link'>
+                        <Link to="./forum" />
+                    </MenuItem>
+                    <MenuItem>
                         Take Quiz
-                    </div>
-                </Link>
-            </div>
-        </div>
+                        <Link to="./quiz" />
+                    </MenuItem>
+                </SubMenu>
+            </Menu>
+            </SidebarContent>
+        </ProSidebar>
     )
 }
 

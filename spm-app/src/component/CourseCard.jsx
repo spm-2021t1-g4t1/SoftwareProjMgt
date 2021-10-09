@@ -29,10 +29,10 @@ const CourseCard = (prop) => {
     
 
     return(
-        <div> 
-            <div className="Catalog-Section">    
-                <h2>{courseSchema.course_id} - {courseSchema.course_name}</h2>
-                <p>Description: {courseSchema.description}</p>
+        <div className= 'my-4' > 
+            <div className="border border-info container-fluid container-bg">    
+                <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}</h2>
+                <p className="p-2">Description: {courseSchema.description}</p>
             </div>
             {courseSchema.classes.map(classes => <ClassCard 
                                                     classChange = {classChange} classSchema={classes} inQueue = {inQueue}
