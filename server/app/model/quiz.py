@@ -10,7 +10,6 @@ class Quiz(db.Model):
     description = db.Column("description", db.String(255))
     uploader = db.Column("uploader", db.String(255))
     duration = db.Column("duration", db.Time)
-    questions = db.relationship("Question")
 
     def __init__(
         self, quiz_id="", quiz_name="", description="", uploader="", duration=""
