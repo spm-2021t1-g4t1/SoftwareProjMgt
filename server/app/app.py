@@ -201,7 +201,6 @@ def get_classQueue(staff_username, course_id):
 def get_the_options(quiz_id, ques_id):
     return QuizOptions.get_QuesOpt(quiz_id, ques_id)
 
-
 @app.route("/add_ques/<int:quiz_id>", methods=["POST"])
 def addQuestion(quiz_id):
     # return json.loads(str(Question.get_courseQues(qid)))
