@@ -2,11 +2,14 @@ import React from 'react';
 
 const SearchBox = (props) => {
     return (
-        <input type = 'search'
-        className = 'search'
-        placeholder = {props.placeholder}
-        onChange = {props.handleChange}
-        />
+        <div className="form-outline">
+            <input type = 'search'
+                    className = 'form-control'
+                    placeholder = {props.placeholder}
+                    onChange = {props.handleChange}
+                    />
+        </div>
+        
     )
 }
 

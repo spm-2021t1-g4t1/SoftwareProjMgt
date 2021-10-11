@@ -8,11 +8,6 @@ class Question(db.Model):
     ques_id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(1000))
     question_type = db.Column(db.String(255))
-    # options = db.relationship(
-    #     "QuizOptions",
-    #     primaryjoin="and_(Question.qid==QuizOptions.qid, Question.ques_id==QuizOptions.ques_id)",
-    #     lazy="dynamic",
-    # )
 
     def getQid(self):
         return self.qid
