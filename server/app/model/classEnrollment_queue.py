@@ -1,6 +1,5 @@
 from db import db
 
-
 class classEnrolmentQueue(db.Model):
     __tablename__ = 'classenrollment_queue'
 
@@ -12,7 +11,7 @@ class classEnrolmentQueue(db.Model):
         db.ForeignKeyConstraint(
             ['course_id', 'class_no'], ["lesson.course_id",'lesson.class_no']
         ),
-    )
+    ) 
 
     def json(self):
         return {
