@@ -2,7 +2,7 @@ import React , {useEffect, useState} from 'react';
 import { Container, Button } from 'react-bootstrap';
 
 const ClassCard = (prop) => {
-    console.log(prop.inQueue.inQueue)
+    // console.log(prop.inQueue.inQueue)
 
     const classSchema = prop.classSchema
     const link = `course/${classSchema.course_id}/${classSchema.class_no}/overview`
