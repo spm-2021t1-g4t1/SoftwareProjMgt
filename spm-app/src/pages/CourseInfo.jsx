@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAward } from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap'
+import { Link } from "react-router-dom"
 
 const CourseInfo = ( prop ) => {
     // console.log(prop)

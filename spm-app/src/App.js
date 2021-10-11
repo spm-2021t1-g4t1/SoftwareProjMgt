@@ -6,6 +6,7 @@ import Course from './pages/Course.jsx';
 import Catalog from './pages/Catalog.jsx';
 import Header from './component/Header.jsx';
 import IndividualQuiz from './component/IndividualQuiz.jsx';
+import Admin from './pages/Admin.jsx';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
@@ -40,6 +41,7 @@ function App() {
               <Route path = '/course/:courseid/:classno/' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
               <Route path = '/IndividualQuiz' component = {IndividualQuiz} exact/>
+              <Route path = '/admin' component = {Admin} exact/>
         </main>
       </div>
     </BrowserRouter>

@@ -24,12 +24,12 @@ function ViewEngineerDetails() {
     }, [])
 
     return (
-        <div className="EngineerDetails">
+        <div className="EngDetails">
             <h1>Engineer Details</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
-            <table border='1' >
-
+            <table className='table'>
+                <thead>
                     <tr>
                         <th>Name</th>
                         <th>Username</th>
@@ -37,8 +37,8 @@ function ViewEngineerDetails() {
                         <th>Department</th>
                         <th>Current Designation</th>
                     </tr>
-
-
+                </thead>
+                <tbody>
                 
             
             
@@ -48,6 +48,7 @@ function ViewEngineerDetails() {
                 } else if (val.staff_name.toLowerCase().includes(searchTerm.toLowerCase())) {
                     return val
                 }
+                console.log(val.length)
             }).map((val) => {
                 return (
                     // <div>{val.staff_name}</div>
@@ -63,7 +64,7 @@ function ViewEngineerDetails() {
                     
                 )
             })}
-
+            </tbody>
             </table>
             
             

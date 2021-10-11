@@ -1,6 +1,6 @@
 //Imports
 import { Link } from "react-router-dom"
-import { FaHome , FaBookReader, FaComment, FaUser, FaCommentDots} from "react-icons/fa";
+import { FaHome , FaBookReader, FaComment, FaUser, FaCommentDots, FaLock} from "react-icons/fa";
 
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarContent ,SidebarFooter } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
@@ -43,6 +43,10 @@ const MainSidebar = () => {
                     <MenuItem icon={<FaCommentDots />}>
                         Mesages
                         <Link to="/" />
+                    </MenuItem>
+                    <MenuItem icon={<FaLock />}>
+                        Admin
+                        <Link to="/admin" />
                     </MenuItem>
                 </Menu>
             </SidebarContent>
