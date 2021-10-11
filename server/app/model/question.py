@@ -40,6 +40,16 @@ class Question(db.Model):
         return {
             "data": [
                 loads(dumps(ques.viewjson(), default=str)) for ques in questionsbank
-            ]
+            ],
+            "code": 200,
+        }
+
+    @classmethod
+    def get_a_question(cls, qid, ques_id):
+        ques = cls.query.filter_by(qid=qid, ques_id=ques_id).first()
+        return {
+            "data": 
+                loads(dumps(ques.viewjson(), default=str)),
+            "code": 200,
         }
 

@@ -9,7 +9,7 @@ class Quiz(db.Model):
     quiz_name = db.Column("quiz_name", db.String(255))
     description = db.Column("description", db.String(255))
     uploader = db.Column("uploader", db.String(255))
-    duration = db.Column("duration", db.Time)
+    duration = db.Column("duration", db.String(255))
 
     def __init__(
         self, quiz_id="", quiz_name="", description="", uploader="", duration=""
@@ -48,7 +48,8 @@ class Quiz(db.Model):
     def get_listofQuiz(cls):
         quizzes = cls.query.all()
         return {
-            "data": [loads(dumps(quiz.viewjson(), default=str)) for quiz in quizzes]
+            "data": [loads(dumps(quiz.viewjson(), default=str)) for quiz in quizzes],
+            "code": 200,
         }
 
     @classmethod
@@ -57,5 +58,7 @@ class Quiz(db.Model):
         return {
             "data": [
                 loads(dumps(quiz.viewjson(), default=str)) for quiz in quiz_details
-            ]
+            ],
+            "code": 200,
         }
+
