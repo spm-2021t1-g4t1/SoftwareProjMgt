@@ -1,17 +1,12 @@
 # Import external modules
-from logging import exception
 from flask import request, Flask, jsonify
 from flask_cors import CORS
-import json
 import platform
 
 
 # Import your classes here
 from db import db
-from static.model.staff import *
-from static.model.course import *
-from static.model.quiz import *
-from static.model.classEnrollment_queue import *
+from model import *
 
 app = Flask(__name__)
 CORS(app)
