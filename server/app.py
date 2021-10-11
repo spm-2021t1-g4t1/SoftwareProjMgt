@@ -68,9 +68,9 @@ def getStaff_Enrollment(staff_username):
 
 
 
-@app.route("/course")
-def get_all_course():
-    return course.get_listOfCourse()
+# @app.route("/course")
+# def get_all_course():
+#     return course.get_listOfCourse()
 
 ############# Catalog ######################################
 

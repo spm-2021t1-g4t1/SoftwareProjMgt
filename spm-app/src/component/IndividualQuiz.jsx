@@ -9,16 +9,21 @@ const IndividualQuiz = (props) => {
     // const [quizDetails, setQuizDetails] = useState(quiz);
     // const  {quiz} = useLocation()
     // console.log('saddasasdadsadsads',props)
-
-
     const [quizDetails, setQuizDetails] = useState([]);
+
     const [quizName, setQuizName] = useState(props.location.state.quiz_name)
 
     useEffect(()=>{
         console.log("This is my quiz id",props.location.state.quiz_id)
         let retlist = quizDetails
-        console.log(quizDetails)
+      
+        console.log(props)
     },[props])
+
+
+    useEffect(() => {
+        console.log(quizDetails)
+    }, [quizDetails])
 
     const AddMCQ = () => {
         let no = quizDetails.length + 1
