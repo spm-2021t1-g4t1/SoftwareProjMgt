@@ -27,5 +27,6 @@ class QuizOptions(db.Model):
     def get_QuesOpt(cls, quiz_id, ques_id):
         opts_bank = cls.query.filter_by(quiz_id=quiz_id, ques_id=ques_id)
         return {
-            "data": [loads(dumps(opt.viewjson(), default=str)) for opt in opts_bank]
+            "data": [loads(dumps(opt.viewjson(), default=str)) for opt in opts_bank],
+            "code": 200
         }

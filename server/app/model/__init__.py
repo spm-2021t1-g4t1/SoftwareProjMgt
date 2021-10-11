@@ -1,6 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
-
 from model.classEnrollment_queue import *
 from model.classEnrollment import *
 from model.classes import *
