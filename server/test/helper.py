@@ -1,0 +1,8 @@
+import os
+import sys
+
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir) + '\\app'
+sys.path.append(parentdir)
+
+from app import *

@@ -11,7 +11,7 @@ class classes(db.Model):
     start_time  = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     class_size   = db.Column(db.Integer)
-    trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_email'), nullable=True)
+    trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_username'), nullable=True)
     lesson = db.relationship('lesson', backref='classes', lazy = True)
     
     __table_args__ = (
