@@ -264,6 +264,11 @@ def delete_questions(quiz_id, ques_id):
     row_to_delete = Question.query.filter_by(
         qid=quiz_id, ques_id=ques_id
     ).first()
+    rows_to_delete = QuizOptions.query.filter_by(
+        quiz_id=quiz_id, ques_id=ques_id
+    )
+    for i in rows_to_delete:
+        db.session.delete(i)
     db.session.delete(row_to_delete)
     db.session.commit()
     return {"Data": {"status": 200, "message": "Question Deleted successful"}}
