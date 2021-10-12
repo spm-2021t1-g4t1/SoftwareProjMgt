@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faInbox, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faInbox, faBell } from '@fortawesome/free-solid-svg-icons'
 import { Navbar, Container } from 'react-bootstrap';
 
 const Header = (prop) => {
