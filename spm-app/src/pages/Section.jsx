@@ -17,7 +17,7 @@ const Section = (prop) => {
     useEffect(() => {
         setSectionArrs(prop.data.classes[0].lesson)
         // console.log(sectionArrs)
-    },[])
+    },[prop.data.classes])
 
     return (
         <div className = 'col col-lg-9 col-md-8'>

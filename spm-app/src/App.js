@@ -7,9 +7,8 @@ import Catalog from './pages/Catalog.jsx';
 import Header from './component/Header.jsx';
 import IndividualQuiz from './component/IndividualQuiz.jsx';
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
-import { CSSTransition } from 'react-transition-group' 
 
 
 import './App.css';
@@ -19,7 +18,7 @@ function App() {
   const[showMenu, setShowMenu] = useState(true)
 
   function toggleSide() {
-      if (showMenu == true) {
+      if (showMenu === true) {
           setShowMenu(false)
       }
       else {

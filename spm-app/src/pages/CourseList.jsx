@@ -24,12 +24,12 @@ const CourseList = () => {
         // console.log(coursesDetail)
         })
 
-    }, [])
+    }, [endpoint])
 
     useEffect(() => {
         const courselist = []
         course_backup.filter((val) =>{
-            if (searchTerm == "") {
+            if (searchTerm === "") {
                 // setCourses(val)
                 courselist.push(val)
                 console.log(val)
@@ -39,9 +39,10 @@ const CourseList = () => {
                 console.log(val)
                 // setCourses([val])
             }
+            return null
         })
         setCoursesDetail(courselist)
-    },[searchTerm])
+    },[searchTerm,course_backup])
 
     return (
         <div>
