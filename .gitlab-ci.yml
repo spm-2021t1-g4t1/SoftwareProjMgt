@@ -31,17 +31,23 @@ before_script:
 
 test:
   script:
+    - echo 'this should run on pull requests'
     - python server/test/Sample.py
-
-always-run:
-  script: echo 'this should always run'
-
-on-pull-requests:
-  script: echo 'this should run on pull requests'
   only:
     - external_pull_requests
+# test:
+#   script:
+#     - python server/test/Sample.py
 
-except-pull-requests:
-  script: echo 'this should not run on pull requests'
-  except:
-    - external_pull_requests
+# always-run:
+#   script: echo 'this should always run'
+
+# on-pull-requests:
+#   script: echo 'this should run on pull requests'
+#   only:
+#     - external_pull_requests
+
+# except-pull-requests:
+#   script: echo 'this should not run on pull requests'
+#   except:
+#     - external_pull_requests
