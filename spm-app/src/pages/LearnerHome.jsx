@@ -5,7 +5,7 @@ import Account from './Account.jsx';
 import Course from './Course.jsx';
 import Catalog from './Catalog.jsx';
 import Header from '../component/Header.jsx';
-import IndividualQuiz from './component/IndividualQuiz.jsx';
+import IndividualQuiz from '../component/IndividualQuiz.jsx';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
