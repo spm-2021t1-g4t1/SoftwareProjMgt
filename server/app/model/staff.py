@@ -23,5 +23,15 @@ class staff(db.Model):
         staffList = cls.query.all()
         return {'data': [staff.viewjson() for staff in staffList]}
 
+    @classmethod
+    def get_staff_by_username(cls, username):
+        staffDAO = cls.query.filter_by(staff_username = username).first()
+        if staffDAO is None: return {'data': None}
+        print(staffDAO)
+        login_staff = {
+            "staff_username": staffDAO.staff_username,
+            "role": staffDAO.role
+        }
+        return {'data': login_staff}
 
 

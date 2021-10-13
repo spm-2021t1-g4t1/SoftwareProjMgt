@@ -11,13 +11,19 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 if platform.system() == "Darwin":
     configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 100, "pool_recycle": 280}
 app.config["SQLALCHEMY_DATABASE_URI"] = configstr
 
+
+############## Login ###############################################
+
+@app.route('/login/<string:username>')
+def get_staff_by_username(username):
+    return staff.get_staff_by_username(username)
 
 ############## Staff ###############################################
 
