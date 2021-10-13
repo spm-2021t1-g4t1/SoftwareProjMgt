@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 09, 2021 at 03:55 PM
--- Server version: 8.0.21
--- PHP Version: 7.3.21
+-- Generation Time: Oct 10, 2021 at 04:00 PM
+-- Server version: 8.0.18
+-- PHP Version: 7.4.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -20,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms`
 --
-CREATE DATABASE IF NOT EXISTS `lms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `lms`;
 
 -- --------------------------------------------------------
 
@@ -32,11 +31,18 @@ USE `lms`;
 DROP TABLE IF EXISTS `classenrollment_queue`;
 CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
   `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
   KEY `CE_Queue_fk_1` (`course_id`,`class_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `classenrollment_queue`
+--
+
+INSERT INTO `classenrollment_queue` (`staff_username`, `course_id`, `class_no`) VALUES
+('darrelwilde', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -46,13 +52,13 @@ CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
 
 DROP TABLE IF EXISTS `classes`;
 CREATE TABLE IF NOT EXISTS `classes` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL AUTO_INCREMENT,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
-  `class_size` int NOT NULL,
+  `class_size` int(11) NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
   KEY `fk_1` (`course_id`),
@@ -86,8 +92,8 @@ INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start
 DROP TABLE IF EXISTS `class_enrolment`;
 CREATE TABLE IF NOT EXISTS `class_enrolment` (
   `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
   KEY `staff_email` (`staff_username`),
   KEY `fk4` (`class_no`,`course_id`)
@@ -99,7 +105,6 @@ CREATE TABLE IF NOT EXISTS `class_enrolment` (
 
 INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
 ('coreyroberts', 1, 1),
-('darrelwilde', 1, 1),
 ('hananhyde', 1, 1),
 ('jackma', 1, 1),
 ('rojinclark', 1, 1),
@@ -123,7 +128,7 @@ INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
 
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE IF NOT EXISTS `course` (
-  `course_id` int NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_name` text NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`course_id`)
@@ -134,12 +139,12 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `description`) VALUES
-(1, 'Fundamentals of Xerox WorkCentre 784', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(2, 'Programming for Xerox WorkCentre with CardAccess and Integration', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(3, 'Embedded Systems Essentials with ARM: Getting Started', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(4, 'IoT System Design, Software and hardware integration', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(5, 'IT Fundamentals for Business ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(6, 'Hardware and Operating Systems for Canon', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul');
+(1, 'Fundamentals of Xerox WorkCentre 784', 'This course is a basic introduction to the Fundamentals of Xerox WorkCentre printer course.'),
+(2, 'Programming for Xerox WorkCentre with CardAccess and Integration', 'This course will equip you with basic programming skills as well as software integration.'),
+(3, 'Embedded Systems Essentials with ARM: Getting Started', 'Get practical without hardware. Quickly prototype and build microcontroller projects using industry-standard APIs.'),
+(4, 'IoT System Design, Software and hardware integration', 'This course is designed to teach you how systems are developed using IoT technology.\r\n'),
+(5, 'IT Fundamentals for Business ', 'This introductory program is designed to give business professionals the basic background on Information Technology (IT) to let them get the most in their interaction with IT professionals, either from their company or from external corporation, as they will have a deeper understanding when identifying requirements, evaluating workloads or supervising results in the IT field.\r\n\r\n'),
+(6, 'Hardware and Operating Systems for Canon', 'This is a hardware course centered around the Canon printer system. You will learn the different hardware components that make up the Canon printer and the operating system.');
 
 -- --------------------------------------------------------
 
@@ -149,7 +154,7 @@ INSERT INTO `course` (`course_id`, `course_name`, `description`) VALUES
 
 DROP TABLE IF EXISTS `learning_objective`;
 CREATE TABLE IF NOT EXISTS `learning_objective` (
-  `course_id` int NOT NULL,
+  `course_id` int(11) NOT NULL,
   `learning_objective` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`course_id`,`learning_objective`),
   KEY `fk6` (`course_id`)
@@ -189,9 +194,9 @@ INSERT INTO `learning_objective` (`course_id`, `learning_objective`) VALUES
 
 DROP TABLE IF EXISTS `lesson`;
 CREATE TABLE IF NOT EXISTS `lesson` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `lesson_name` varchar(255) NOT NULL,
   `lesson_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
@@ -202,12 +207,12 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 --
 
 INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`) VALUES
-(1, 2, 1, 'Fundamentals of Xerox WorkCentre 784 101', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(1, 2, 2, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(1, 2, 3, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(2, 1, 1, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(2, 1, 2, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul'),
-(2, 1, 3, 'Lorem ipsum dolor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget ante nulla. Cras eget metus vitae est cursus sagittis et mollis dolor. Sed imperdiet est vitae justo ultrices, et finibus felis suscipit. Phasellus scelerisque lacus tincidunt facilisis ul');
+(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.'),
+(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. '),
+(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. '),
+(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration'),
+(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration'),
+(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration');
 
 -- --------------------------------------------------------
 
@@ -217,9 +222,9 @@ INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `less
 
 DROP TABLE IF EXISTS `lesson_materials`;
 CREATE TABLE IF NOT EXISTS `lesson_materials` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`)
@@ -230,12 +235,18 @@ CREATE TABLE IF NOT EXISTS `lesson_materials` (
 --
 
 INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`) VALUES
-(1, 2, 1, 'material 1', 'material1.txt'),
+(1, 2, 1, '121A', 'www.121a.com'),
+(1, 2, 1, '121B', 'www.121b.com'),
+(1, 2, 2, '122A', 'www.122a.com'),
+(1, 2, 2, '122B', 'www.122b.com'),
+(1, 2, 2, '123A', 'www.123a.com'),
+(1, 2, 2, '123B', 'www.123b.com'),
 (2, 1, 1, '211A', 'www.google.com'),
 (2, 1, 1, '211B', 'www.yahoo.com'),
 (2, 1, 2, '212A', 'www.youtube.com'),
-(2, 1, 2, '212B', 'www.jewtube.com'),
-(2, 1, 3, '213A', 'www.stormfront.com');
+(2, 1, 2, '212B', 'www.amazon.com'),
+(2, 1, 3, '213A', 'www.hardwarezone.com'),
+(2, 1, 3, '213B', 'www.reddit.com');
 
 -- --------------------------------------------------------
 
@@ -245,9 +256,9 @@ INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_ma
 
 DROP TABLE IF EXISTS `materials_viewed`;
 CREATE TABLE IF NOT EXISTS `materials_viewed` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`,`staff_username`),
@@ -270,7 +281,7 @@ INSERT INTO `materials_viewed` (`course_id`, `class_no`, `lesson_no`, `course_ma
 
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE IF NOT EXISTS `quiz` (
-  `quiz_id` int NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_name` varchar(255) NOT NULL DEFAULT 'Untitiled',
   `description` text NOT NULL,
   `uploader` varchar(255) NOT NULL,
@@ -294,11 +305,11 @@ INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration
 
 DROP TABLE IF EXISTS `quiz_attempts`;
 CREATE TABLE IF NOT EXISTS `quiz_attempts` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
+  `quiz_score` int(11) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`),
   KEY `staff_username_fk1` (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -318,9 +329,9 @@ INSERT INTO `quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff_userna
 
 DROP TABLE IF EXISTS `quiz_options`;
 CREATE TABLE IF NOT EXISTS `quiz_options` (
-  `quiz_id` int NOT NULL,
-  `ques_id` int NOT NULL,
-  `opts_id` int NOT NULL,
+  `quiz_id` int(11) NOT NULL,
+  `ques_id` int(11) NOT NULL,
+  `opts_id` int(11) NOT NULL,
   `qopt` text NOT NULL,
   `is_right` tinyint(1) NOT NULL,
   PRIMARY KEY (`quiz_id`,`ques_id`,`opts_id`)
@@ -333,7 +344,16 @@ CREATE TABLE IF NOT EXISTS `quiz_options` (
 INSERT INTO `quiz_options` (`quiz_id`, `ques_id`, `opts_id`, `qopt`, `is_right`) VALUES
 (1, 1, 1, 'Increase service limit from AWS Trusted Advisor before launching new instances', 0),
 (1, 1, 2, 'Submit a service limit increase to AWS Support specifying the instance type and region. ', 1),
-(1, 1, 3, 'BOOOOOP', 0);
+(1, 1, 3, 'BOOOOOP', 0),
+(1, 2, 1, 'Load Balancing', 1),
+(1, 2, 2, 'Auto Scaling', 0),
+(1, 2, 3, 'Not sure', 0),
+(1, 3, 1, 'Not sure', 0),
+(1, 3, 2, 'Security Group', 1),
+(1, 3, 3, 'Key Management', 0),
+(1, 4, 1, 'Archive the file', 0),
+(1, 4, 2, 'Delete the file from S3', 0),
+(1, 4, 3, 'Store it in EBS', 1);
 
 -- --------------------------------------------------------
 
@@ -343,8 +363,8 @@ INSERT INTO `quiz_options` (`quiz_id`, `ques_id`, `opts_id`, `qopt`, `is_right`)
 
 DROP TABLE IF EXISTS `quiz_questions`;
 CREATE TABLE IF NOT EXISTS `quiz_questions` (
-  `qid` int NOT NULL,
-  `ques_id` int NOT NULL,
+  `qid` int(11) NOT NULL,
+  `ques_id` int(11) NOT NULL,
   `question` text NOT NULL,
   `question_type` varchar(255) NOT NULL,
   PRIMARY KEY (`qid`,`ques_id`)
