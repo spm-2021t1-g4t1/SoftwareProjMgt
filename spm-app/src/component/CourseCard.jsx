@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 
 import ClassCard from './ClassCard';
 
-const CourseCard = ({courseSchema}) => {
+const CourseCard = (prop) => {
 
-    // console.log(courseSchema)
+    // console.log('prop')
+
+    const courseSchema = prop.courseSchema
+
+    const [stateChange, setStateChange] = useState(false)
+    const [inQueue, setInQueue] = useState([])
+
+    function classChange() {
+        setStateChange(true)
+    }
+
+    const endpoint = `http://127.0.0.1:5000/queue/darrelwilde/${courseSchema.course_id}`
+
+    useEffect(() => {
+        fetch(endpoint)
+        .then((res) => res.json()) 
+        .then((result) => {
+        // console.log(result)
+        setInQueue(result)
+        })
+    },[stateChange,endpoint])
+        
+    
 
     return(
-        <div> 
-            <div className="Catalog-Section">    
-                <h2>{courseSchema.course_id} - {courseSchema.course_name}</h2>
-                <p>Description: {courseSchema.description}</p>
+        <div className= 'my-4' > 
+            <div className="border border-info container-fluid container-bg">    
+                <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}</h2>
+                <p className="p-2">Description: {courseSchema.description}</p>
             </div>
-            {courseSchema.classes.map(classes => <ClassCard classSchema={classes} key={courseSchema.course_code - classes.class_no}/>)}
+            {courseSchema.classes.map(classes => <ClassCard 
+                                                    classChange = {classChange} classSchema={classes} inQueue = {inQueue}
+                                                    key={courseSchema.course_id-classes.class_no}/>)}
 
         </div>
         

@@ -5,6 +5,7 @@ import Account from './Account.jsx';
 import Course from './Course.jsx';
 import Catalog from './Catalog.jsx';
 import Header from '../component/Header.jsx';
+import IndividualQuiz from './component/IndividualQuiz.jsx';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
@@ -48,6 +49,7 @@ function LearnerHome({handleLogout}) {
               <Route path = '/catalog' component = {Catalog} exact/>
               <Route path = '/course/:courseid/:classno/' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
+              <Route path = '/IndividualQuiz' component = {IndividualQuiz} exact/>
             </div>
           </CSSTransition>
       </div>

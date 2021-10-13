@@ -1,27 +1,29 @@
 import React from 'react'
+import { Image } from 'react-bootstrap';
+
 
 
 const CourseDetail = (prop) => {
     // console.log(prop.data)
     
     return (
-         <div className = 'courseDetail'>
+         <div className = 'border border-info container-bg text-center my-3'>
             <div className = 'courseDetail-instructor'>
-                <img className = 'Portait'src = '/images/logo.png' alt = 'Trainer Pic' />
+                <Image className = 'instructor-image'src="/images/logo.png" roundedCircle />
                 <p>{prop.data.trainer_name}</p>
             </div>
             <div className= 'courseDetail-others'>
-                <div>
-                    <p>Course Start Date:</p>
-                    <p>{prop.data.start_date}</p>
-                    <p>Course End Date:</p>
-                    <p>{prop.data.end_date}</p>
+                <div className= 'my-2'>
+                    <div>Course Start Date:</div>
+                    <div>{prop.data.start_date}</div>
+                    <div>Course End Date:</div>
+                    <div>{prop.data.end_date}</div>
                 </div>
-                <div>
-                    <p>Course Start Time</p>
-                    <p>{prop.data.start_time}</p>
-                    <p>Course End Time:</p>
-                    <p>{prop.data.end_time}</p>
+                <div className= 'my-2'>
+                    <div>Course Start Time</div>
+                    <div>{prop.data.start_time}</div>
+                    <div>Course End Time:</div>
+                    <div>{prop.data.end_time}</div>
                 </div>
             </div>
         </div>
