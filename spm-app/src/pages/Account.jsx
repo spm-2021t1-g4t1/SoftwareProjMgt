@@ -1,7 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios';
 import Quizzes from '../component/Quizzes'
-import IndividualQuiz from '../component/IndividualQuiz';
 
 const Account = () => {
     const [quizzes, setQuizzes] = useState([]);

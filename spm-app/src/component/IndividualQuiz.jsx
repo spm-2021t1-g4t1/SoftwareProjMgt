@@ -1,24 +1,29 @@
 import { React, useEffect, useState } from 'react'
-import { Button, Stack, Card, Form, Col, Row} from 'react-bootstrap';
-import { useLocation, Link } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faArrowDown, faArrowUp, faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Button, Stack, Form, Col, Row} from 'react-bootstrap';
+import { Link } from "react-router-dom"
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import { faPlus, faArrowDown, faArrowUp, faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import QuestionCard from './QuestionCard';
 
 const IndividualQuiz = (props) => {
     // const [quizDetails, setQuizDetails] = useState(quiz);
     // const  {quiz} = useLocation()
     // console.log('saddasasdadsadsads',props)
-
-
     const [quizDetails, setQuizDetails] = useState([]);
+
     const [quizName, setQuizName] = useState(props.location.state.quiz_name)
 
     useEffect(()=>{
         console.log("This is my quiz id",props.location.state.quiz_id)
-        let retlist = quizDetails
+        // let retlist = quizDetails
+      
+        console.log(props)
+    },[props,quizDetails])
+
+
+    useEffect(() => {
         console.log(quizDetails)
-    },[props])
+    }, [quizDetails])
 
     const AddMCQ = () => {
         let no = quizDetails.length + 1
@@ -80,7 +85,7 @@ const IndividualQuiz = (props) => {
             setQuizDetails(quesArr)
             // console.log(quizDetails)
         })).catch()
-    },[])
+    },[props.location.state.quiz_id])
 
     // useEffect(()=>{
     //     fetch("http://127.0.0.1:5000/ques_opt/" + props.location.state.quiz_id).then(response => response.json()

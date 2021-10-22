@@ -3,8 +3,7 @@ import {Button, Container} from 'react-bootstrap';
 
 const SectionContainer = (props) => {
     console.log(props.data)
-
-    let sectionArr = props.data
+    
     // eslint-disable-next-line
     const [sectionArrs, setSectionArrs] = useState(props.data)
 

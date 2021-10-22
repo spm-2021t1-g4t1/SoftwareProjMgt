@@ -1,5 +1,4 @@
 import React from 'react'
-import {List, Header} from "semantic-ui-react";
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 

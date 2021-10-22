@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faInbox, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faInbox, faBell } from '@fortawesome/free-solid-svg-icons'
 import { Navbar, Container } from 'react-bootstrap';
 
 const Header = (prop) => {
     return (
-
         <Navbar fixed="top" bg="dark" variant="dark">
             <Container>
                 <Navbar.Brand href="/">
@@ -27,6 +27,7 @@ const Header = (prop) => {
                     </Navbar.Text>
                     <Navbar.Text>
                         Signed in as: <a href="#login">David Wilde</a>
+                        <button onClick={prop.handleLogout}>Logout</button>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Container>

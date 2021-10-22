@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import axios from "axios";
 import { useState, useEffect } from 'react';
 import "../App.css";
 import SearchBox from './SearchBox';
@@ -21,7 +19,7 @@ function ViewEngineerDetails() {
             
         })
     ).catch()
-    }, [])
+    }, [engineers])
 
     return (
         <div className="EngineerDetails">
@@ -43,11 +41,12 @@ function ViewEngineerDetails() {
             
             
             {engineers.filter((val) => {
-                if (searchTerm == "") {
+                if (searchTerm === "") {
                     return val
                 } else if (val.staff_name.toLowerCase().includes(searchTerm.toLowerCase())) {
                     return val
                 }
+                return null
             }).map((val) => {
                 return (
                     // <div>{val.staff_name}</div>

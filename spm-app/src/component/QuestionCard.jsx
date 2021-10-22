@@ -18,7 +18,7 @@ const QuestionCard = (props) => {
             const optArr = data.data
             setoptionsList(optArr)
         })).catch()
-    },[])
+    },[props.quizCard.qid,props.quizCard.ques_id])
     //
     const toggleEdit = () => {
         setisEditting(!isEditting);

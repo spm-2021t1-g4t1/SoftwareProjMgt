@@ -24,7 +24,7 @@ const CourseCard = (prop) => {
         // console.log(result)
         setInQueue(result)
         })
-    },[stateChange])
+    },[stateChange,endpoint])
         
     
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
-import { Link, BrowserRouter, Route } from "react-router-dom"
+import { BrowserRouter, Route } from "react-router-dom"
 
 import CourseInfo from './CourseInfo'
 import CourseSidebar from '../component/CourseSidebar'
@@ -38,7 +38,7 @@ const Course = () => {
                     console.log(courseDetailArr)
                 }
             )
-    }, [courseid])
+    }, [courseid,classno,courseDetailArr])
 
 
 
@@ -67,7 +67,7 @@ const Course = () => {
                     console.log(lessonDetailArr)
                 }
             )
-    }, [courseid])
+    }, [courseid,classno,lessonDetailArr])
     
     return (
         <BrowserRouter>
