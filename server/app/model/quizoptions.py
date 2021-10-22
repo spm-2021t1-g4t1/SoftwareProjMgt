@@ -30,3 +30,14 @@ class QuizOptions(db.Model):
             "data": [loads(dumps(opt.viewjson(), default=str)) for opt in opts_bank],
             "code": 200
         }
+
+    @classmethod
+    def remove_opt(cls, q_id, quid, oid):
+        row_to_delete = QuizOptions.query.filter_by(
+        quiz_id=q_id, ques_id=quid, opts_id=oid).first()
+        db.session.delete(row_to_delete)
+        db.session.commit()
+        return {
+            "data": "Removed",
+            "code": 200
+        }

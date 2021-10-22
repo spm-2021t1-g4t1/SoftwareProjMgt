@@ -21,9 +21,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = configstr
 
 ############## Login ###############################################
 
-@app.route('/login/<string:username>')
+
+@app.route("/login/<string:username>")
 def get_staff_by_username(username):
     return staff.get_staff_by_username(username)
+
 
 ############## Staff ###############################################
 
@@ -158,6 +160,7 @@ def get_lessons(course_id, class_no, staff_username):
 def get_all_quiz():
     return Quiz.get_listofQuiz()
 
+
 @app.route("/insert_quiz", methods=["POST", "GET"])
 def insert_quiz():
     data = request.get_json()
@@ -166,11 +169,12 @@ def insert_quiz():
         quiz_name=data["quiz_name"],
         description=data["description"],
         uploader=data["uploader"],
-        duration=data["duration"]
+        duration=data["duration"],
     )
     db.session.add(addQuiz)
     db.session.commit()
     return {"data": {"status": 200, "message": "Quiz is successfully created"}}
+
 
 @app.route("/quiz/<int:quiz_id>", methods=["POST", "GET"])
 def get_spec_quiz(quiz_id):
@@ -181,9 +185,11 @@ def get_spec_quiz(quiz_id):
 def get_all_ques(qid):
     return Question.get_courseQues(qid)
 
+
 @app.route("/get_spec_quiz_ques/<int:qid>/<int:ques_id>", methods=["POST", "GET"])
-def get_specific_ques(qid,ques_id):
-    return Question.get_a_question(qid,ques_id)
+def get_specific_ques(qid, ques_id):
+    return Question.get_a_question(qid, ques_id)
+
 
 @app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
 def get_classQueue(staff_username, course_id):
@@ -206,6 +212,7 @@ def get_classQueue(staff_username, course_id):
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
 def get_the_options(quiz_id, ques_id):
     return QuizOptions.get_QuesOpt(quiz_id, ques_id)
+
 
 @app.route("/add_ques/<int:quiz_id>", methods=["POST"])
 def addQuestion(quiz_id):
@@ -258,10 +265,14 @@ def update_options(quiz_id, ques_id):
                 )
                 db.session.add(option)
                 db.session.commit()
-        return {"data": {"status": 200, "message": "Questions and Options updated Successfully!"}}
+        return {
+            "data": {
+                "status": 200,
+                "message": "Questions and Options updated Successfully!",
+            }
+        }
     except:
         return {"data": {"status": 500, "message": "Unsuccessful Update"}}
-
 
 
 @app.route(
@@ -269,23 +280,23 @@ def update_options(quiz_id, ques_id):
     methods=["POST", "GET"],
 )
 def delete_options(quiz_id, ques_id, opts_id):
-    row_to_delete = QuizOptions.query.filter_by(
-        quiz_id=quiz_id, ques_id=ques_id, opts_id=opts_id
-    ).first()
-    db.session.delete(row_to_delete)
-    db.session.commit()
+    QuizOptions.remove_opt(quiz_id, ques_id, opts_id)
     return {"data": {"status": 200, "message": "Options Deleted successful"}}
 
-@app.route("/quiz_delete/<int:quiz_id>", methods=["POST", "GET"],)
+
+@app.route(
+    "/quiz_delete/<int:quiz_id>",
+    methods=["POST", "GET"],
+)
 def delele_quiz(quiz_id):
     try:
-        row_to_delete = Quiz.query.filter_by(
-            quiz_id=quiz_id).first()
+        row_to_delete = Quiz.query.filter_by(quiz_id=quiz_id).first()
         db.session.delete(row_to_delete)
         db.session.commit()
         return {"data": {"status": 200, "message": "Quiz deleted successful"}}
     except:
         return {"data": {"status": 500, "message": "Error in deleting quiz"}}
+
 
 @app.route("/ques_delete/<int:quiz_id>/<int:ques_id>", methods=["POST", "GET"])
 def delete_questions(quiz_id, ques_id):
