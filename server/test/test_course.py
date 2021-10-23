@@ -1,3 +1,4 @@
+from datetime import datetime
 import unittest
 import flask_testing
 import json
@@ -35,6 +36,13 @@ class TestApp(flask_testing.TestCase):
                 course_id = i // 2 + 1,
                 learning_objective = f"Learning Objective {i + 1}"
             ))
+
+        db.session.add(classes(
+            course_id=1, 
+            class_no=1, 
+            start_date=datetime(2021,9,1), 
+            end_date=datetime(2021,9,2), 
+            class_size=15))
 
         db.session.commit()
 
@@ -100,7 +108,17 @@ class TestCourse_DB(TestApp):
                 'course_name': 'Test Course 1', 
                 'description': 'Test Description 1', 
                 'learning_objective': ['Learning Objective 1', 'Learning Objective 2'], 
-                'classes': []
+                'classes': [
+                    {'course_id': 1, 
+                    'class_no': 1, 
+                    'start_date': '2021-09-01 00:00:00', 
+                    'end_date': '2021-09-02 00:00:00', 
+                    'start_time': 'None', 
+                    'end_time': 'None', 
+                    'class_size': 15, 
+                    'trainer_name': None, 
+                    'lesson': []
+                    }]
             }, 
             {
                 'course_id': 2, 
@@ -112,7 +130,6 @@ class TestCourse_DB(TestApp):
         ]
     }
         self.assertEqual(len(courseList["data"]), 2)
-        print(courseList)
         self.assertEqual(courseList, expected)
 
     def test_get_specificCourse(self):
@@ -131,6 +148,42 @@ class TestCourse_DB(TestApp):
         # this really shouldn't be an attributeerror but we'll refactor this later i suppose
         with self.assertRaises(AttributeError):
             course.get_specificCourse(3)
+
+class Test_API(TestApp):
+    def test_API_getCourse(self):
+        res = self.client.get("/course/1")
+        expected = {
+            'course_id': 1, 
+            'course_name': 'Test Course 1', 
+            'description': 'Test Description 1', 
+            'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
+        }
+        self.assertEqual(res.json['data'], expected)
+    
+    def test_API_getInvalidCourse(self):
+        with self.assertRaises(AttributeError):
+            self.client.get("/course/3")
+    
+    def test_API_getClass(self):
+        res = self.client.get("/course/1/1")
+        expected = {
+            'classes': [{
+                'class_no': 1, 
+                'class_size': 15, 
+                'course_id': 1, 
+                'end_date': '2021-09-02 00:00:00', 
+                'end_time': 'None', 
+                'lesson': [], 
+                'start_date': '2021-09-01 00:00:00', 
+                'start_time': 'None', 
+                'trainer_name': None
+                }], 
+            'course_id': 1, 
+            'course_name': 'Test Course 1', 
+            'description': 'Test Description 1', 
+            'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
+            }
+        self.assertEqual(res.json["data"], expected)
 
 
 if __name__ == "__main__":
