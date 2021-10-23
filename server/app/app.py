@@ -13,7 +13,7 @@ CORS(app)
 
 configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
 if platform.system() == "Darwin":
-    configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+    configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 100, "pool_recycle": 280}
 app.config["SQLALCHEMY_DATABASE_URI"] = configstr
@@ -148,6 +148,24 @@ def get_lessons(course_id, class_no, staff_username):
 
     return ClassDetail
 
+############# Queue ######################################
+
+@app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
+def get_classQueue(staff_username, course_id):
+    if request.method == "GET":
+        return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
+    if request.method == "POST":
+        try:
+            class_no = request.json["class_no"]
+            CE_Queue = classEnrolmentQueue(
+                staff_username=staff_username, course_id=course_id, class_no=class_no
+            )
+            db.session.add(CE_Queue)
+            db.session.commit()
+
+            return jsonify({"code": 200, "message": "Enrollment succeed"}), 200
+        except:
+            return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 ############# Quiz ######################################
 
@@ -187,22 +205,7 @@ def get_specific_ques(qid, ques_id):
     return Question.get_a_question(qid, ques_id)
 
 
-@app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
-def get_classQueue(staff_username, course_id):
-    if request.method == "GET":
-        return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
-    if request.method == "POST":
-        try:
-            class_no = request.json["class_no"]
-            CE_Queue = classEnrolmentQueue(
-                staff_username=staff_username, course_id=course_id, class_no=class_no
-            )
-            db.session.add(CE_Queue)
-            db.session.commit()
 
-            return jsonify({"code": 200, "message": "Enrollment succeed"}), 200
-        except:
-            return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
