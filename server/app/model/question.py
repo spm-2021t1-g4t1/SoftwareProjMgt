@@ -48,3 +48,4 @@ class Question(db.Model):
             "code": 200,
         }
 
+

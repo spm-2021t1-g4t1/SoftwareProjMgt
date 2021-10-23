@@ -61,4 +61,3 @@ class Quiz(db.Model):
             ],
             "code": 200,
         }
-
