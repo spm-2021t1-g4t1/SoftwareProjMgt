@@ -53,6 +53,7 @@ class classes(db.Model):
     @classmethod
     def get_specificClass(cls,course_id, class_no):
         classobj = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
+
         return {'data': classobj.json()}
 
     @classmethod

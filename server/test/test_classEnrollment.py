@@ -3,6 +3,7 @@ import flask_testing
 import json
 from helper import *
 from app import *
+from datetime import datetime
 # from app.model import staff
 # from app import app, db
 
@@ -20,32 +21,21 @@ class TestApp(flask_testing.TestCase):
 
     def setUp(self):
         db.create_all()
-        aStaff = staff(
-            staff_username = 'coreyroberts',
-            staff_name = 'Corey Roberts',
-            role = 'Learner',
-            department = 'Operation',
-            current_designation = 'Engineer'
-        )
-        db.session.add(aStaff)
-        db.session.commit()
-        aStaff2 = staff(
-            staff_username = 'hello',
-            staff_name = 'Corey Roberts',
-            role = 'Learner',
-            department = 'Operation',
-            current_designation = 'Engineer'
-        )
-        db.session.add(aStaff2)
+        Objects = [
+            staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
+            staff(staff_username = 'hello', staff_name = 'hello', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
+            course(course_id = 1, course_name = "Test Course 1", description = "Test Description 1" ),
+            course(course_id = 2, course_name = "Test Course 2", description = "Test Description 2"),
+            classes(course_id = 1, class_no = 1, start_date = datetime(2021,9,1), end_date = datetime(2021,9,2), class_size = 40, trainer_name = 'stevejobs'),
+            classes(course_id = 2, class_no = 1, start_date = datetime(2021,9,1), end_date = datetime(2021,9,2), class_size = 40, trainer_name = 'stevejobs'),
+            classEnrolment(staff_username = 'coreyroberts', course_id = 1, class_no = 1),
+            classEnrolment(staff_username = 'hello', course_id = 1, class_no = 1),
+            classEnrolment(staff_username = 'coreyroberts', course_id = 2, class_no = 1)
+        ]
+        
+        db.session.bulk_save_objects(Objects)
         db.session.commit()
 
-        # aCourse = course(
-        #     course_id = 1,
-        #     course_name = 'course1',
-        #     description = 'description',
-        #     learning_objective = 'learning objective',
-        #     classes = 
-        # )
         
 
     def tearDown(self):
@@ -54,51 +44,38 @@ class TestApp(flask_testing.TestCase):
 
 class testClassEnrollment(TestApp):
     def testGetClassList(self):
-        aStudent1 = classEnrolment(
-            staff_username = 'coreyroberts',
-            course_id = 1,
-            class_no = 1
-        )
-        aStudent2 = classEnrolment(
-            staff_username = 'hello',
-            course_id = 1,
-            class_no = 1
-        )
-
-        db.session.add(aStudent1)
-        db.session.add(aStudent2)
-        db.session.commit()
 
         data = self.client.get(f"/enrolment/{1}/{1}")
         insertedStudents = data.json["data"]
-
-        # print(insertedStudents)
-        # print(insertedStudents['0'])
 
         self.assertEqual(insertedStudents['0']['staff_username'], 'coreyroberts')
         self.assertEqual(insertedStudents['1']['staff_username'], 'hello')
     
 
-    # def testGetStaffEnrollment(self):
-    #     aStudent1 = classEnrolment(
-    #         staff_username = 'coreyroberts',
-    #         course_id = 1,
-    #         class_no = 1
-    #     )
-    #     aStudent2 = classEnrolment(
-    #         staff_username = 'coreyroberts',
-    #         course_id = 2,
-    #         class_no = 2
-    #     )
-    #     db.session.add(aStudent1)
-    #     db.session.add(aStudent2)
-    #     db.session.commit()
+    def testGetClassNumber(self):
+        data = self.client.get(f"/enrolment/{1}/{1}/length")
+        numStudents = data.json['message']
 
-    #     data = self.client.get(f"/enrolment/coreyroberts")
-    #     # insertedStaff = data.json['data']
-    #     print(data)
+        self.assertEqual(numStudents, 2)
+
+    
+    def testGetStaffEnrollment(self):
+
+        data = self.client.get(f"/enrolment/coreyroberts")
+
+        course_id1 = data.json['data'][0]['course_id']
+        class_no1 = data.json['data'][0]['classes'][0]['class_no']
+        course_id2 = data.json['data'][1]['course_id']
+        class_no2 = data.json['data'][1]['classes'][0]['class_no']
+        
+        self.assertEqual(course_id1, 1)
+        self.assertEqual(course_id2, 2)
+        self.assertEqual(class_no1, 1)
+        self.assertEqual(class_no2, 1)
 
 
 
 if __name__ == "__main__":
     unittest.main()
+
+

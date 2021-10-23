@@ -9,5 +9,4 @@ else:
     parentdir = os.path.dirname(currentdir) + '/app'
 sys.path.append(parentdir)
 # print(sys.path)
-
-from app import *
+# from app import *
