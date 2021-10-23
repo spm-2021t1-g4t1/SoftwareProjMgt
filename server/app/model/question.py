@@ -30,14 +30,38 @@ class Question(db.Model):
         }
 
     @classmethod
-    def get_courseQues(cls, qid):
-        questionsbank = cls.query.filter_by(qid=qid)
+    def get_courseQues(cls, qzid):
+        questionsbank = cls.query.filter_by(qid=qzid)
         return {
             "data": [
                 loads(dumps(ques.viewjson(), default=str)) for ques in questionsbank
             ],
             "code": 200,
         }
+
+    @classmethod
+    def add_courseQuestion(cls, q_id, quezid, quez, quez_type):
+        ques = Question(
+            qid=q_id,
+            ques_id=quezid,
+            question=quez,
+            question_type=quez_type,
+        )
+        db.session.add(ques)
+        db.session.commit()
+
+    @classmethod
+    def update_specificQuestion(cls, quiz_id, quez_id, new_quez):
+        ques = cls.query.filter_by(qid=quiz_id, ques_id=quez_id).first()
+        ques.question = new_quez 
+        db.session.commit()
+        return {
+            "data": [
+                loads(dumps(ques.viewjson(), default=str))
+            ],
+            "code": 200,
+        }
+
 
     @classmethod
     def get_a_question(cls, qid, ques_id):
@@ -49,3 +73,9 @@ class Question(db.Model):
         }
 
 
+    @classmethod
+    def remove_question(cls,quiz_id,ques_id):
+        row_to_delete = cls.query.filter_by(qid=quiz_id, ques_id=ques_id).first()
+        db.session.delete(row_to_delete)
+        db.session.commit()
+        return True
