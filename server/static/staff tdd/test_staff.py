@@ -26,7 +26,7 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 class testStaff(TestApp):
-    def testGetStaffList(self):
+    def testGetClassList(self):
         aStaff = staff(
             staff_username = 'coreyroberts',
             staff_name = 'Corey Roberts',
