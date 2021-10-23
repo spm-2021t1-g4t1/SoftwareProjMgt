@@ -1,5 +1,6 @@
 import os
 import sys
+import platform
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 if platform.system() == "Windows":
