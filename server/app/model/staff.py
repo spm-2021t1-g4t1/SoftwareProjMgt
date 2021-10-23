@@ -11,7 +11,7 @@ class staff(db.Model):
     
     def viewjson(self):
         return {
-            "staff_email": self.staff_username,
+            "staff_username": self.staff_username,
             "staff_name": self.staff_name,
             "role": self.role,
             "department": self.department,
