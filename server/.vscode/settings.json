@@ -2,7 +2,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./classenrollment tdd",
+        "./test",
         "-p",
         "test_*.py"
     ],
