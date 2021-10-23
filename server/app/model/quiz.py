@@ -62,3 +62,52 @@ class Quiz(db.Model):
             "code": 200,
         }
 
+    @classmethod
+    def get_one_quiz(cls, quiz_id):
+        try:
+            quiz_details = cls.query.filter_by(quiz_id=quiz_id).first()
+            return {
+                "data": loads(dumps(quiz_details.viewjson(), default=str)),
+                "code": 200,
+            }
+        except:
+            return {
+                "data": None,
+                "code": 500,
+            }
+
+    @classmethod
+    def delete_quiz(cls, quiz_id):
+        row_to_delete = cls.query.filter_by(quiz_id=quiz_id).first()
+        db.session.delete(row_to_delete)
+        db.session.commit()
+        return True
+
+    @classmethod
+    def save_quiz(cls, quiz_id, quiz_name, description, uploader, duration):
+        quiz = cls.query.filter_by(quiz_id=quiz_id).first()
+        quiz.quiz_name = quiz_name
+        quiz.description = description
+        quiz.duration = duration
+        quiz.uploader = uploader
+        db.session.commit()
+        return {
+            "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+            "code": 200,
+        }
+
+    @classmethod
+    def create_quiz(cls, quiz_id, quiz_name, description, uploader, duration):
+        aQuiz = Quiz(
+            quiz_id=quiz_id,
+            quiz_name=quiz_name,
+            description=description,
+            uploader=uploader,
+            duration=duration,
+        )
+        db.session.add(aQuiz)
+        db.session.commit()
+        return {
+            "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+            "code": 200,
+        }

@@ -210,14 +210,12 @@ def addQuestion(quiz_id):
     print(len(questions["data"]))
     data = request.get_json()
     if data["ques_id"] == len(questions["data"]) + 1:
-        ques = Question(
-            qid=quiz_id,
-            ques_id=data["ques_id"],
-            question=data["question"],
-            question_type=data["question_type"],
+        Question.add_courseQuestion(
+            quiz_id,
+            data["ques_id"],
+            data["question"],
+            data["question_type"],
         )
-        db.session.add(ques)
-        db.session.commit()
         return {"data": {"status": 200, "message": "Question Added successful"}}
     else:
         return {"data": {"status": 500, "message": "Question NOT added"}}
@@ -228,35 +226,28 @@ def update_options(quiz_id, ques_id):
     data = request.get_json()
     optionsList = data["optionsList"]
     question = data["question"]
+    Question.update_specificQuestion(quiz_id, ques_id, question)
+    # Question.query.filter_by(qid=quiz_id, ques_id=ques_id).first()
+    for i in optionsList:
+        x = QuizOptions.get_specificOption(
+            quiz_id=quiz_id, ques_id=ques_id, opts_id=i["opts_id"]
+        )
+        if x["data"] is not None:
+            QuizOptions.update_quiz_options(
+                i["quiz_id"], i["ques_id"], i["opts_id"], i["is_right"], i["qopt"]
+            )
+        else:
+            QuizOptions.insert_quiz_options(
+                i["quiz_id"], i["ques_id"], i["opts_id"], i["is_right"], i["qopt"]
+            )
+    return {
+        "data": {
+            "status": 200,
+            "message": "Questions and Options updated Successfully!",
+            "data": Question.get_a_question(quiz_id, ques_id),
+        }
+    }
 
-    try:
-        ques = Question.query.filter_by(qid=quiz_id, ques_id=ques_id).first()
-        ques.question = question
-        db.session.commit()
-        for i in optionsList:
-            optz = QuizOptions.query.filter_by(
-                quiz_id=quiz_id, ques_id=ques_id, opts_id=i["opts_id"]
-            ).first()
-            try:
-                optz.quiz_id = i["quiz_id"]
-                optz.ques_id = i["ques_id"]
-                optz.opts_id = i["opts_id"]
-                optz.is_right = i["is_right"]
-                optz.qopt = i["qopt"]
-                db.session.commit()
-            except:
-                option = QuizOptions(
-                    quiz_id=i["quiz_id"],
-                    ques_id=i["ques_id"],
-                    opts_id=i["opts_id"],
-                    is_right=i["is_right"],
-                    qopt=i["qopt"],
-                )
-                db.session.add(option)
-                db.session.commit()
-        return {"data": {"status": 200, "message": "Questions and Options updated Successfully!"}}
-    except:
-        return {"data": {"status": 500, "message": "Unsuccessful Update"}}
 
 
 
@@ -275,22 +266,15 @@ def delete_options(quiz_id, ques_id, opts_id):
 @app.route("/quiz_delete/<int:quiz_id>", methods=["POST", "GET"],)
 def delele_quiz(quiz_id):
     try:
-        row_to_delete = Quiz.query.filter_by(
-            quiz_id=quiz_id).first()
-        db.session.delete(row_to_delete)
-        db.session.commit()
+        Quiz.delete_quiz(quiz_id)
         return {"data": {"status": 200, "message": "Quiz deleted successful"}}
     except:
         return {"data": {"status": 500, "message": "Error in deleting quiz"}}
 
 @app.route("/ques_delete/<int:quiz_id>/<int:ques_id>", methods=["POST", "GET"])
 def delete_questions(quiz_id, ques_id):
-    row_to_delete = Question.query.filter_by(qid=quiz_id, ques_id=ques_id).first()
-    rows_to_delete = QuizOptions.query.filter_by(quiz_id=quiz_id, ques_id=ques_id)
-    for i in rows_to_delete:
-        db.session.delete(i)
-    db.session.delete(row_to_delete)
-    db.session.commit()
+    Question.remove_question(quiz_id, ques_id)
+    QuizOptions.remove_all_opt(quiz_id, ques_id)
     return {"data": {"status": 200, "message": "Question Deleted successful"}}
 
 
@@ -298,13 +282,13 @@ def delete_questions(quiz_id, ques_id):
 def save_quiz(quiz_id):
     try:
         data = request.get_json()
-        print(quiz_id, data)
-        quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
-        quiz.quiz_name = data["quiz_name"]
-        quiz.description = data["description"]
-        quiz.duration = data["duration"]
-        quiz.uploader = data["uploader"]
-        db.session.commit()
+        Quiz.save_quiz(
+            quiz_id,
+            data["quiz_name"],
+            data["description"],
+            data["uploader"],
+            data["duration"]
+        )
         return {"data": {"status": 200, "message": "Saved Quiz successful"}}
     except:
         return {"data": {"status": 500, "message": "Quiz cant be saved successful"}}
