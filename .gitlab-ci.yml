@@ -1,4 +1,4 @@
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
+S# To contribute improvements to CI/CD templates, please follow the Development guide at:
 # https://docs.gitlab.com/ee/development/cicd/templates.html
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
@@ -31,8 +31,8 @@ before_script:
 
 test:
   script:
-    - echo 'this should run on pull requests'
-    - python server/test/Sample.py
+    - cd server/test
+    - python -m unittest
   only:
     - external_pull_requests
 # test:

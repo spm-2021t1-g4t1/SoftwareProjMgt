@@ -11,9 +11,9 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
 if platform.system() == "Darwin":
-    configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
+    configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 100, "pool_recycle": 280}
 app.config["SQLALCHEMY_DATABASE_URI"] = configstr
@@ -53,11 +53,8 @@ def getStaff_Enrollment(staff_username):
     ClassList = classEnrolment.getStaffEnrollment(staff_username)
 
     for classesObj in ClassList["data"].values():
-        # print(classesObj)
         Courses = course.get_specificCourse(classesObj["course_id"])["data"]
-        classObj = classes.get_specificClass(
-            classesObj["course_id"], classesObj["class_no"]
-        )["data"]
+        classObj = classes.get_specificClass(classesObj["course_id"], classesObj["class_no"])["data"]
 
         classEnrolments["data"].append(
             {
@@ -80,7 +77,6 @@ def get_all_course(staff_username):
     alreadyEnrolledCourses = classEnrolment.getStaffEnrollment(staff_username)
     for courseobj in alreadyEnrolledCourses["data"].values():
         course_list.append(courseobj["course_id"])
-    print(alreadyEnrolledCourses)
     return course.get_listOfCourse(course_list)
 
 
