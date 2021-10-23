@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
   `class_no` int(11) NOT NULL,
   PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
   KEY `CE_Queue_fk_1` (`course_id`,`class_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `classenrollment_queue`
@@ -251,27 +251,25 @@ INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_ma
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materials_viewed`
+-- Table structure for table `lesson_completion`
 --
 
-DROP TABLE IF EXISTS `materials_viewed`;
-CREATE TABLE IF NOT EXISTS `materials_viewed` (
+DROP TABLE IF EXISTS `lesson_completion`;
+CREATE TABLE IF NOT EXISTS `lesson_completion` (
   `course_id` int(11) NOT NULL,
   `class_no` int(11) NOT NULL,
   `lesson_no` int(11) NOT NULL,
-  `course_material_title` varchar(255) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`,`staff_username`),
+  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`),
   KEY `fk11` (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `materials_viewed`
+-- Dumping data for table `lesson_completion`
 --
 
-INSERT INTO `materials_viewed` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `staff_username`) VALUES
-(2, 1, 1, '211A', 'darrelwilde'),
-(2, 1, 1, '211B', 'darrelwilde');
+INSERT INTO `lesson_completion` (`course_id`, `class_no`, `lesson_no`, `staff_username`) VALUES
+(2, 1, 1, 'darrelwilde');
 
 -- --------------------------------------------------------
 
@@ -454,10 +452,10 @@ ALTER TABLE `lesson_materials`
   ADD CONSTRAINT `fk9` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`);
 
 --
--- Constraints for table `materials_viewed`
+-- Constraints for table `lesson_completion`
 --
-ALTER TABLE `materials_viewed`
-  ADD CONSTRAINT `fk10` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`) REFERENCES `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`),
+ALTER TABLE `lesson_completion`
+  ADD CONSTRAINT `fk10` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
   ADD CONSTRAINT `fk11` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --

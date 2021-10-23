@@ -13,7 +13,7 @@ CORS(app)
 
 configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
 if platform.system() == "Darwin":
-    configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+    configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_size": 100, "pool_recycle": 280}
 app.config["SQLALCHEMY_DATABASE_URI"] = configstr
@@ -21,9 +21,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = configstr
 
 ############## Login ###############################################
 
-@app.route('/login/<string:username>')
+
+@app.route("/login/<string:username>")
 def get_staff_by_username(username):
     return staff.get_staff_by_username(username)
+
 
 ############## Staff ###############################################
 
@@ -54,7 +56,9 @@ def getStaff_Enrollment(staff_username):
 
     for classesObj in ClassList["data"].values():
         Courses = course.get_specificCourse(classesObj["course_id"])["data"]
-        classObj = classes.get_specificClass(classesObj["course_id"], classesObj["class_no"])["data"]
+        classObj = classes.get_specificClass(
+            classesObj["course_id"], classesObj["class_no"]
+        )["data"]
 
         classEnrolments["data"].append(
             {
@@ -147,39 +151,8 @@ def get_lessons(course_id, class_no, staff_username):
     return ClassDetail
 
 
-############# Quiz ######################################
+############# Queue ######################################
 
-
-@app.route("/quiz", methods=["POST", "GET"])
-def get_all_quiz():
-    return Quiz.get_listofQuiz()
-
-@app.route("/insert_quiz", methods=["POST", "GET"])
-def insert_quiz():
-    data = request.get_json()
-    addQuiz = Quiz(
-        quiz_id=data["quiz_id"],
-        quiz_name=data["quiz_name"],
-        description=data["description"],
-        uploader=data["uploader"],
-        duration=data["duration"]
-    )
-    db.session.add(addQuiz)
-    db.session.commit()
-    return {"data": {"status": 200, "message": "Quiz is successfully created"}}
-
-@app.route("/quiz/<int:quiz_id>", methods=["POST", "GET"])
-def get_spec_quiz(quiz_id):
-    return Quiz.get_quiz_details(quiz_id)
-
-
-@app.route("/quiz_ques/<int:qid>", methods=["POST", "GET"])
-def get_all_ques(qid):
-    return Question.get_courseQues(qid)
-
-@app.route("/get_spec_quiz_ques/<int:qid>/<int:ques_id>", methods=["POST", "GET"])
-def get_specific_ques(qid,ques_id):
-    return Question.get_a_question(qid,ques_id)
 
 @app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
 def get_classQueue(staff_username, course_id):
@@ -199,9 +172,48 @@ def get_classQueue(staff_username, course_id):
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 
+############# Quiz ######################################
+
+
+@app.route("/quiz", methods=["POST", "GET"])
+def get_all_quiz():
+    return Quiz.get_listofQuiz()
+
+
+@app.route("/insert_quiz", methods=["POST", "GET"])
+def insert_quiz():
+    data = request.get_json()
+    addQuiz = Quiz(
+        quiz_id=data["quiz_id"],
+        quiz_name=data["quiz_name"],
+        description=data["description"],
+        uploader=data["uploader"],
+        duration=data["duration"],
+    )
+    db.session.add(addQuiz)
+    db.session.commit()
+    return {"data": {"status": 200, "message": "Quiz is successfully created"}}
+
+
+@app.route("/quiz/<int:quiz_id>", methods=["POST", "GET"])
+def get_spec_quiz(quiz_id):
+    return Quiz.get_quiz_details(quiz_id)
+
+
+@app.route("/quiz_ques/<int:qid>", methods=["POST", "GET"])
+def get_all_ques(qid):
+    return Question.get_courseQues(qid)
+
+
+@app.route("/get_spec_quiz_ques/<int:qid>/<int:ques_id>", methods=["POST", "GET"])
+def get_specific_ques(qid, ques_id):
+    return Question.get_a_question(qid, ques_id)
+
+
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
 def get_the_options(quiz_id, ques_id):
     return QuizOptions.get_QuesOpt(quiz_id, ques_id)
+
 
 @app.route("/add_ques/<int:quiz_id>", methods=["POST"])
 def addQuestion(quiz_id):
@@ -249,27 +261,26 @@ def update_options(quiz_id, ques_id):
     }
 
 
-
-
 @app.route(
     "/ques_opt_delete/<int:quiz_id>/<int:ques_id>/<int:opts_id>",
     methods=["POST", "GET"],
 )
 def delete_options(quiz_id, ques_id, opts_id):
-    row_to_delete = QuizOptions.query.filter_by(
-        quiz_id=quiz_id, ques_id=ques_id, opts_id=opts_id
-    ).first()
-    db.session.delete(row_to_delete)
-    db.session.commit()
+    QuizOptions.remove_opt(quiz_id, ques_id, opts_id)
     return {"data": {"status": 200, "message": "Options Deleted successful"}}
 
-@app.route("/quiz_delete/<int:quiz_id>", methods=["POST", "GET"],)
+
+@app.route(
+    "/quiz_delete/<int:quiz_id>",
+    methods=["POST", "GET"],
+)
 def delele_quiz(quiz_id):
     try:
         Quiz.delete_quiz(quiz_id)
         return {"data": {"status": 200, "message": "Quiz deleted successful"}}
     except:
         return {"data": {"status": 500, "message": "Error in deleting quiz"}}
+
 
 @app.route("/ques_delete/<int:quiz_id>/<int:ques_id>", methods=["POST", "GET"])
 def delete_questions(quiz_id, ques_id):
@@ -287,7 +298,7 @@ def save_quiz(quiz_id):
             data["quiz_name"],
             data["description"],
             data["uploader"],
-            data["duration"]
+            data["duration"],
         )
         return {"data": {"status": 200, "message": "Saved Quiz successful"}}
     except:
