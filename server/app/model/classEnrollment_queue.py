@@ -29,4 +29,3 @@ class classEnrolmentQueue(db.Model):
             data = {'inQueue': True}
 
         return data
-
