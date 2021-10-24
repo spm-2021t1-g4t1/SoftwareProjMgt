@@ -38,7 +38,7 @@ const Course = () => {
                     console.log(courseDetailArr)
                 }
             )
-    }, [courseid,classno,courseDetailArr])
+    }, [courseid,classno])
 
 
 
@@ -67,7 +67,7 @@ const Course = () => {
                     console.log(lessonDetailArr)
                 }
             )
-    }, [courseid,classno,lessonDetailArr])
+    }, [courseid,classno])
     
     return (
         <BrowserRouter>

@@ -25,8 +25,8 @@ class quiz_attempts(db.Model):
         }
     @classmethod
     def get_listOfQuizAttemptsByStaff(cls, course_id, class_no, staff_username):
-        attempts = cls.query.filter_by(course_id=course_id, class_no=class_no,staff_username=staff_username).first()
-        return {'data': attempts.json()}
+        attempts = cls.query.filter_by(course_id=course_id, class_no=class_no,staff_username=staff_username).all()
+        return {'data': [one_attempt.json() for one_attempt in attempts]}
 
 
 

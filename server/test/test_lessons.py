@@ -101,3 +101,79 @@ class TestGetLessons(TestApp):
     def test_get_lessons_0_lessons_completed_0_quizzes_passed(self):
         response = self.client.get(f"/lesson/2/1/darrelwilde")
         self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 1)
+
+    def test_get_lessons_1_lesson_completed_0_quizzes_passed(self):
+        aLessonCompletion = lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=1,
+            staff_username='darrelwilde'
+        )
+        db.session.add(aLessonCompletion)
+        db.session.commit()
+
+        response = self.client.get(f"/lesson/2/1/darrelwilde")
+        self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 1)
+
+    def test_get_lessons_3_lessons_completed_3_quizzes_passed(self):
+        aLessonCompletion = lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=1,
+            staff_username='darrelwilde'
+        )
+        db.session.add(aLessonCompletion)
+        db.session.commit()
+
+        aLessonCompletion2 = lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=2,
+            staff_username='darrelwilde'
+        )
+
+        db.session.add(aLessonCompletion2)
+        db.session.commit()
+
+        aLessonCompletion3 = lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=3,
+            staff_username='darrelwilde'
+        )
+        db.session.add(aLessonCompletion3)
+        db.session.commit()
+
+        aQuizAttempt = quiz_attempts(
+            course_id=2,
+            class_no=1,
+            lesson_no=1,
+            staff_username='darrelwilde',
+            quiz_score=89
+        )
+        db.session.add(aQuizAttempt)
+        db.session.commit()
+
+        aQuizAttempt2 = quiz_attempts(
+            course_id=2,
+            class_no=1,
+            lesson_no=2,
+            staff_username='darrelwilde',
+            quiz_score=89
+        )
+        db.session.add(aQuizAttempt2)
+        db.session.commit()
+
+        aQuizAttempt3 = quiz_attempts(
+            course_id=2,
+            class_no=1,
+            lesson_no=3,
+            staff_username='darrelwilde',
+            quiz_score=89
+        )
+        db.session.add(aQuizAttempt3)
+        db.session.commit()
+
+        response = self.client.get(f"/lesson/2/1/darrelwilde")
+        self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 4)
+
