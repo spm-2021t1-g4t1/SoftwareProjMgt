@@ -108,8 +108,9 @@ def get_specificCourseDetail(course_id, class_no):
     }
     return ClassDetail
 
-
-@app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")  ######
+############# Lesson ######################################
+ 
+@app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):
     ClassDetail = {"data": []}
 
@@ -120,24 +121,24 @@ def get_lessons(course_id, class_no, staff_username):
     LessonDetail = {"data": []}
     LessonDetail["data"].append(all_lessons[0])
 
-    curr_index = 0
-    for each_lesson in all_lessons:
-        material_count_for_current_lesson = len(each_lesson["lesson_materials"])
-        list_of_material_viewed_by_staff = (
-            materials_viewed.get_listOfMaterialsViewedByStaff(
-                course_id, class_no, each_lesson["lesson_no"], staff_username
-            )["data"]
-        )
-        if (
-            material_count_for_current_lesson == len(list_of_material_viewed_by_staff)
-            and material_count_for_current_lesson != 0
-        ):
-            current_staff_quiz_score = quiz_attempts.get_listOfQuizAttemptsByStaff(
-                course_id, class_no, staff_username
-            )["data"]["quiz_score"]
-            if current_staff_quiz_score >= 80 and curr_index + 1 < len(all_lessons):
-                LessonDetail["data"].append(all_lessons[curr_index + 1])
-        curr_index = curr_index + 1
+    list_of_lessons_completed_by_staff = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)["data"]
+    list_of_quiz_attempts_by_staff = quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)["data"]
+    completed_lesson_no_list = []
+    for each_completed_lesson in list_of_lessons_completed_by_staff:
+        completed_lesson_no_list.append(each_completed_lesson['lesson_no'])
+    most_recent_lesson_completed = 0    
+    if len(completed_lesson_no_list) > 0:
+        most_recent_lesson_completed = max(completed_lesson_no_list)  
+
+    for index in range(0, len(all_lessons)): 
+        if index + 1 != len(all_lessons):
+            lesson_no = all_lessons[index]['lesson_no']
+            if most_recent_lesson_completed + 1 >= lesson_no+1:
+                for attempt in list_of_quiz_attempts_by_staff:
+                    if attempt["lesson_no"] == lesson_no:
+                        if attempt["quiz_score"] >= 80:
+                            LessonDetail['data'].append(all_lessons[index+1])
+                        
 
     classObj["lesson"] = LessonDetail["data"]
     ClassDetail["data"] = {
@@ -149,6 +150,18 @@ def get_lessons(course_id, class_no, staff_username):
     }
 
     return ClassDetail
+
+@app.route("/mark_lesson_as_complete", methods=["POST"])
+def mark_lesson_as_complete():
+    class_info = request.get_json()
+    course_id = class_info['course_id']
+    class_no = class_info['class_no']
+    lesson_no = class_info['lesson_no']
+    staff_username = class_info['staff_username']
+    lesson_completion_object = lesson_completion(course_id=course_id, class_no=class_no, lesson_no=lesson_no, staff_username=staff_username)
+    result = lesson_completion.mark_lesson_completed(lesson_completion_object)
+    return "DONE!"
+
 
 
 ############# Queue ######################################
