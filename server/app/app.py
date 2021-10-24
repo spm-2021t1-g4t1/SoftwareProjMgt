@@ -81,6 +81,39 @@ def get_all_course(staff_username):
         course_list.append(courseobj["course_id"])
     return course.get_listOfCourse(course_list)
 
+############# Queue ######################################
+
+@app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
+def get_classQueue(staff_username, course_id):
+    if request.method == "GET":
+        return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
+    if request.method == "POST":
+        try:
+            class_no = request.json["class_no"]
+            CE_Queue = classEnrolmentQueue(
+                staff_username=staff_username, course_id=course_id, class_no=class_no
+            )
+            db.session.add(CE_Queue)
+            db.session.commit()
+
+            return jsonify({"code": 200, "message": "Enrollment succeed"}), 200
+        except:
+            return jsonify({"code": 400, "message": "Enrollment failed"}), 400
+
+
+@app.route("/queue/withdraw" , methods=["POST"])
+def withdraw_classQueue():
+        try:
+            staff_username = request.json["staff_username"]
+            course_id = request.json["course_id"]
+
+            CE_Queue = classEnrolmentQueue.query.filter_by(course_id= course_id, staff_username=staff_username).first()
+            db.session.delete(CE_Queue)
+            db.session.commit()
+
+            return jsonify({"code": 200, "message": "Enrollment succeed"}), 200
+        except:
+            return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 ############# Course ######################################
 
@@ -203,9 +236,6 @@ def get_all_ques(qid):
 @app.route("/get_spec_quiz_ques/<int:qid>/<int:ques_id>", methods=["POST", "GET"])
 def get_specific_ques(qid, ques_id):
     return Question.get_a_question(qid, ques_id)
-
-
-
 
 
 @app.route("/ques_opt/<int:quiz_id>/<int:ques_id>")
