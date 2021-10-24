@@ -19,7 +19,7 @@ function ViewEngineerDetails() {
             
         })
     ).catch()
-    }, [engineers])
+    }, [])
 
     return (
         <div className="EngineerDetails">
