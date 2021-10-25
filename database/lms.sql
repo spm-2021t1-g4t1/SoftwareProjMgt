@@ -21,7 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms`
 --
-
+CREATE DATABASE IF NOT EXISTS `lms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `lms`;
 -- --------------------------------------------------------
 
 --
@@ -145,6 +146,50 @@ INSERT INTO `course` (`course_id`, `course_name`, `description`) VALUES
 (4, 'IoT System Design, Software and hardware integration', 'This course is designed to teach you how systems are developed using IoT technology.\r\n'),
 (5, 'IT Fundamentals for Business ', 'This introductory program is designed to give business professionals the basic background on Information Technology (IT) to let them get the most in their interaction with IT professionals, either from their company or from external corporation, as they will have a deeper understanding when identifying requirements, evaluating workloads or supervising results in the IT field.\r\n\r\n'),
 (6, 'Hardware and Operating Systems for Canon', 'This is a hardware course centered around the Canon printer system. You will learn the different hardware components that make up the Canon printer and the operating system.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_prerequisite`
+--
+
+DROP TABLE IF EXISTS `course_prerequisite`;
+CREATE TABLE IF NOT EXISTS `course_prerequisite` (
+  `course_id` int(11) NOT NULL,
+  `prerequisite_course_id` int(11) NOT NULL,
+  PRIMARY KEY (`course_id`, `prerequisite_course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
+(2, 1),
+(5, 4),
+(5, 3),
+(5, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_completion`
+--
+
+DROP TABLE IF EXISTS `course_completion`;
+CREATE TABLE IF NOT EXISTS `course_completion` (
+  `course_id` int(11) NOT NULL,
+  `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`course_id`, `staff_username`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course_completion` (`course_id`, `staff_username`) VALUES
+(1, 'darrelwilde');
+
 
 -- --------------------------------------------------------
 
@@ -470,6 +515,22 @@ ALTER TABLE `quiz_attempts`
 --
 ALTER TABLE `quiz_questions`
   ADD CONSTRAINT `quiz` FOREIGN KEY (`qid`) REFERENCES `quiz` (`quiz_id`);
+COMMIT;
+
+--
+-- Constraints for table `prerequisite_course`
+--
+ALTER TABLE `course_prerequisite`
+  ADD CONSTRAINT `course_prerequisite_fk` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
+  ADD CONSTRAINT `course_prerequisite_fk2` FOREIGN KEY (`prerequisite_course_id`) REFERENCES `course` (`course_id`);
+COMMIT;
+
+--
+-- Constraints for table `course_completion`
+--
+ALTER TABLE `course_completion`
+  ADD CONSTRAINT `course_completion_fk` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
+  ADD CONSTRAINT `course_completion_fk2` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

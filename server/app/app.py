@@ -160,7 +160,7 @@ def mark_lesson_as_complete():
     staff_username = class_info['staff_username']
     lesson_completion_object = lesson_completion(course_id=course_id, class_no=class_no, lesson_no=lesson_no, staff_username=staff_username)
     result = lesson_completion.mark_lesson_completed(lesson_completion_object)
-    return "DONE!"
+    return result
 
 
 

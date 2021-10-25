@@ -8,3 +8,4 @@ from model.quiz import *
 from model.question import *
 from model.quizoptions import *
 from model.staff import *
+from model.course_completion import *
