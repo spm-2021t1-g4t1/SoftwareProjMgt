@@ -60,7 +60,8 @@ class TestCourse_DB(TestApp):
             course_name = "Test Course 3",
             description = "Test Description 3",
             learning_objective = [learningObjective(course_id=3, learning_objective="Learning Objective 3"), learningObjective(course_id=3, learning_objective="Learning Objective 4")],
-            classes = [one_class]
+            classes = [one_class],
+            prerequisite_courses = []
         )
 
         expected = {
@@ -79,7 +80,8 @@ class TestCourse_DB(TestApp):
                 'trainer_name': None, 
                 'lesson': []
                 }
-            ]
+            ],
+            'prerequisite_courses': []
         }
         self.assertEqual(c.view_all_json(), expected)
 
@@ -118,14 +120,16 @@ class TestCourse_DB(TestApp):
                     'class_size': 15, 
                     'trainer_name': None, 
                     'lesson': []
-                    }]
+                    }],
+                'prerequisite_courses': []
             }, 
             {
                 'course_id': 2, 
                 'course_name': 'Test Course 2', 
                 'description': 'Test Description 2', 
                 'learning_objective': ['Learning Objective 3', 'Learning Objective 4'], 
-                'classes': []
+                'classes': [],
+                'prerequisite_courses': []
             }
         ]
     }
