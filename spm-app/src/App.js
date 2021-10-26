@@ -1,6 +1,5 @@
-import React, { useEffect, useState, createContext, useContext } from 'react'
+import React, { useState, createContext, useContext } from 'react'
 import { BrowserRouter, Route, useHistory, Redirect } from "react-router-dom"
-import { CSSTransition } from 'react-transition-group'
 import LearnerHome from './pages/LearnerHome';
 import Login from './pages/Login';
 import AdminHome from './pages/AdminHome';

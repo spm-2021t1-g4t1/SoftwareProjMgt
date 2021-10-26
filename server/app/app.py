@@ -130,7 +130,7 @@ def get_specificCourseDetail(course_id, class_no):
     ClassDetail = {"data": []}
 
     Courses = course.get_specificCourse(course_id)["data"]
-    classObj = classes.get_specificClassDetail(course_id, class_no)["data"]
+    classObj = classes.get_specificClass(course_id, class_no)["data"]
 
     ClassDetail["data"] = {
         "course_id": Courses["course_id"],

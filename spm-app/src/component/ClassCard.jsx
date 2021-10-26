@@ -102,6 +102,7 @@ const ClassCard = (prop) => {
                     <Button variant="danger" onClick={() => setModalShow(true)} >Withdraw enrollment</Button>
                 </Container>
                 ):''}
+            
             <DoubleCheck
                 show={modalShow}
                 func = {() => withdrawClass()}
@@ -127,7 +128,7 @@ function DoubleCheck(props) {
         <Modal.Body>
           <h4>Confirmation</h4>
           <p className = 'py-2'>
-            Are you sure you wish to withdraw your enrollment ?
+          Are you sure you wish to withdraw your enrollment ?
           </p>
         </Modal.Body>
         <Modal.Footer>

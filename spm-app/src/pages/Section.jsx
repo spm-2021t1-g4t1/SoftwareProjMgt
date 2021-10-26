@@ -15,7 +15,11 @@ const Section = () => {
     //useState
     const[sectionArrs, setSectionArrs] = useState([])
     const[noCompleted, setNoCompleted] = useState(0)
+    const [stateChange, setStateChange] = useState(0)
 
+    function classChange() {
+        setStateChange(stateChange+1)
+    }
 
     // pull api only once
     useEffect(() => {
@@ -37,13 +41,15 @@ const Section = () => {
                     setNoCompleted((result.data).length)
                 }
             )
-    }, [])
+    }, [stateChange])
 
 
     return (
         <div className = 'col col-lg-9 col-md-8'>
             {sectionArrs.map((sectionArr,index) =>
-                <SectionContainer key= {index} data = {sectionArr} completedLesson = {noCompleted} number = {index+1}/>
+                <SectionContainer key= {index} 
+                                    data = {sectionArr} completedLesson = {noCompleted} number = {index+1}
+                                    classChange = {classChange}/>
             )}
         </div>
     )
