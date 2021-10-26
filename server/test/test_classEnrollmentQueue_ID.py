@@ -47,7 +47,7 @@ class testIntegrateCEQ(TestApp):
         self.assert200(response)
         self.assertEqual(response.json,{'code': 200, 'message': 'Enrollment succeed'})
         
-        print(self.client.get(f"/queue/jane/{3}").json)
+        # print(self.client.get(f"/queue/jane/{3}").json)
         
         
         responseFailed = self.client.post(

@@ -27,7 +27,7 @@ class staff(db.Model):
     def get_staff_by_username(cls, username):
         staffDAO = cls.query.filter_by(staff_username = username).first()
         if staffDAO is None: return {'data': None}
-        print(staffDAO)
+        # print(staffDAO)
         login_staff = {
             "staff_username": staffDAO.staff_username,
             "role": staffDAO.role
