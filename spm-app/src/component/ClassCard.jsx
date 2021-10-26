@@ -1,12 +1,18 @@
 import React , {useEffect, useState} from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Modal, Container, Button } from 'react-bootstrap';
 
 const ClassCard = (prop) => {
     // console.log(prop.inQueue.inQueue)
-
+   
+   
+   
+   
+   
+    // Variable
     const classSchema = prop.classSchema
     const link = `course/${classSchema.course_id}/${classSchema.class_no}/overview`
     const isCatalog = window.location.pathname.includes('catalog')
+    const [modalShow, setModalShow] = React.useState(false);
 
 
     function enrolClass() {
@@ -26,6 +32,29 @@ const ClassCard = (prop) => {
 
         })
     }
+    function withdrawClass() {
+        const endpoint = `http://127.0.0.1:5000/queue/withdraw`
+        const data = {
+            staff_username: "darrelwilde",
+            course_id: classSchema.course_id
+        }
+        fetch(endpoint,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((res) => res.json()) 
+        .then((result) => {
+        console.log(result)
+        setModalShow(false)
+        prop.classChange()
+
+        })
+    }
+
+
 
     
     const [classNum, setClassNum] = useState(0)
@@ -68,9 +97,45 @@ const ClassCard = (prop) => {
                     : (<a href = {link}> <Button variant="primary">Enter Course</Button></a>)}
                 </Container>
             </div>
+            {prop.inQueue.inQueue 
+                ? ( <Container className="d-flex justify-content-end pb-2">
+                    <Button variant="danger" onClick={() => setModalShow(true)} >Withdraw enrollment</Button>
+                </Container>
+                ):''}
+            <DoubleCheck
+                show={modalShow}
+                func = {() => withdrawClass()}
+                onHide={() => setModalShow(false)}
+            />
         </div>
+        
     )
+
+    
 }
 
+function DoubleCheck(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="DoubleCheck"
+        centered
+      >
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Confirmation</h4>
+          <p className = 'py-2'>
+            Are you sure you wish to withdraw your enrollment ?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>No</Button>
+          <Button variant='danger' onClick={props.func}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 
 export default ClassCard
