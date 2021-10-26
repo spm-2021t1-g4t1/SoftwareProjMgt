@@ -50,7 +50,8 @@ const ClassCard = (prop) => {
         console.log(result)
         setModalShow(false)
         prop.classChange()
-
+        
+        window.location.reload(false)
         })
     }
 
