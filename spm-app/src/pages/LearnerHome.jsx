@@ -43,14 +43,14 @@ function LearnerHome({handleLogout}) {
               classNames="slider-body"
               timeout={{ enter: 1000, exit: 1000 }}
               >
-            <div className = 'App-body'>
+            <main className = 'App-body'>
               <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
               <Route path = '/course/:courseid/:classno/' component = {Course} />
               <Route path = '/account' component = {Account} exact/>
               <Route path = '/IndividualQuiz' component = {IndividualQuiz} exact/>
-            </div>
+            </main>
           </CSSTransition>
       </div>
   );
