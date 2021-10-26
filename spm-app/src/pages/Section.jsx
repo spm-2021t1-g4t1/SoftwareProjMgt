@@ -1,28 +1,49 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom"
+
 
 import SectionContainer from '../component/SectionContainer'
 
 
 
-const Section = (prop) => {
+const Section = () => {
+    const courseid = useParams().courseid
+    const classno = useParams().classno
+    const staffusername = 'darrelwilde'
 
-    // console.log(prop.data.classes[0].lesson)
 
     //useState
     const[sectionArrs, setSectionArrs] = useState([])
+    const[noCompleted, setNoCompleted] = useState(0)
 
-   
+
     // pull api only once
-    
     useEffect(() => {
-        setSectionArrs(prop.data.classes[0].lesson)
-        // console.log(sectionArrs)
-    },[prop.data.classes])
+        fetch(`http://127.0.0.1:5000/lesson/${courseid}/${classno}/${staffusername}`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    // console.log(result.data)
+                    setSectionArrs(result.data)
+                    // console.log(sectionArrs)
+                }
+            )
+
+        fetch(`http://127.0.0.1:5000//lesson_completion/${courseid}/${classno}/${staffusername}`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    // console.log(result.data.length)
+                    setNoCompleted((result.data).length)
+                }
+            )
+    }, [])
+
 
     return (
         <div className = 'col col-lg-9 col-md-8'>
             {sectionArrs.map((sectionArr,index) =>
-                <SectionContainer key= {index } data = {sectionArr} number = {index+1}/>
+                <SectionContainer key= {index} data = {sectionArr} completedLesson = {noCompleted} number = {index+1}/>
             )}
         </div>
     )

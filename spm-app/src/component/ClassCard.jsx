@@ -47,7 +47,7 @@ const ClassCard = (prop) => {
         })
         .then((res) => res.json()) 
         .then((result) => {
-        console.log(result)
+        // console.log(result)
         setModalShow(false)
         prop.classChange()
 
@@ -66,7 +66,7 @@ const ClassCard = (prop) => {
         .then((res) => res.json()) 
         .then((result) => {
         // console.log(result)
-        setClassNum(result.message)
+            setClassNum(result.message)
 
         })
 

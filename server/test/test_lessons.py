@@ -100,7 +100,8 @@ class TestApp(flask_testing.TestCase):
 class TestGetLessons(TestApp):
     def test_get_lessons_0_lessons_completed_0_quizzes_passed(self):
         response = self.client.get(f"/lesson/2/1/darrelwilde")
-        self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 1)
+        print(response.json['data'])
+        self.assertEqual(len(response.json['data']), 1)
 
     def test_get_lessons_1_lesson_completed_0_quizzes_passed(self):
         aLessonCompletion = lesson_completion(
@@ -113,7 +114,7 @@ class TestGetLessons(TestApp):
         db.session.commit()
 
         response = self.client.get(f"/lesson/2/1/darrelwilde")
-        self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 1)
+        self.assertEqual(len(response.json['data']), 1)
 
     def test_get_lessons_3_lessons_completed_3_quizzes_passed(self):
         aLessonCompletion = lesson_completion(
@@ -175,5 +176,5 @@ class TestGetLessons(TestApp):
         db.session.commit()
 
         response = self.client.get(f"/lesson/2/1/darrelwilde")
-        self.assertEqual(len(response.json['data']['classes'][0]['lesson']), 4)
+        self.assertEqual(len(response.json['data']), 4)
 

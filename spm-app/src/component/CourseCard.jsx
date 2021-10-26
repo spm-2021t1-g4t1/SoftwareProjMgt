@@ -8,11 +8,11 @@ const CourseCard = (prop) => {
 
     const courseSchema = prop.courseSchema
 
-    const [stateChange, setStateChange] = useState(false)
+    const [stateChange, setStateChange] = useState(0)
     const [inQueue, setInQueue] = useState([])
 
     function classChange() {
-        setStateChange(true)
+        setStateChange(stateChange+1)
     }
 
     const endpoint = `http://127.0.0.1:5000/queue/darrelwilde/${courseSchema.course_id}`
@@ -24,7 +24,7 @@ const CourseCard = (prop) => {
         // console.log(result)
         setInQueue(result)
         })
-    },[stateChange,endpoint])
+    },[stateChange])
         
     
 
