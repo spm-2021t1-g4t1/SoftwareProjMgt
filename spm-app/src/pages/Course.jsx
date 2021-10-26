@@ -12,6 +12,7 @@ const Course = () => {
     const courseid = useParams().courseid
     const classno = useParams().classno
     const staffusername = 'darrelwilde'
+
     //useState
     const [courseDetailArr, setCourseDetailArr] = useState({
         course_code: null,
@@ -81,7 +82,7 @@ const Course = () => {
                         <CourseInfo data={courseDetailArr} />
                     </Route>
                     <Route path='/course/:courseid/:classno/curriculum' exact>
-                        <Section data={lessonDetailArr} />
+                        <Section/>
                     </Route>
                     <Route path='/course/:courseid/:classno/forum' exact>
                         <CourseInfo data={courseDetailArr} />
