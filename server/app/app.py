@@ -265,7 +265,7 @@ def get_the_options(quiz_id, ques_id):
 def addQuestion(quiz_id):
     # return json.loads(str(Question.get_courseQues(qid)))
     questions = Question.get_courseQues(quiz_id)
-    print(len(questions["data"]))
+    # print(len(questions["data"]))
     data = request.get_json()
     if data["ques_id"] == len(questions["data"]) + 1:
         Question.add_courseQuestion(
