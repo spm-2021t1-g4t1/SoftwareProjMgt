@@ -8,6 +8,7 @@ class course(db.Model):
     description = db.Column(db.String(255))
     learning_objective = db.relationship('learningObjective', backref='course', lazy = True)
     classes = db.relationship('classes', backref='course', lazy = True)
+    prerequisite_courses = db.relationship('course_prerequisite', backref='course', lazy = True)
 
     def view_all_json(self):
         learn_obj = []
@@ -18,12 +19,17 @@ class course(db.Model):
         for one_class in self.classes:
             all_classes.append(one_class.viewjson())
 
+        prerequisite_courses = []
+        for prereq_course in self.prerequisite_courses:
+            prerequisite_courses.append(prereq_course.json())
+
         return {
             "course_id": self.course_id,
             "course_name": self.course_name,
             "description": self.description,
             "learning_objective": learn_obj,
-            "classes": all_classes
+            "classes": all_classes,
+            "prerequisite_courses": prerequisite_courses
         }
     
     def json(self):
@@ -58,6 +64,17 @@ class learningObjective(db.Model):
     def viewstring(self):
         return self.learning_objective
 
+#-----------------------------------------------------------------------------------------------------------------------#
 
+class course_prerequisite(db.Model):
+    __tablename__ = "course_prerequisite"
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
+    prerequisite_course_id = db.Column(db.Integer, primary_key=True)
+
+    def json(self):
+        return {
+            "course_id": self.course_id,
+            "prerequisite_course_id": self.prerequisite_course_id
+        }
 
 
