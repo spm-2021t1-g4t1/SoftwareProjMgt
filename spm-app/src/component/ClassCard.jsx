@@ -2,17 +2,15 @@ import React , {useEffect, useState} from 'react';
 import { Modal, Container, Button } from 'react-bootstrap';
 
 const ClassCard = (prop) => {
-    // console.log(prop.inQueue.inQueue)
-   
-   
-   
-   
    
     // Variable
     const classSchema = prop.classSchema
     const link = `course/${classSchema.course_id}/${classSchema.class_no}/overview`
     const isCatalog = window.location.pathname.includes('catalog')
     const [modalShow, setModalShow] = React.useState(false);
+    const [classNum, setClassNum] = useState(0)
+    const [isEligible, setIsEligible] = useState(true)
+
 
 
     function enrolClass() {
@@ -32,6 +30,7 @@ const ClassCard = (prop) => {
 
         })
     }
+
     function withdrawClass() {
         const endpoint = `http://127.0.0.1:5000/queue/withdraw`
         const data = {
@@ -54,23 +53,37 @@ const ClassCard = (prop) => {
         })
     }
 
+        useEffect(() => {
+
+            if (isCatalog) {
+
+                const endpoint = `http://127.0.0.1:5000/enrolment/${classSchema.course_id}/${classSchema.class_no}/length`
+                fetch(endpoint)
+                .then((res) => res.json()) 
+                .then((result) => {
+                // console.log(result)
+                    setClassNum(result.message)
+        
+                })
+                if (prop.hasPrereq) {
+                    const endpoint1 = `http://127.0.0.1:5000/eligiblity/${classSchema.course_id}/darrelwilde`
+                    fetch(endpoint1)
+                    .then((res) => res.json()) 
+                    .then((result) => {
+                    // console.log(classSchema.course_id)
+                    // console.log(result.eligiblity)
+                    setIsEligible(result.eligiblity)
+                    })
+                }
 
 
+            }
+
+
+
+        },[])
     
-    const [classNum, setClassNum] = useState(0)
 
-    useEffect(() => {
-
-        const endpoint = `http://127.0.0.1:5000/enrolment/${classSchema.course_id}/${classSchema.class_no}/length`
-        fetch(endpoint)
-        .then((res) => res.json()) 
-        .then((result) => {
-        // console.log(result)
-            setClassNum(result.message)
-
-        })
-
-    })
 
     return(
         <div className="border border-info container-fluid container-bg">
@@ -91,9 +104,11 @@ const ClassCard = (prop) => {
                 </Container>
                 <Container className = 'my-auto'>
                     {isCatalog 
-                    ? prop.inQueue.inQueue 
-                        ? (<p className = 'text-danger' >Awaiting Confirmation </p>)
-                        : (<Button variant="primary"  onClick = {enrolClass}>Enroll</Button>)
+                    ? isEligible
+                        ? prop.inQueue.inQueue 
+                            ? (<p className = 'text-danger' >Awaiting Confirmation </p>)
+                            : (<Button variant="primary"  onClick = {enrolClass}>Self Enroll</Button>)
+                        : (<Button variant="secondary" disabled>Not Eligible</Button>)
                     : (<a href = {link}> <Button variant="primary">Enter Course</Button></a>)}
                 </Container>
             </div>

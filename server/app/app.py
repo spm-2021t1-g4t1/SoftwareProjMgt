@@ -71,6 +71,21 @@ def getStaff_Enrollment(staff_username):
 
     return classEnrolments
 
+############# Class Completion ######################################
+
+@app.route('/eligiblity/<int:course_id>/<string:staff_username>')
+def getStaffCompletion(course_id,staff_username):
+    prereqCourses = course.get_prerequisite_courses(course_id)['data']
+    completeObj = course_completion.getStaffCompletion(staff_username)
+    # print(completeObj['data'])
+    for completeCourse in completeObj['data'].values():
+        if completeCourse['course_id'] in prereqCourses:
+            prereqCourses.remove(completeCourse['course_id'])
+    
+    if len(prereqCourses) == 0:
+        return {"eligiblity": True}
+    return {"eligiblity": False}
+
 
 ############# Catalog ######################################
 
@@ -78,8 +93,12 @@ def getStaff_Enrollment(staff_username):
 def get_all_course(staff_username):
     course_list = []
     alreadyEnrolledCourses = classEnrolment.getStaffEnrollment(staff_username)
+    alreadyCompletedCourses = course_completion.getStaffCompletion(staff_username)
     for courseobj in alreadyEnrolledCourses["data"].values():
         course_list.append(courseobj["course_id"])
+    for courseobj in alreadyCompletedCourses["data"].values():
+        course_list.append(courseobj["course_id"])
+    # print(course_list)
     return course.get_listOfCourse(course_list)
 
 
