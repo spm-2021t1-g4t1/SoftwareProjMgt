@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 
 
-import SectionContainer from '../component/SectionContainer'
+import SectionContainer from '../../component/SectionContainer'
 
 
 

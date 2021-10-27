@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom"
 import { BrowserRouter, Route } from "react-router-dom"
 
 import CourseInfo from './CourseInfo'
-import CourseSidebar from '../component/CourseSidebar'
-import CourseDetail from '../component/CourseDetail'
+import CourseSidebar from '../../component/CourseSidebar'
+import CourseDetail from '../../component/CourseDetail'
 import Section from './Section'
 
 const Course = () => {

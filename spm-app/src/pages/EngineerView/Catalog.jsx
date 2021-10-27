@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 
 // import "../App.css";
 
-import CourseCard from '../component/CourseCard';
-import SearchBox from '../component/SearchBox';
+import CourseCard from '../../component/CourseCard';
+import SearchBox from '../../component/SearchBox';
 
 
 const Catalog = () => {

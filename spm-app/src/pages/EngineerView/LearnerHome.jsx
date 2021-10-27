@@ -1,18 +1,18 @@
-import MainSidebar from '../component/MainSidebar.jsx';
-import Home from './Home.jsx';
+import MainSidebar from '../../component/MainSidebar.jsx';
+import Home from '../Home.jsx';
 import CourseList from './CourseList.jsx';
-import Account from './Account.jsx';
+import Account from '../Account.jsx';
 import Course from './Course.jsx';
 import Catalog from './Catalog.jsx';
-import Header from '../component/Header.jsx';
-import IndividualQuiz from '../component/IndividualQuiz.jsx';
+import Header from '../../component/Header.jsx';
+import IndividualQuiz from '../../component/IndividualQuiz.jsx';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
 import { CSSTransition } from 'react-transition-group' 
 
 
-import '../App.css';
+import '../../App.css';
 
 function LearnerHome({handleLogout}) {
 
