@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
-import CourseCard from '../component/CourseCard';
-import SearchBox from '../component/SearchBox';
+import CourseCard from '../../component/CourseCard';
+import SearchBox from '../../component/SearchBox';
 
 
 

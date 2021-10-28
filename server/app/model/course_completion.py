@@ -21,3 +21,10 @@ class course_completion(db.Model):
         except:
             return {"code": 400, "message": "Failed to mark course as complete"}
 
+    @classmethod
+    def getStaffCompletion(cls, staff_username):
+        ClassListDAO = cls.query.filter_by(staff_username = staff_username).all()
+        classList = {'data':{}}
+        for index, classes in enumerate(ClassListDAO):
+            classList['data'][index] = classes.json()
+        return classList

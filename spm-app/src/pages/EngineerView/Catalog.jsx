@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 
 // import "../App.css";
 
-import CourseCard from '../component/CourseCard';
-import SearchBox from '../component/SearchBox';
+import CourseCard from '../../component/CourseCard';
+import SearchBox from '../../component/SearchBox';
 
 
 const Catalog = () => {
@@ -22,23 +22,23 @@ const Catalog = () => {
         }
     })
         .then(res => {
-            console.log(res.data.data)
+            // console.log(res.data.data)
             setCourses(res.data.data)
             setcourse_backup(res.data.data)
         })}, [])
     
         
-        useEffect(() => {
+    useEffect(() => {
         const courselist = []
         course_backup.filter((val) =>{
             if (searchTerm === "") {
                 // setCourses(val)
                 courselist.push(val)
-                console.log(val)
+                // console.log(val)
 
             } else if (val.course_name.toLowerCase().includes(searchTerm.toLowerCase())) {
                 courselist.push(val)
-                console.log(val)
+                // console.log(val)
                 // setCourses([val])
             }
             return null
