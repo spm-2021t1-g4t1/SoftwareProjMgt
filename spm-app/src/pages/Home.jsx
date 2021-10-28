@@ -5,7 +5,6 @@ import ViewEngineerDetails from '../component/EngineerDetails';
 const Home = () => {
     return (
         <div>
-            <p>Home Page</p>
             <ViewEngineerDetails />
         </div>
     )

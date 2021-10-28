@@ -26,7 +26,7 @@ const Header = (prop) => {
                         <FontAwesomeIcon icon={faBell} />
                     </Navbar.Text>
                     <Navbar.Text>
-                        Signed in as: <a href="#login">David Wilde</a>
+                        Signed in as: <a href="#login">{JSON.parse(localStorage.getItem('user')).staff_username}</a>
                         <button onClick={prop.handleLogout}>Logout</button>
                     </Navbar.Text>
                 </Navbar.Collapse>

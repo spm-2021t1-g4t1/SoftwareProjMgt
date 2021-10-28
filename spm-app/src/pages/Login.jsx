@@ -13,6 +13,7 @@ const Login = ({setUser}) => {
         
         try {
             const endpoint = "http://127.0.0.1:5000/"
+            
         // validate username
         axios.get(endpoint + `login/${username}`)
             .then((response) => {
@@ -46,7 +47,7 @@ const Login = ({setUser}) => {
             </form>
             <h2>Dev reference</h2>
             <p>Admin account: hananhyde</p>
-            <p>Learner account: darrylwilde</p>
+            <p>Learner account: darrelwilde</p>
             <p>Trainer account: jackma</p>
         </div>
     );

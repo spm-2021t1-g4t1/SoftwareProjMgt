@@ -43,7 +43,7 @@ const CourseCard = (prop) => {
 
     return(
         <div className= 'my-4' > 
-            <div className="border border-info container-fluid container-bg">    
+            <div class Name="border border-info container-fluid container-bg">    
                 <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}
                     {hasPrerequisites 
                     ?   <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
