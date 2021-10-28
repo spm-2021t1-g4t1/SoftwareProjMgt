@@ -89,7 +89,7 @@ class course_prerequisite(db.Model):
 
 
     def json(self):
-        print()
+        # print()
         return {
             "course_id": self.course_id,
             "prerequisite_course_id": self.prerequisite_course_id,

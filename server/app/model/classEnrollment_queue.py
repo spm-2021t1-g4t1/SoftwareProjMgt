@@ -4,9 +4,9 @@ class classEnrolmentQueue(db.Model):
     __tablename__ = 'classenrollment_queue'
 
     staff_username = db.Column(db.String(255), db.ForeignKey('staff.staff_username') , primary_key=True)
-    course_id = db.db.ForeignKey('course.course_id', primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
     class_no = db.Column(db.Integer ,primary_key=True)
-    course = db.relationship('Course', backref='classenrollment_queue', lazy = True)
+    course = db.relationship('course', backref='classenrollment_queue', lazy = True)
 
     __table_args__ = (
         db.ForeignKeyConstraint(

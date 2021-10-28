@@ -100,7 +100,7 @@ class TestApp(flask_testing.TestCase):
 class TestGetLessons(TestApp):
     def test_get_lessons_0_lessons_completed_0_quizzes_passed(self):
         response = self.client.get(f"/lesson/2/1/darrelwilde")
-        print(response.json['data'])
+        # print(response.json['data'])
         self.assertEqual(len(response.json['data']), 1)
 
     def test_get_lessons_1_lesson_completed_0_quizzes_passed(self):
