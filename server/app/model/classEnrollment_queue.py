@@ -7,7 +7,7 @@ class classEnrolmentQueue(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
     class_no = db.Column(db.Integer ,primary_key=True)
     course = db.relationship('course', backref='classenrollment_queue', lazy = True)
-
+    staff = db.relationship('staff', backref='classenrollment_queue', lazy = True)
     __table_args__ = (
         db.ForeignKeyConstraint(
             ['course_id', 'class_no'], ["lesson.course_id",'lesson.class_no']
@@ -22,7 +22,13 @@ class classEnrolmentQueue(db.Model):
         }
 
     def approvejson(self):
-        print(self.course)
+        return {
+            'course_id': self.course_id,
+            'class_no': self.class_no,
+            'course_name': self.course.course_name,
+            'staff_name': self.staff.staff_name,
+            'staff_username': self.staff.staff_username
+        }
 
     @classmethod
     def getStaffQueue(cls, staff_username, course_id):
@@ -35,8 +41,17 @@ class classEnrolmentQueue(db.Model):
         return data
 
     @classmethod
-    def getStaffRequest(cls, staff_username, course_id):
-        StaffRequest = cls.query.filter_by(staff_username = staff_username, course_id = course_id).first()
-        StaffRequest.approvejson()
+    def getStaffRequest(cls):
+        SRobj = {'data': []}
+        StaffRequests = cls.query.all()
+        for SR in StaffRequests:
+            SRobj['data'].append(SR.approvejson())
+        return SRobj
 
-        return "LOL"
+    @classmethod
+    def removeQueue(cls, staff_username, course_id ):
+        StaffQueue = cls.query.filter_by(staff_username = staff_username, course_id = course_id).first()
+        print(StaffQueue)
+        db.session.delete(StaffQueue)
+        db.session.commit()
+        return {"data": "Removed"}

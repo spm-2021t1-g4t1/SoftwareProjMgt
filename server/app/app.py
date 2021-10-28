@@ -73,6 +73,13 @@ def getStaff_Enrollment(staff_username):
 
     return classEnrolments
 
+@app.route("/enrolment/approve", methods=["POST"])
+def ApproveEnrolment():
+    data = request.json
+    classEnrolmentQueue.removeQueue(data['staff_username'], data['course_id'])
+    classEnrolment.enrollToClass(data['staff_username'], data['course_id'], data['class_no'])
+    return data
+
 ############# Class Completion ######################################
 
 @app.route('/eligiblity/<int:course_id>/<string:staff_username>')
@@ -138,8 +145,9 @@ def withdraw_classQueue():
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 # New function (probably no test yet)
-# @app.route('/queue/getList/<string:staff_username>/<int:course_id>/')
-# def get_enrollmentRequest():
+@app.route('/queue/getList/')
+def get_enrollmentRequest():
+    return classEnrolmentQueue.getStaffRequest()
     
 ############# Course ######################################
 

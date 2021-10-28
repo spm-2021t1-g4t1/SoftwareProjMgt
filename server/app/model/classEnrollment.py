@@ -37,3 +37,11 @@ class classEnrolment(db.Model):
         for index, classes in enumerate(ClassListDAO):
             classList['data'][index] = classes.json()
         return classList
+
+    @classmethod
+    def enrollToClass(cls, staff_username, course_id, class_no):
+        print('enrol')
+        enrollObj = classEnrolment( staff_username = staff_username, class_no = class_no, course_id = course_id)
+        db.session.add(enrollObj)
+        db.session.commit()
+        return {"data": "Added"}

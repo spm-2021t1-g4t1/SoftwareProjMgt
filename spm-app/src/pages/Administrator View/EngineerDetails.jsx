@@ -4,9 +4,7 @@ import { Button, Table, Row, Col} from 'react-bootstrap';
 import { BiMessageRoundedDots} from "react-icons/bi";
 import { FaEdit, FaTrash} from "react-icons/fa";
 
-
-import "../App.css";
-import SearchBox from './SearchBox';
+import SearchBox from '../../component/SearchBox';
 
 
 function ViewEngineerDetails() {
