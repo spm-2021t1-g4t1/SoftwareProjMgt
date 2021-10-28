@@ -189,7 +189,7 @@ class Test_API(TestApp):
             'description': 'Test Description 1', 
             'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
             }
-        print(res.json["data"])
+        # print(res.json["data"])
         self.assertEqual(res.json["data"], expected)
 
 

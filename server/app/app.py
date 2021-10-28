@@ -29,11 +29,13 @@ def get_staff_by_username(username):
 
 ############## Staff ###############################################
 
-
 @app.route("/staff")
 def list_of_staff():
     return staff.get_staffList()
 
+@app.route('/staff/engineers')
+def list_of_engineers():
+    return staff.get_engineerList()
 
 ############# Class Enrolment ######################################
 
@@ -135,6 +137,10 @@ def withdraw_classQueue():
         except:
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
+# New function (probably no test yet)
+# @app.route('/queue/getList/<string:staff_username>/<int:course_id>/')
+# def get_enrollmentRequest():
+    
 ############# Course ######################################
 
 

@@ -10,7 +10,15 @@
 .pro-sidebar{
   min-width:auto;
   width: auto;
+  margin-top: 3rem;
+  height: -webkit-fill-available
   /* position: fixed; */
+}
+
+.admin-table{
+    border-collapse: separate;
+    border-spacing: 0rem 0.5rem;
+  
 }
 
 main{

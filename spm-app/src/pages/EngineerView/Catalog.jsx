@@ -18,7 +18,6 @@ const Catalog = () => {
         headers:
         {
             'content-type': 'application/json',
-            'x-hasura-admin-secret': 'VzdZJkGQnpf3LdOqSq19hpvM6cCgL6OuwC0YYBxO72TYyLUFpsyBAp5uDC6kg5pQ'
         }
     })
         .then(res => {
