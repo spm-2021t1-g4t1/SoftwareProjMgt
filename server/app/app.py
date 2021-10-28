@@ -180,6 +180,12 @@ def get_unassigned_lessons():
     unsorted = classes.get_unassignedClass()
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
 
+@app.route('/class/assign', methods=['POST'])
+def assign_trainer():
+    data = request.get_json()
+    response = classes.assignTrainer(data['course_id'], data['class_no'], data['staff_username'])
+    return response
+
 ############# Lesson ######################################
  
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
