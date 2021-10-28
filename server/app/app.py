@@ -173,14 +173,17 @@ def get_specificCourseDetail(course_id, class_no):
     }
     return ClassDetail
 
+############# Classes ######################################
+
+@app.route('/class/get_unassignedClass')
+def get_unassigned_lessons():
+    unsorted = classes.get_unassignedClass()
+    return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
+
 ############# Lesson ######################################
  
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):
-    # lessonDetail = {"data": []}
-
-    # Courses = course.get_specificCourse(course_id)["data"]
-    # classObj = classes.get_specificClassDetail(course_id, class_no)["data"]
 
     all_lessons = lesson.get_allLessonByClass(course_id, class_no)["data"]
     LessonDetail = {"data": []}
@@ -203,16 +206,6 @@ def get_lessons(course_id, class_no, staff_username):
                     if attempt["lesson_no"] == lesson_no:
                         if attempt["quiz_score"] >= 80:
                             LessonDetail['data'].append(all_lessons[index+1])
-                        
-
-    # classObj["lesson"] = LessonDetail["data"]
-    # ClassDetail["data"] = {
-    #     "course_id": Courses["course_id"],
-    #     "course_name": Courses["course_name"],
-    #     "description": Courses["description"],
-    #     "learning_objective": Courses["learning_objective"],
-    #     "classes": [classObj],
-    # }
 
     return LessonDetail
 

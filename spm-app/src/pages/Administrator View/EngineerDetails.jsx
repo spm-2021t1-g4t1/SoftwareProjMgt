@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Table, Row, Col} from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import { BiMessageRoundedDots} from "react-icons/bi";
 import { FaEdit, FaTrash} from "react-icons/fa";
 
