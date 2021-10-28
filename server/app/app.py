@@ -101,14 +101,13 @@ def get_all_course(staff_username):
     # print(course_list)
     return course.get_listOfCourse(course_list)
 
-
 ############# Queue ######################################
 
 @app.route("/queue/<string:staff_username>/<int:course_id>", methods=["POST", "GET"])
 def get_classQueue(staff_username, course_id):
     if request.method == "GET":
         return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
-    elif request.method == "POST":
+    if request.method == "POST":
         try:
             class_no = request.json["class_no"]
             CE_Queue = classEnrolmentQueue(
@@ -132,9 +131,9 @@ def withdraw_classQueue():
             db.session.delete(CE_Queue)
             db.session.commit()
 
-            return jsonify({"code": 200, "message": "Withdraw succeed"}), 200
+            return jsonify({"code": 200, "message": "Enrollment succeed"}), 200
         except:
-            return jsonify({"code": 400, "message": "Withdraw failed"}), 400
+            return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 ############# Course ######################################
 
