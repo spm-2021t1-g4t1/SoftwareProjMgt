@@ -1,7 +1,8 @@
-import MainSidebarAdmin from '../component/MainSidebarAdmin.jsx';
-import Home from './Home.jsx';
-import Header from '../component/Header.jsx';
-import '../App.css';
+import MainSidebarAdmin from '../../component/MainSidebarAdmin.jsx';
+import EngineerDetails from './EngineerDetails.jsx';
+import Header from '../../component/Header.jsx';
+import ApprovalList from './ApprovalList.jsx';
+// import '../App.css';
 
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route } from "react-router-dom"
@@ -37,7 +38,9 @@ const AdminHome = ({handleLogout}) => {
                 timeout={{ enter: 1000, exit: 1000 }}
                 >
               <main className = 'App-body'>
-                <Route path = '/Administrator/EngineerList' component = {Home} exact/>
+                {/* <Route path= "/Administrator/Dashboard" compents={Home} exact /> */}
+                <Route path = '/Administrator/EngineerList' component = {EngineerDetails} exact/>
+                <Route path = '/Administrator/Enrollment' component = {ApprovalList} exact />
               </main>
             </CSSTransition>
         </div>
