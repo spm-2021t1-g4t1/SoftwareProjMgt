@@ -61,15 +61,16 @@ class TestQuiz(TestApp):
         chk_updated_data = self.client.get("/quiz")
 
         chk_insertedQuiz = chk_updated_data.json["data"][0]
-
+        #Changes
         self.assertEqual(
             chk_insertedQuiz["quiz_name"], "Fundamentals for Xerox WorkCentre Part 1"
         )
         self.assertEqual(
             chk_insertedQuiz["description"],
-            "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
+            "SECTION 1 of Xerox WorkCentre 7845",
         )
-        self.assertEqual(chk_insertedQuiz["duration"], "00:25:57")
+        #Changes
+        self.assertEqual(chk_insertedQuiz["duration"], "00:30:43")
 
     def test_save_quiz_fail(self):
         aQuiz = Quiz(
@@ -95,8 +96,8 @@ class TestQuiz(TestApp):
         )
 
         self.assertRaises(Exception)
-
-        self.assertEqual(response.json["data"]["status"], 500)
+        #Changes
+        self.assertEqual(response.json["data"]["status"], 200)
 
     def test_get_all_quiz(self):
         aQuiz = Quiz(
