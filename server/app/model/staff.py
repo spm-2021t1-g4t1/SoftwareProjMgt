@@ -18,13 +18,6 @@ class staff(db.Model):
             "current_designation": self.current_designation
         }
 
-    def publicjson(self):
-        return {
-            "staff_name": self.staff_name,
-            "role": self.role,
-            "department": self.department,
-            "current_designation": self.current_designation
-        }
 
     @classmethod
     def get_staffList(cls):
@@ -45,4 +38,4 @@ class staff(db.Model):
     @classmethod
     def get_engineerList(cls):
         staffDAO = cls.query.filter(cls.role.notin_(['Administrator']))
-        return {'data': [one_staff.publicjson() for one_staff in staffDAO]}
+        return {'data': [one_staff.viewjson() for one_staff in staffDAO]}

@@ -145,7 +145,7 @@ def withdraw_classQueue():
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 # New function (probably no test yet)
-@app.route('/queue/getList/')
+@app.route('/queue/getList')
 def get_enrollmentRequest():
     return classEnrolmentQueue.getStaffRequest()
     
