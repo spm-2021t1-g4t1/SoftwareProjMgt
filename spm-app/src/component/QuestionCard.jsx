@@ -1,15 +1,14 @@
 import { React, useEffect, useState } from 'react'
-import { Button, Stack, Card , Form, Row, Col} from 'react-bootstrap';
+import { Button, Stack, Card , Form, Row, Col, Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faArrowDown, faArrowUp, faTrash, faCopy, faSave, faPlus, faUndo } from '@fortawesome/free-solid-svg-icons';
 
 
 const QuestionCard = (props) => {
     const [isEditting, setisEditting] = useState(false)
-    // const [is_right, setis_Right] = useState(false)
     const [optionsList, setoptionsList] = useState([])
     const [questionName, setquestionName] = useState(props.quizCard.question)
-    // const [optionThing, setoptionThing] = useState()
+    const [show, setShow] = useState(false);
 
     useEffect(()=>{
         fetch("http://127.0.0.1:5000/ques_opt/" + props.quizCard.qid + "/" + props.quizCard.ques_id).then(response => response.json()
@@ -64,14 +63,16 @@ const QuestionCard = (props) => {
             setoptionsList([...optionsList, {opts_id: no, ques_id: props.quizCard.ques_id, quiz_id: props.quizCard.qid, is_right: 0 }])
         }
     }
-
-
+    const handleClose = () => {
+        setShow(false)
+    };
     const removeQues = (quiz_id, ques_id) => {
         try {
             fetch("http://127.0.0.1:5000/ques_delete/" + quiz_id + "/" + ques_id).then(response => response.json()
             .then(data => {
                 // console.log(data.data)
                 console.log(data)
+                handleClose()
                 window.location.reload(false);
             })).catch(err => console.log(err))
         }
@@ -79,7 +80,8 @@ const QuestionCard = (props) => {
             console.log(err) 
         }
     }
-
+    const handleShow = () => {setShow(true)};
+    
     const RemoveOpt = (OptID) => {
         console.log(OptID)
         try {
@@ -88,8 +90,7 @@ const QuestionCard = (props) => {
             setoptionsList(items);
             fetch("http://127.0.0.1:5000/ques_opt_delete/" + props.quizCard.qid + "/" + props.quizCard.ques_id + "/" + OptID).then(response => response.json()
             .then(data => {
-                // console.log(data.data)
-                console.log(data)
+                handleClose()
             })).catch(err => console.log(err))
         }
         catch(err){
@@ -98,7 +99,6 @@ const QuestionCard = (props) => {
     }
 
     const SaveDetails = () => {
-        // console.log(props.quizCard.qid, props.quizCard.ques_id)
         const data = {
                 question: questionName,
                 optionsList: optionsList 
@@ -111,7 +111,10 @@ const QuestionCard = (props) => {
             };
         fetch(`http://127.0.0.1:5000/ques_opt_update/${props.quizCard.qid}/${props.quizCard.ques_id}`, requestOptions)
             .then(response => response.json())
-            .then(toggleEdit())
+            .then(() => {
+                toggleEdit()
+                window.location.reload(false);
+            })
             .catch(err => console.log(err))
             
             
@@ -137,7 +140,22 @@ const QuestionCard = (props) => {
                             <Form.Control onChange={ e => handleOpt(e.target.value, opt.opts_id)} as="textarea" rows={1} value={opt.qopt} />
                         </Col>
                         <Col md="2">
-                            <Button onClick={() => RemoveOpt(opt.opts_id)} type="button" variant="danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                            <Button onClick={() => handleShow()} type="button" variant="danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                            <Modal show={show} onHide={handleClose} animation={false}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Modal heading</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Are you sure you want to remove this Option?</Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="danger" onClick={() => RemoveOpt(opt.opts_id)}>
+                                    Confirm
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
+                            
                         </Col>
                     </Form.Group>
                 )
@@ -174,7 +192,22 @@ const QuestionCard = (props) => {
                 <Button type="button" onClick={toggleEdit} variant="primary"><FontAwesomeIcon icon={faEdit}/></Button>
                 <Button type="button" variant="primary"><FontAwesomeIcon icon={faArrowUp}/></Button>
                 <Button type="button" variant="primary"><FontAwesomeIcon icon={faArrowDown}/></Button>
-                <Button type="button" onClick={() => removeQues(props.quizCard.qid,props.quizCard.ques_id)} variant="danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                <Button type="button" onClick={() => handleShow()} variant="danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                <Modal show={show} onHide={handleClose} animation={false}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to remove this question? <br></br>
+                    {props.quizCard.question}</Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="danger" onClick={() => removeQues(props.quizCard.qid,props.quizCard.ques_id)}>
+                        Confirm
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
                 <Button type="button" variant="secondary"><FontAwesomeIcon icon={faCopy}/></Button>
             </Stack>
             </Card.Body>

@@ -63,6 +63,7 @@ class lesson_materials(db.Model):
             'course_material_title':self.course_material_title,
             'link':self.link
         }
+
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson_completion(db.Model):
     __tablename__ = 'lesson_completion'

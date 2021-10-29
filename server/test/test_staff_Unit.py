@@ -66,22 +66,5 @@ class testStaff(TestApp):
         self.assertEqual(insertedStaff, 'darrelwilde')
 
 
-        
-
-
-# class testIntegrate(TestApp):
-#     def test_to_dict(self):
-#         c1 = classEnrolmentQueue(staff_username = 'stevejob',course_id = '3', class_no = '2')
-#         db.session.add(c1)
-#         db.session.commit()
-
-#         response = self.client.get('/queue/stevejob/3')
-#         print(response.json)
-
-# class testUni(unittest.TestCase):
-#     def test_sample2(self):
-#         c1 = classEnrolmentQueue(staff_username = 'stevejob',course_id = '3', class_no = '2')
-#         print(c1.json())
-
 if __name__ == "__main__":
     unittest.main()

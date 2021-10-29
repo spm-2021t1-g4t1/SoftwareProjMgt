@@ -29,11 +29,13 @@ def get_staff_by_username(username):
 
 ############## Staff ###############################################
 
-
 @app.route("/staff")
 def list_of_staff():
     return staff.get_staffList()
 
+@app.route('/staff/engineers')
+def list_of_engineers():
+    return staff.get_engineerList()
 
 ############# Class Enrolment ######################################
 
@@ -71,6 +73,28 @@ def getStaff_Enrollment(staff_username):
 
     return classEnrolments
 
+@app.route("/enrolment/approve", methods=["POST"])
+def ApproveEnrolment():
+    data = request.json
+    classEnrolmentQueue.removeQueue(data['staff_username'], data['course_id'])
+    classEnrolment.enrollToClass(data['staff_username'], data['course_id'], data['class_no'])
+    return data
+
+############# Class Completion ######################################
+
+@app.route('/eligiblity/<int:course_id>/<string:staff_username>')
+def getStaffCompletion(course_id,staff_username):
+    prereqCourses = course.get_prerequisite_courses(course_id)['data']
+    completeObj = course_completion.getStaffCompletion(staff_username)
+    # print(completeObj['data'])
+    for completeCourse in completeObj['data'].values():
+        if completeCourse['course_id'] in prereqCourses:
+            prereqCourses.remove(completeCourse['course_id'])
+    
+    if len(prereqCourses) == 0:
+        return {"eligiblity": True}
+    return {"eligiblity": False}
+
 
 ############# Catalog ######################################
 
@@ -78,10 +102,13 @@ def getStaff_Enrollment(staff_username):
 def get_all_course(staff_username):
     course_list = []
     alreadyEnrolledCourses = classEnrolment.getStaffEnrollment(staff_username)
+    alreadyCompletedCourses = course_completion.getStaffCompletion(staff_username)
     for courseobj in alreadyEnrolledCourses["data"].values():
         course_list.append(courseobj["course_id"])
+    for courseobj in alreadyCompletedCourses["data"].values():
+        course_list.append(courseobj["course_id"])
+    # print(course_list)
     return course.get_listOfCourse(course_list)
-
 
 ############# Queue ######################################
 
@@ -89,7 +116,7 @@ def get_all_course(staff_username):
 def get_classQueue(staff_username, course_id):
     if request.method == "GET":
         return classEnrolmentQueue.getStaffQueue(staff_username, course_id)
-    elif request.method == "POST":
+    if request.method == "POST":
         try:
             class_no = request.json["class_no"]
             CE_Queue = classEnrolmentQueue(
@@ -117,6 +144,11 @@ def withdraw_classQueue():
         except:
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
+# New function (probably no test yet)
+@app.route('/queue/getList')
+def get_enrollmentRequest():
+    return classEnrolmentQueue.getStaffRequest()
+    
 ############# Course ######################################
 
 
@@ -130,7 +162,7 @@ def get_specificCourseDetail(course_id, class_no):
     ClassDetail = {"data": []}
 
     Courses = course.get_specificCourse(course_id)["data"]
-    classObj = classes.get_specificClassDetail(course_id, class_no)["data"]
+    classObj = classes.get_specificClass(course_id, class_no)["data"]
 
     ClassDetail["data"] = {
         "course_id": Courses["course_id"],
@@ -141,14 +173,23 @@ def get_specificCourseDetail(course_id, class_no):
     }
     return ClassDetail
 
+############# Classes ######################################
+
+@app.route('/class/get_unassignedClass')
+def get_unassigned_lessons():
+    unsorted = classes.get_unassignedClass()
+    return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
+
+@app.route('/class/assign', methods=['POST'])
+def assign_trainer():
+    data = request.get_json()
+    response = classes.assignTrainer(data['course_id'], data['class_no'], data['staff_username'])
+    return response
+
 ############# Lesson ######################################
  
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):
-    ClassDetail = {"data": []}
-
-    Courses = course.get_specificCourse(course_id)["data"]
-    classObj = classes.get_specificClassDetail(course_id, class_no)["data"]
 
     all_lessons = lesson.get_allLessonByClass(course_id, class_no)["data"]
     LessonDetail = {"data": []}
@@ -171,30 +212,26 @@ def get_lessons(course_id, class_no, staff_username):
                     if attempt["lesson_no"] == lesson_no:
                         if attempt["quiz_score"] >= 80:
                             LessonDetail['data'].append(all_lessons[index+1])
-                        
 
-    classObj["lesson"] = LessonDetail["data"]
-    ClassDetail["data"] = {
-        "course_id": Courses["course_id"],
-        "course_name": Courses["course_name"],
-        "description": Courses["description"],
-        "learning_objective": Courses["learning_objective"],
-        "classes": [classObj],
-    }
+    return LessonDetail
 
-    return ClassDetail
-
-@app.route("/mark_lesson_as_complete", methods=["POST"])
+@app.route("/lesson_completion/mark_complete", methods=["POST"])
 def mark_lesson_as_complete():
     class_info = request.get_json()
-    course_id = class_info['course_id']
-    class_no = class_info['class_no']
-    lesson_no = class_info['lesson_no']
-    staff_username = class_info['staff_username']
-    lesson_completion_object = lesson_completion(course_id=course_id, class_no=class_no, lesson_no=lesson_no, staff_username=staff_username)
+    lesson_completion_object = lesson_completion(
+        course_id=class_info['course_id'], 
+        class_no=class_info['class_no'], 
+        lesson_no=class_info['lesson_no'], 
+        staff_username=class_info['staff_username'])
+
     result = lesson_completion.mark_lesson_completed(lesson_completion_object)
+    
     return result
 
+@app.route("/lesson_completion/<int:course_id>/<int:class_no>/<string:staff_username>", methods=["GET"])
+def get_lessonCompletion(course_id,class_no,staff_username):
+    lessonCompletion = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)
+    return lessonCompletion
 
 
 ############# Quiz ######################################
@@ -318,12 +355,9 @@ def delete_questions(quiz_id, ques_id):
 def save_quiz(quiz_id):
     try:
         data = request.get_json()
-        Quiz.save_quiz(
+        Quiz.save_quizName(
             quiz_id,
-            data["quiz_name"],
-            data["description"],
-            data["uploader"],
-            data["duration"],
+            data["quiz_name"]
         )
         return {"data": {"status": 200, "message": "Saved Quiz successful"}}
     except:

@@ -18,6 +18,7 @@ class staff(db.Model):
             "current_designation": self.current_designation
         }
 
+
     @classmethod
     def get_staffList(cls):
         staffList = cls.query.all()
@@ -34,4 +35,7 @@ class staff(db.Model):
         }
         return {'data': login_staff}
 
-
+    @classmethod
+    def get_engineerList(cls):
+        staffDAO = cls.query.filter(cls.role.notin_(['Administrator']))
+        return {'data': [one_staff.viewjson() for one_staff in staffDAO]}

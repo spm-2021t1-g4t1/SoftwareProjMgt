@@ -97,7 +97,8 @@ class TestCourse_DB(TestApp):
             'course_id': 3, 
             'course_name': 'Test Course 3', 
             'description': 'Test Description 3', 
-            'learning_objective': ['Learning Objective 3', 'Learning Objective 4']
+            'learning_objective': ['Learning Objective 3', 'Learning Objective 4'],
+            'prerequisite_courses': []
             }
         self.assertEqual(c.json(), expected)
 
@@ -143,7 +144,8 @@ class TestCourse_DB(TestApp):
                 {'course_id': 1, 
                 'course_name': 'Test Course 1', 
                 'description': 'Test Description 1', 
-                'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
+                'learning_objective': ['Learning Objective 1', 'Learning Objective 2'],
+                'prerequisite_courses': []
                 }
             }
         self.assertEqual(result, expected)
@@ -160,7 +162,8 @@ class Test_API(TestApp):
             'course_id': 1, 
             'course_name': 'Test Course 1', 
             'description': 'Test Description 1', 
-            'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
+            'learning_objective': ['Learning Objective 1', 'Learning Objective 2'],
+            'prerequisite_courses': []
         }
         self.assertEqual(res.json['data'], expected)
     
@@ -177,7 +180,6 @@ class Test_API(TestApp):
                 'course_id': 1, 
                 'end_date': '2021-09-02 00:00:00', 
                 'end_time': 'None', 
-                'lesson': [], 
                 'start_date': '2021-09-01 00:00:00', 
                 'start_time': 'None', 
                 'trainer_name': None
@@ -187,6 +189,7 @@ class Test_API(TestApp):
             'description': 'Test Description 1', 
             'learning_objective': ['Learning Objective 1', 'Learning Objective 2']
             }
+        # print(res.json["data"])
         self.assertEqual(res.json["data"], expected)
 
 

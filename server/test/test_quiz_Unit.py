@@ -104,6 +104,24 @@ class TestQuizClass(TestApp):
         )
         self.assertEqual(saved_quiz["code"], 200)
 
+    def test_saveQuizName(self):
+        aQuiz = Quiz(
+            quiz_id=1,
+            quiz_name="Fundx WorkCentre 7845",
+            description="SECTIOre 7845",
+            uploader="Jath",
+            duration="00:00:00",
+        )
+        db.session.add(aQuiz)
+        db.session.commit()
+        saved_quiz = Quiz.save_quizName(
+            1,
+            "Fundamentals of Xerox WorkCentre 7845",
+        )
+        self.assertEqual(saved_quiz["code"], 200)
+        self.assertEqual(saved_quiz["data"], "Fundamentals of Xerox WorkCentre 7845")
+
+
     def test_create_quiz(self):
         Quiz.create_quiz(
             1,
