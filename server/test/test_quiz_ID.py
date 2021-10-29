@@ -22,7 +22,7 @@ class TestApp(flask_testing.TestCase):
 
 
 class TestQuiz(TestApp):
-    def test_save_quiz(self):
+    def test_save_quizName(self):
         aQuiz = Quiz(
             quiz_id=1,
             quiz_name="Fundamentals of Xerox WorkCentre 7845",
@@ -46,9 +46,6 @@ class TestQuiz(TestApp):
         editQuiz = {
             "quiz_id": 1,
             "quiz_name": "Fundamentals for Xerox WorkCentre Part 1",
-            "description": "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
-            "uploader": "James Smith",
-            "duration": "00:25:57",
         }
 
         response = self.client.post(
@@ -65,38 +62,6 @@ class TestQuiz(TestApp):
         self.assertEqual(
             chk_insertedQuiz["quiz_name"], "Fundamentals for Xerox WorkCentre Part 1"
         )
-        self.assertEqual(
-            chk_insertedQuiz["description"],
-            "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
-        )
-        self.assertEqual(chk_insertedQuiz["duration"], "00:25:57")
-
-    def test_save_quiz_fail(self):
-        aQuiz = Quiz(
-            quiz_id=1,
-            quiz_name="Fundamentals of Xerox WorkCentre 7845",
-            description="SECTION 1 of Xerox WorkCentre 7845",
-            uploader="James Smith",
-            duration="00:30:43",
-        )
-        db.session.add(aQuiz)
-        db.session.commit()
-        editQuiz = {
-            "quiz_id": 1,
-            "quiz_name": "Fundamentals for Xerox WorkCentre Part 1",
-            "description": "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
-            "duration": "00:25:57",
-        }
-
-        response = self.client.post(
-            f"/quiz_update/{1}",
-            data=json.dumps(editQuiz),
-            content_type="application/json",
-        )
-
-        self.assertRaises(Exception)
-
-        self.assertEqual(response.json["data"]["status"], 500)
 
     def test_get_all_quiz(self):
         aQuiz = Quiz(
