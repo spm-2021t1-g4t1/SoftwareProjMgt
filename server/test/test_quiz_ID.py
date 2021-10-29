@@ -22,7 +22,7 @@ class TestApp(flask_testing.TestCase):
 
 
 class TestQuiz(TestApp):
-    def test_save_quiz(self):
+    def test_save_quizName(self):
         aQuiz = Quiz(
             quiz_id=1,
             quiz_name="Fundamentals of Xerox WorkCentre 7845",
@@ -46,9 +46,6 @@ class TestQuiz(TestApp):
         editQuiz = {
             "quiz_id": 1,
             "quiz_name": "Fundamentals for Xerox WorkCentre Part 1",
-            "description": "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
-            "uploader": "James Smith",
-            "duration": "00:25:57",
         }
 
         response = self.client.post(
