@@ -72,6 +72,11 @@ class testClassEnrollment(TestApp):
         self.assertEqual(course_id2, 2)
         self.assertEqual(class_no1, 1)
         self.assertEqual(class_no2, 1)
+    
+    # def testApproveEnrolment(self):
+    #     data = self.client.get(f"/enrolment/approve")
+
+
 
 
 
