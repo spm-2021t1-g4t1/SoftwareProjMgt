@@ -89,7 +89,7 @@ class Quiz(db.Model):
         quiz.quiz_name = quiz_name
         db.session.commit()
         return {
-            "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+            "data": quiz.quiz_name,
             "code": 200,
         }
 
