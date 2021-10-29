@@ -1,61 +1,61 @@
-import MainSidebar from './component/MainSidebar.jsx';
-import Home from './pages/Home.jsx';
-import CourseList from './pages/CourseList.jsx';
-import Account from './pages/Account.jsx';
-import Course from './pages/Course.jsx';
-import Catalog from './pages/Catalog.jsx';
-import Header from './component/Header.jsx';
-
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter ,Route } from "react-router-dom"
-import { CSSTransition } from 'react-transition-group' 
-
+import React, { useState, createContext, useContext } from 'react'
+import { BrowserRouter, Route, useHistory, Redirect } from "react-router-dom"
+import LearnerHome from './pages/EngineerView/LearnerHome';
+import Login from './pages/Login';
+import AdminHome from './pages/Administrator View/AdminHome';
+import TrainerHome from './pages/EngineerView/TrainerHome';
 
 import './App.css';
 
-function App() {
+const userContext = createContext({
+  user: {
+    current_designation: undefined,
+    department: undefined,
+    role: undefined,
+    staff_email: undefined,
+    staff_name: undefined
+  },
+  setUser: (user) => { }
+});
 
-  const[showMenu, setShowMenu] = useState(true)
-
-  function toggleSide() {
-      if (showMenu == true) {
-          setShowMenu(false)
-      }
-      else {
-          setShowMenu(true)
-      }
-      console.log(showMenu)
-  }
+const App = () => {
+  const history = useHistory();
+  // TODO: set username into context once logged in so child components can access it
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  console.log(user)
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <Header func = {toggleSide}/>
-          <CSSTransition 
-              in= {showMenu}
-              classNames="slider-sidebar"
-              timeout={{ enter: 1000, exit: 1000 }}
-              >
-              <MainSidebar />
-          </CSSTransition>
-          <CSSTransition 
-              in= {showMenu}
-              classNames="slider-body"
-              timeout={{ enter: 1000, exit: 1000 }}
-              >
-            <div className = 'App-body'>
-              <Route path = '/' component = {Home} exact/>
-              <Route path = '/course' component = {CourseList} exact/>
-              <Route path = '/catalog' component = {Catalog} exact/>
-              <Route path = '/course/:courseid' component = {Course} />
-              <Route path = '/account' component = {Account} exact/>
-            </div>
-          </CSSTransition>
-      </div>
+      <Route path='/login'>
+        <Login setUser={setUser} />
+      </Route>
+      <Route path='/' >
+        <LoginWrapper user={user} setUser={setUser}/>
+      </Route>
     </BrowserRouter>
-    
-    
   );
 }
 
 export default App;
+
+
+const LoginWrapper = ({ user, setUser }) => {
+  const handleLogout = () => {
+      localStorage.removeItem('user');
+      setUser(undefined);
+    }
+
+  if (!user) {
+    return (<Redirect to='/login' />);
+  }
+  if (user.role === 'Administrator') {
+    return (<AdminHome handleLogout={handleLogout} />);
+  }
+  if (user.role === 'Learner') {
+    return (<LearnerHome handleLogout={handleLogout} />);
+  }
+  if (user.role === 'Trainer') {
+    return (<TrainerHome handleLogout={handleLogout} />);
+  }
+  return(<h1>Something has gone wrong and the user is undefined. Run localStorage.clear() in the console to reset.</h1>);
+}
