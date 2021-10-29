@@ -78,3 +78,11 @@ class classes(db.Model):
     def get_unassignedClass(cls):
         classesObj = cls.query.filter(cls.trainer_name == None).all()
         return {'data': [classObj.coursejson() for classObj in classesObj]}
+
+    @classmethod
+    def assignTrainer(cls, course_id, class_no, staff_username):
+        classobj = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
+        classobj.trainer_name = staff_username
+        db.session.commit()
+        return {"data": "Updated"}
+

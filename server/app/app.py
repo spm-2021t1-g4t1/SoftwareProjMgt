@@ -145,7 +145,7 @@ def withdraw_classQueue():
             return jsonify({"code": 400, "message": "Enrollment failed"}), 400
 
 # New function (probably no test yet)
-@app.route('/queue/getList/')
+@app.route('/queue/getList')
 def get_enrollmentRequest():
     return classEnrolmentQueue.getStaffRequest()
     
@@ -179,6 +179,12 @@ def get_specificCourseDetail(course_id, class_no):
 def get_unassigned_lessons():
     unsorted = classes.get_unassignedClass()
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
+
+@app.route('/class/assign', methods=['POST'])
+def assign_trainer():
+    data = request.get_json()
+    response = classes.assignTrainer(data['course_id'], data['class_no'], data['staff_username'])
+    return response
 
 ############# Lesson ######################################
  

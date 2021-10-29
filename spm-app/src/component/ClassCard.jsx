@@ -7,7 +7,7 @@ const ClassCard = (prop) => {
     const classSchema = prop.classSchema
     const link = `course/${classSchema.course_id}/${classSchema.class_no}/overview`
     const isCatalog = window.location.pathname.includes('catalog')
-    const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow, setModalShow] = useState(false);
     const [classNum, setClassNum] = useState(0)
     const [isEligible, setIsEligible] = useState(true)
 
