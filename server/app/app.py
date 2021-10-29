@@ -355,12 +355,9 @@ def delete_questions(quiz_id, ques_id):
 def save_quiz(quiz_id):
     try:
         data = request.get_json()
-        Quiz.save_quiz(
+        Quiz.save_quizName(
             quiz_id,
-            data["quiz_name"],
-            data["description"],
-            data["uploader"],
-            data["duration"],
+            data["quiz_name"]
         )
         return {"data": {"status": 200, "message": "Saved Quiz successful"}}
     except:

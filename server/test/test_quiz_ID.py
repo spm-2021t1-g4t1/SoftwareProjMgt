@@ -58,10 +58,43 @@ class TestQuiz(TestApp):
         chk_updated_data = self.client.get("/quiz")
 
         chk_insertedQuiz = chk_updated_data.json["data"][0]
-
+        #Changes
         self.assertEqual(
             chk_insertedQuiz["quiz_name"], "Fundamentals for Xerox WorkCentre Part 1"
         )
+        self.assertEqual(
+            chk_insertedQuiz["description"],
+            "SECTION 1 of Xerox WorkCentre 7845",
+        )
+        #Changes
+        self.assertEqual(chk_insertedQuiz["duration"], "00:30:43")
+
+    def test_save_quiz_fail(self):
+        aQuiz = Quiz(
+            quiz_id=1,
+            quiz_name="Fundamentals of Xerox WorkCentre 7845",
+            description="SECTION 1 of Xerox WorkCentre 7845",
+            uploader="James Smith",
+            duration="00:30:43",
+        )
+        db.session.add(aQuiz)
+        db.session.commit()
+        editQuiz = {
+            "quiz_id": 1,
+            "quiz_name": "Fundamentals for Xerox WorkCentre Part 1",
+            "description": "SECTION 1 of Xerox WorkCentre 7845 -- Fundamentals",
+            "duration": "00:25:57",
+        }
+
+        response = self.client.post(
+            f"/quiz_update/{1}",
+            data=json.dumps(editQuiz),
+            content_type="application/json",
+        )
+
+        self.assertRaises(Exception)
+        #Changes
+        self.assertEqual(response.json["data"]["status"], 200)
 
     def test_get_all_quiz(self):
         aQuiz = Quiz(
