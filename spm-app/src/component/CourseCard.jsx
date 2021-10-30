@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { OverlayTrigger, Popover, Button } from 'react-bootstrap';
 
 import ClassCard from './ClassCard';
-
 const CourseCard = (prop) => {
 
     // console.log('prop')
@@ -10,7 +9,7 @@ const CourseCard = (prop) => {
     const courseSchema = prop.courseSchema
     const prerequisiteCourse = courseSchema.prerequisite_courses
 
-    console.log(courseSchema.prerequisite_courses)
+    console.log(courseSchema)
 
     const [stateChange, setStateChange] = useState(0)
     const [inQueue, setInQueue] = useState([])
@@ -43,7 +42,7 @@ const CourseCard = (prop) => {
 
     return(
         <div className= 'my-4' > 
-            <div class Name="border border-info container-fluid container-bg">    
+            <div className="border border-info container-fluid container-bg">    
                 <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}
                     {hasPrerequisites 
                     ?   <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
