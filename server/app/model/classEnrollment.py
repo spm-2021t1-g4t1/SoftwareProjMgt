@@ -24,9 +24,9 @@ class classEnrolment(db.Model):
     @classmethod
     def getClasslist(cls,course_id, class_no):
         ClassListDAO = cls.query.filter_by(course_id = course_id, class_no = class_no).all()
-        classList = {'data':{}}
+        classList = {'data':[]}
         for index, Student in enumerate(ClassListDAO):
-            classList['data'][index] = Student.staff.viewjson()
+            classList['data'].append(Student.staff.viewjson())
         return classList
 
 
