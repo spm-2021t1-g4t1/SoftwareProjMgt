@@ -197,7 +197,7 @@ def get_lessons(course_id, class_no, staff_username):
     LessonDetail["data"].append(all_lessons[0])
 
     list_of_lessons_completed_by_staff = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)["data"]
-    list_of_quiz_attempts_by_staff = quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)["data"]
+    list_of_quiz_attempts_by_staff = lesson_quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)["data"]
     completed_lesson_no_list = []
     for each_completed_lesson in list_of_lessons_completed_by_staff:
         completed_lesson_no_list.append(each_completed_lesson['lesson_no'])
@@ -211,7 +211,7 @@ def get_lessons(course_id, class_no, staff_username):
             if most_recent_lesson_completed + 1 >= lesson_no+1:
                 for attempt in list_of_quiz_attempts_by_staff:
                     if attempt["lesson_no"] == lesson_no:
-                        if attempt["quiz_score"] >= 80:
+                        if attempt["quiz_score"] >= 0:
                             LessonDetail['data'].append(all_lessons[index+1])
 
     return LessonDetail
@@ -234,6 +234,10 @@ def get_lessonCompletion(course_id,class_no,staff_username):
     lessonCompletion = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)
     return lessonCompletion
 
+@app.route("/lesson_quiz_result/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>")
+def get_lesson_quiz_result(course_id, class_no, lesson_no, staff_username):
+    quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
+    return quizResult
 
 ############# Quiz ######################################
 
