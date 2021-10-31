@@ -67,6 +67,7 @@ def getStaff_Enrollment(staff_username):
                 "course_id": Courses["course_id"],
                 "course_name": Courses["course_name"],
                 "description": Courses["description"],
+                "prerequisite_courses": Courses["prerequisite_courses"],
                 "classes": [classObj]           
             }
         )
