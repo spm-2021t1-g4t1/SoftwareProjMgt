@@ -8,15 +8,15 @@ import Header from '../../component/Header.jsx';
 import IndividualQuiz from '../../component/IndividualQuiz.jsx';
 
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter ,Route } from "react-router-dom"
+import { BrowserRouter ,Route, useHistory } from "react-router-dom"
 import { CSSTransition } from 'react-transition-group' 
 
 
 import '../../App.css';
 
 function LearnerHome({handleLogout}) {
-
-  const[showMenu, setShowMenu] = useState(true)
+  const history = useHistory();
+  const[showMenu, setShowMenu] = useState(true);
 
   function toggleSide() {
       if (showMenu == true) {
@@ -27,6 +27,11 @@ function LearnerHome({handleLogout}) {
       }
       console.log(showMenu)
   }
+
+  useEffect(() => {
+    const role = JSON.parse(localStorage.getItem("user")).role;
+    console.log(role);
+  });
 
   return (
       <div className="App">
