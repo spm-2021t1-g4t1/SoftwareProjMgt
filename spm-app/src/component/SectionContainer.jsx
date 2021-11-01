@@ -33,21 +33,9 @@ const SectionContainer = (props) => {
             })
     }
 
-    function viewQuizResult() {
-        const endpoint = `http://localhost:5000/lesson_quiz_result/${props.data.course_id}/${props.data.class_no}/${props.data.lesson_no}/darrelwilde`
-        // console.log(data)
-        fetch(endpoint, {
-            method: 'GET'
-        })
-            .then((res) => res.json())
-            .then((result) => {
-                console.log(result)
-            })
-    }
-
     useEffect(() => {
         setIsCompleted(sectionNumber <= props.completedLesson)
-    }, [props.completedLesson])
+    },[props.completedLesson])
 
     return (
         <Container className='sectionCon'>
@@ -66,7 +54,7 @@ const SectionContainer = (props) => {
                         <h2>Course Material</h2>
                         <ul>
                             {sectionArrs['lesson_materials'].map((mat, index) =>
-                                <li key={mat['lesson_no'] + "-" + mat['course_material_title']}>
+                                <li key={mat['lesson_no']+"-"+mat['course_material_title']}>
                                     <a href={mat['link']}>{mat['course_material_title']}</a>
                                 </li>
                             )}
@@ -75,18 +63,18 @@ const SectionContainer = (props) => {
 
                     <div className='my-auto'>
                         {
-                            isCompleted
-                                ? <Button className='m-1' variant='success' onClick={viewQuizResult}> Completed </Button>
-                                : <Button className='m-1' variant='primary' onClick={() => setModalShow(true)}>Mark as Completed</Button>
+                            isCompleted 
+                            ? <Button className = 'm-1' variant='success' > Completed </Button>
+                            : <Button className = 'm-1' variant='primary' onClick={() => setModalShow(true)}>Mark as Completed</Button>
 
                         }
-                        <Button className='m-1' varient='primary'>Take Quiz</Button>
+                        <Button className = 'm-1'varient='primary'>Take Quiz</Button>
                     </div>
 
                     <DoubleCheck
-                        show={modalShow}
-                        func={() => markLessonAsComplete()}
-                        onHide={() => setModalShow(false)}
+                    show={modalShow}
+                    func = {() => markLessonAsComplete()}
+                    onHide={() => setModalShow(false)}
                     />
                 </Container>
             </Container>
@@ -96,27 +84,26 @@ const SectionContainer = (props) => {
 
 function DoubleCheck(props) {
     return (
-        <Modal
-            {...props}
-            size="lg"
-            aria-labelledby="DoubleCheck"
-            centered
-        >
-            <Modal.Header closeButton>
-            </Modal.Header>
-            <Modal.Body>
-                <h4>Confirmation</h4>
-                <p className='py-2'>
-                    Are you sure you reviewed your lessons ?
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={props.onHide}>No</Button>
-                <Button variant='danger' onClick={props.func}>Yes</Button>
-            </Modal.Footer>
-        </Modal>
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="DoubleCheck"
+        centered
+      >
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Confirmation</h4>
+          <p className = 'py-2'>
+            Are you sure you reviewed your lessons ?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>No</Button>
+          <Button variant='danger' onClick={props.func}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
     );
-}
-
+  }
 
 export default SectionContainer

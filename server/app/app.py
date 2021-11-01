@@ -195,6 +195,7 @@ def get_lessons(course_id, class_no, staff_username):
     all_lessons = lesson.get_allLessonByClass(course_id, class_no)["data"]
     LessonDetail = {"data": []}
     LessonDetail["data"].append(all_lessons[0])
+    
 
     list_of_lessons_completed_by_staff = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)["data"]
     list_of_quiz_attempts_by_staff = lesson_quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)["data"]
@@ -211,10 +212,34 @@ def get_lessons(course_id, class_no, staff_username):
             if most_recent_lesson_completed + 1 >= lesson_no+1:
                 for attempt in list_of_quiz_attempts_by_staff:
                     if attempt["lesson_no"] == lesson_no:
-                        if attempt["quiz_score"] >= 0:
-                            LessonDetail['data'].append(all_lessons[index+1])
+                        LessonDetail['data'].append(all_lessons[index+1])
+    
+    ReturnData = {"data": []}
+    for each_lesson in LessonDetail['data']:
+        course_id = each_lesson['course_id']
+        class_no = each_lesson['class_no']
+        lesson_no = each_lesson['lesson_no']
+        lesson_description = each_lesson["lesson_description"]
+        lesson_materials = each_lesson["lesson_materials"]
+        lesson_name = each_lesson["lesson_name"]
+        quiz_score = None
+        try:
+            quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
+            quiz_score = quizResult['data']['quiz_score']
+        except:
+            pass
+        ReturnData['data'].append({
+            "class_no": class_no,
+            "course_id": course_id,
+            "lesson_description": lesson_description,
+            "lesson_materials": lesson_materials,
+            "lesson_name": lesson_name,
+            "lesson_no": lesson_no,
+            "quiz_score": quiz_score
+        })
 
-    return LessonDetail
+
+    return ReturnData
 
 @app.route("/lesson_completion/mark_complete", methods=["POST"])
 def mark_lesson_as_complete():
@@ -234,10 +259,11 @@ def get_lessonCompletion(course_id,class_no,staff_username):
     lessonCompletion = lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)
     return lessonCompletion
 
-@app.route("/lesson_quiz_result/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>")
-def get_lesson_quiz_result(course_id, class_no, lesson_no, staff_username):
-    quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
-    return quizResult
+#### probably dont need already, KIV here first!!!
+# @app.route("/lesson_quiz_result/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>")
+# def get_lesson_quiz_result(course_id, class_no, lesson_no, staff_username):
+#     quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
+#     return quizResult
 
 ############# Quiz ######################################
 
