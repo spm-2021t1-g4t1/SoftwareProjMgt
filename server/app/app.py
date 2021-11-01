@@ -174,6 +174,10 @@ def get_specificCourseDetail(course_id, class_no):
     }
     return ClassDetail
 
+@app.route("/course/getList")
+def get_allCourse():
+    return course.get_listOfCourse([])
+
 ############# Classes ######################################
 
 @app.route('/class/get_unassignedClass')
@@ -181,10 +185,10 @@ def get_unassigned_lessons():
     unsorted = classes.get_unassignedClass()
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
 
-@app.route('/class/assign', methods=['POST'])
-def assign_trainer():
+@app.route('/class/trainer/modify', methods=['POST'])
+def modify_trainer():
     data = request.get_json()
-    response = classes.assignTrainer(data['course_id'], data['class_no'], data['staff_username'])
+    response = classes.modifyTrainer(data['course_id'], data['class_no'], data['staff_username'])
     return response
 
 ############# Lesson ######################################
