@@ -51,11 +51,11 @@ const LoginWrapper = ({ user, setUser }) => {
   if (user.role === 'Administrator') {
     return (<AdminHome handleLogout={handleLogout} />);
   }
-  if (user.role === 'Learner') {
+  if (user.role === 'Learner' || user.role === 'Trainer') {
     return (<LearnerHome handleLogout={handleLogout} />);
   }
-  if (user.role === 'Trainer') {
-    return (<TrainerHome handleLogout={handleLogout} />);
-  }
+  // if (user.role === 'Trainer') {
+  //   return (<TrainerHome handleLogout={handleLogout} />);
+  // }
   return(<h1>Something has gone wrong and the user is undefined. Run localStorage.clear() in the console to reset.</h1>);
 }

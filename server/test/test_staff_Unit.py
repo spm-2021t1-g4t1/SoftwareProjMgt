@@ -20,27 +20,24 @@ class TestApp(flask_testing.TestCase):
 
     def setUp(self):
         db.create_all()
+        Objects = [
+            staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
+            staff(staff_username = 'darrelwilde', staff_name = 'Darrel Wilde', role = 'Learner', department = 'Development', current_designation = 'Engineer'),
+            staff(staff_username = 'hananhyde', staff_name = 'Hanan Hyde', role = 'Administrator', department = 'Human Resources', current_designation = 'Executive')
+        ]
+        db.session.bulk_save_objects(Objects)
+        db.session.commit()
+
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
 
 class testStaff(TestApp):
-    def testGetClassList(self):
-        aStaff = staff(
-            staff_username = 'coreyroberts',
-            staff_name = 'Corey Roberts',
-            role = 'Learner',
-            department = 'Operation',
-            current_designation = 'Engineer'
-        )
-        db.session.add(aStaff)
-        db.session.commit()
-
+    def testGetStaffList(self):
         data = self.client.get(f"/staff")
         insertedStaff = data.json["data"][0]
-        # print(data.json)
-        # print(insertedStaff)
+
         self.assertEqual(insertedStaff["staff_username"], 'coreyroberts')
         self.assertEqual(insertedStaff["staff_name"], 'Corey Roberts')
         self.assertEqual(insertedStaff["role"], 'Learner')
@@ -48,22 +45,23 @@ class testStaff(TestApp):
         self.assertEqual(insertedStaff["current_designation"], 'Engineer')
     
     def testGetStaffByUsername(self):
-        aStaff = staff(
-            staff_username = 'darrelwilde',
-            staff_name = 'Darrel Wilde',
-            role = 'Learner',
-            department = 'Development',
-            current_designation = 'Engineer'
-        )
-        db.session.add(aStaff)
-        db.session.commit()
-
         data = self.client.get(f"/login/darrelwilde")
-        # insertedStaff =data.json['data'][0]
         insertedStaff = data.json['data']['staff_username']
-        # print(insertedStaff)
 
         self.assertEqual(insertedStaff, 'darrelwilde')
+    
+    def testGetEngineerList(self):
+        data = self.client.get(f"/staff/engineers")
+        engineersList = data.json['data']
+        # print(data.json['data'])
+        
+        self.assertEqual(engineersList[0]['staff_username'], 'coreyroberts')
+        self.assertEqual(engineersList[0]['current_designation'], 'Engineer')
+        self.assertEqual(engineersList[1]['staff_username'], 'darrelwilde')
+        self.assertEqual(engineersList[1]['current_designation'], 'Engineer')
+
+
+
 
 
 if __name__ == "__main__":

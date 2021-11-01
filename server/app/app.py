@@ -11,7 +11,7 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 if platform.system() == "Darwin":
     configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -386,9 +386,14 @@ def delete_questions(quiz_id, ques_id):
 def save_quiz(quiz_id):
     try:
         data = request.get_json()
+        print(data["duration"])
         Quiz.save_quizName(
             quiz_id,
             data["quiz_name"]
+        )
+        Quiz.save_quizDuration(
+            quiz_id, 
+            data["duration"]
         )
         return {"data": {"status": 200, "message": "Saved Quiz successful"}}
     except:
