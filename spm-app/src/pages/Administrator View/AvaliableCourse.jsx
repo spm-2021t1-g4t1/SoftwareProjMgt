@@ -139,7 +139,7 @@ function AvaliableCourse() {
                                                     delay={{ show: 100, hide: 400 }}
                                                     overlay={removeTooltip}
                                                     >
-                                                        <Button disabled onClick = {() => removeTrainer(classesObj.course_id,classesObj.class_no)}className ='mx-1' size="sm" variant = 'outline-danger'>
+                                                        <Button onClick = {() => removeTrainer(classesObj.course_id,classesObj.class_no)}className ='mx-1' size="sm" variant = 'outline-danger'>
                                                             <MdPersonRemoveAlt1 />
                                                         </Button>
                                                     </OverlayTrigger>
