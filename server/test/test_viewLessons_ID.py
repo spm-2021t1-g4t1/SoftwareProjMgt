@@ -5,7 +5,7 @@ from datetime import datetime
 from helper import *
 
 from model.lesson import *
-from model.quiz_attempts import *
+from model.lesson_quiz_attempts import *
 
 
 class TestApp(flask_testing.TestCase):
@@ -145,7 +145,7 @@ class TestGetLessons(TestApp):
         db.session.add(aLessonCompletion3)
         db.session.commit()
 
-        aQuizAttempt = quiz_attempts(
+        aQuizAttempt = lesson_quiz_attempts(
             course_id=2,
             class_no=1,
             lesson_no=1,
@@ -155,7 +155,7 @@ class TestGetLessons(TestApp):
         db.session.add(aQuizAttempt)
         db.session.commit()
 
-        aQuizAttempt2 = quiz_attempts(
+        aQuizAttempt2 = lesson_quiz_attempts(
             course_id=2,
             class_no=1,
             lesson_no=2,
@@ -165,7 +165,7 @@ class TestGetLessons(TestApp):
         db.session.add(aQuizAttempt2)
         db.session.commit()
 
-        aQuizAttempt3 = quiz_attempts(
+        aQuizAttempt3 = lesson_quiz_attempts(
             course_id=2,
             class_no=1,
             lesson_no=3,
