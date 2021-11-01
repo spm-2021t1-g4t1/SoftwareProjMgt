@@ -1,18 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { Button, Table } from 'react-bootstrap';
-import { BiMessageRoundedDots} from "react-icons/bi";
-import { FaEdit, FaTrash} from "react-icons/fa";
+import { Button} from 'react-bootstrap';
+import { useParams, Link } from "react-router-dom";
+import { Table } from 'react-bootstrap';
+import { MdArrowBack} from "react-icons/md";
 
 import SearchBox from '../../component/SearchBox';
 
-function ViewClassList(prop) {
+function ViewClassList() {
 
-    console.log(prop)
-    const courseid = prop.courseid
-    const classno = prop.classno
+    const courseid = useParams().courseid
+    const classno = useParams().classno
 
     const [classList, setClassList] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -39,6 +37,11 @@ function ViewClassList(prop) {
 
     return (
         <div>
+            <Link to={`/Administrator/Course/list`}>
+                <Button variant ="outline-primary" >
+                    <MdArrowBack />
+                </Button>
+            </Link>
             <h1>Class List</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
@@ -49,13 +52,13 @@ function ViewClassList(prop) {
                         <th>Role</th>
                         <th>Department</th>
                         <th>Current Designation</th>
-                        <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    {classList.filter((val) => {
+                    {classList.length
+                    ?classList.filter((val) => {
                         if (searchTerm === "") {
                             return val
                         } else if (val.staff_name.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -76,7 +79,11 @@ function ViewClassList(prop) {
 
                             
                         )
-                    })}
+                    })
+                    :   <tr className = 'table-secondary'>
+                            <td colSpan = "5" className = 'text-center' colSpan="5"><h3>No Engineer Enrolled</h3></td>
+                        </tr>
+                }
                 </tbody>
             </Table>
         </div>
