@@ -104,28 +104,24 @@ class TestQuiz(TestApp):
     def test_create_quiz(self):
         body = {
             "quiz_id": 1,
-            "quiz_name": "Fundamentals of Xerox WorkCentre 7845",
-            "description": "SECTION 1 of Xerox WorkCentre 7845",
-            "uploader": "James Smith",
-            "duration": "00:30:43",
+            "quiz_name": "Untitled",
+            "description": "",
+            "uploader": "James_smith",
+            "duration": "00:00:00",
         }
-        response = self.client.post(
-            f"/insert_quiz",
-            data=json.dumps(body),
-            content_type="application/json",
-        )
+        response = self.client.get(f"/insert_quiz/1/James_smith")
 
         self.assertEqual(response.json["data"]["status"], 200)
         data = self.client.get(f"/quiz/{1}")
         insertedQuiz = data.json["data"][0]
-        self.assertEqual(insertedQuiz["uploader"], "James Smith")
+        self.assertEqual(insertedQuiz["uploader"], "James_smith")
         self.assertEqual(
-            insertedQuiz["quiz_name"], "Fundamentals of Xerox WorkCentre 7845"
+            insertedQuiz["quiz_name"], "Untitled"
         )
         self.assertEqual(
-            insertedQuiz["description"], "SECTION 1 of Xerox WorkCentre 7845"
+            insertedQuiz["description"], ""
         )
-        self.assertEqual(insertedQuiz["duration"], "00:30:43")
+        self.assertEqual(insertedQuiz["duration"], "00:00:00")
         self.assertEqual(insertedQuiz["quiz_id"], 1)
         self.assertEqual(len(data.json["data"]), 1)
 
