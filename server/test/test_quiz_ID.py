@@ -22,7 +22,7 @@ class TestApp(flask_testing.TestCase):
 
 
 class TestQuiz(TestApp):
-    def test_save_quizName(self):
+    def test_save_quizDetails(self):
         aQuiz = Quiz(
             quiz_id=1,
             quiz_name="Fundamentals of Xerox WorkCentre 7845",
@@ -35,6 +35,7 @@ class TestQuiz(TestApp):
         editQuiz = {
             "quiz_id": 1,
             "quiz_name": "Fundamentals for Xerox WorkCentre Part 1",
+            "duration": "0:30:43",
         }
 
         response = self.client.post(
@@ -49,6 +50,10 @@ class TestQuiz(TestApp):
         self.assertEqual(
             chk_insertedQuiz["quiz_name"], "Fundamentals for Xerox WorkCentre Part 1"
         )
+        self.assertEqual(
+            chk_insertedQuiz["duration"], "0:30:43"
+        )
+        
 
     def test_get_all_quiz(self):
         aQuiz = Quiz(
