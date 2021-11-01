@@ -21,7 +21,13 @@ const Login = ({setUser}) => {
                     localStorage.setItem('user', JSON.stringify(response.data.data));
                     setUser(response.data.data)
                     setErrMsg("");
-                    history.push(response.data.data.role);
+                    switch (response.data.data.role) {
+                        case "admin": 
+                            history.push("Administrator");
+                            break;                        
+                        default: history.push("/");
+                    }
+                    
                 }
                 else {  
                     setErrMsg("Invalid username");
@@ -34,7 +40,15 @@ const Login = ({setUser}) => {
 
     // If user is already logged in, redirect away from login page.
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user) history.push(user.role);
+    if (user) {
+        switch (user.role) {
+            case "admin": 
+                history.push("Administrator");
+                break;
+            default: history.push("/");
+        }
+
+    } 
 
     return (
         <div>
