@@ -94,6 +94,16 @@ class Quiz(db.Model):
         }
 
     @classmethod
+    def save_quizDuration(cls, quiz_id, duration):
+        quiz = cls.query.filter_by(quiz_id=quiz_id).first()
+        quiz.duration = duration
+        db.session.commit()
+        return {
+            "data": quiz.duration,
+            "code": 200,
+        }
+
+    @classmethod
     def save_quiz(cls, quiz_id, quiz_name, description, uploader, duration):
         quiz = cls.query.filter_by(quiz_id=quiz_id).first()
         quiz.quiz_name = quiz_name
