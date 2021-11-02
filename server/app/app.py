@@ -309,13 +309,46 @@ def exam(course_id, class_no, staff_username):
         return {'data': exam['data']}
     else:
         return {'data': None}
-# probably dont need already, KIV here first!!!
-# @app.route("/lesson_quiz_result/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>")
-# def get_lesson_quiz_result(course_id, class_no, lesson_no, staff_username):
-#     quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
-#     return quizResult
 
 ############# Quiz ######################################
+@app.route("/class_result/<int:course_id>/<int:class_no>")
+def class_result(course_id, class_no):
+    returnJSON = {'data': []}
+    list_of_enrolled_students = classEnrolment.getClasslist(course_id, class_no)['data']
+    list_of_lessons = lesson.get_allLessonByClass(course_id, class_no)['data']
+    for each_student in list_of_enrolled_students:
+        staff_username = each_student['staff_username']
+        quiz_results = []
+        for each_lesson in list_of_lessons:
+            lesson_no = each_lesson['lesson_no']
+            quiz_attempt = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
+            if quiz_attempt['code'] == 200:
+                quiz_results.append(
+                    {
+                        "course_id": course_id,
+                        "class_no": class_no,
+                        "lesson_no" : lesson_no,
+                        "quiz_score": quiz_attempt['data']['quiz_score']
+                    }
+                )
+            else:
+                quiz_results.append(
+                    {
+                        "course_id": course_id,
+                        "class_no": class_no,
+                        "lesson_no" : lesson_no,
+                        "quiz_score": None
+                    }
+                )
+            final_quiz_result = final_quiz_attempts.get_specificFinalQuizAttempt(course_id, class_no, staff_username)
+            final_quiz_score = final_quiz_result['data']['quiz_score'] if final_quiz_result['code'] == 200 else None
+        returnJSON['data'].append({
+            "staff_username": staff_username,
+            "lesson_quiz_results": quiz_results,
+            "final_quiz_result": final_quiz_score
+        })
+    return returnJSON
+
 
 
 @app.route("/quiz", methods=["POST", "GET"])
