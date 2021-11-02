@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from db import db
 
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -70,7 +70,11 @@ class classes(db.Model):
     
     
     def getSelfEnrolDates(self):
-        return {"start": str(self.selfenrol_start), "end": str(self.selfenrol_end)}
+        
+        return {
+            "start": datetime.strftime(self.selfenrol_start, "%Y-%m-%d"), 
+            "end": datetime.strftime(self.selfenrol_end, "%Y-%m-%d")
+        }
 
     @classmethod
     def setSelfEnrolDates(cls, data):
