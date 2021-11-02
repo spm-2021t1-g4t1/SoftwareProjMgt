@@ -60,7 +60,7 @@ class TestApp(flask_testing.TestCase):
 class TestCourseCompletion(TestApp):
     def test_getCompletionByCourse(self):
         res = course_completion.getCompletionByCourse(1)
-        expected = [{"staff_username": "Staff 1"}]
+        expected = ["Staff 1"]
         print("res", res)
         self.assertEqual(res, expected)
     

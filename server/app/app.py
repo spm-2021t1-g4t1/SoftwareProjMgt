@@ -96,6 +96,17 @@ def getStaffCompletion(course_id,staff_username):
         return {"eligiblity": True}
     return {"eligiblity": False}
 
+@app.route('/eligibility/<int:course_id>')
+def getEligibleStaff(course_id):
+    prereqCourses = course.get_prerequisite_courses(course_id)['data']
+    result = []
+    if len(prereqCourses) > 0:
+        prereq = prereqCourses[0]
+        result = course_completion.getCompletionByCourse(prereq)
+    for prereq in prereqCourses[1:]:
+        studentsCompleted = course_completion.getCompletionByCourse(prereq)
+        result = list(set(result) & set(studentsCompleted))
+    return {"data": result}
 
 ############# Catalog ######################################
 

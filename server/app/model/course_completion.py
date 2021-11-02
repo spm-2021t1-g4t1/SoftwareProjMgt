@@ -34,5 +34,5 @@ class course_completion(db.Model):
         result = cls.query.filter_by(course_id=course_id).all()
         resultList = []
         for index, course in enumerate(result):
-            resultList.append({"staff_username": course.json()["staff_username"]})
+            resultList.append(course.json()["staff_username"])
         return resultList
