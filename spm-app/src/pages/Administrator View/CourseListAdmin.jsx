@@ -37,6 +37,7 @@ function CourseListAdmin() {
 const ClassEnrolDateCard = ({ course }) => {
     const [selfEnrolStart, setSelfEnrolStart] = useState(course.selfenrol_start);
     const [selfEnrolEnd, setSelfEnrolEnd] = useState(course.selfenrol_end);
+    const [ freshlySaved, setFreshlySaved ] = useState(false);
     const endpoint = "http://127.0.0.1:5000/class/setSelfEnrolDates"
 
     const handleSubmit = () => {
@@ -53,7 +54,11 @@ const ClassEnrolDateCard = ({ course }) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             }).then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data);
+                setFreshlySaved(true);
+                setTimeout(() => setFreshlySaved(false), 3000);
+            })
         } catch (err) {
             console.log(err)
         }
@@ -75,7 +80,10 @@ const ClassEnrolDateCard = ({ course }) => {
                 </Col>
             <Row>
                 <Col md={4} className="my-2">
-                    <Button onClick={handleSubmit}>Save Changes</Button>
+                    {freshlySaved ? 
+                    <Button variant="success" onClick={handleSubmit}>Changes saved!</Button> 
+                    : 
+                    <Button variant="primary" onClick={handleSubmit}>Save Changes</Button>}
                 </Col>
             </Row>
             </Row>
