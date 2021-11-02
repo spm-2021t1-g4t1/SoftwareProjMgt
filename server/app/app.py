@@ -198,10 +198,23 @@ def get_unassigned_lessons():
     return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
 
 
+
+@app.route('/class/get_futureClass')
+def get_futureClass():
+    unsorted = classes.get_futureClass()
+    return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
+
+
 @app.route('/class/trainer/modify', methods=['POST'])
 def modify_trainer():
     data = request.get_json()
     response = classes.modifyTrainer(data['course_id'], data['class_no'], data['staff_username'])
+    return response
+
+@app.route('/class/setSelfEnrolDates', methods=['POST'])
+def update_classObj():
+    data = request.get_json()
+    response = classes.setSelfEnrolDates(data)
     return response
 
 ############# Lesson ######################################

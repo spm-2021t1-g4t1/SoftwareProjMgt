@@ -1,5 +1,5 @@
 import unittest
-import datetime
+from datetime import date, time
 from helper import *
 
 class testClassesObj(unittest.TestCase):
@@ -7,10 +7,10 @@ class testClassesObj(unittest.TestCase):
         self.CO1 = classes(
             course_id = 1,
             class_no = 1,
-            start_date  = datetime.date(year=2012, month=1,day=1),
-            end_date  = datetime.date(year=2012, month=2,day=1),
-            start_time  = datetime.time(hour=8,minute=0,second=0),
-            end_time = datetime.time(hour=10,minute=0,second=0),
+            start_date  = date(year=2012, month=1,day=1),
+            end_date  = date(year=2012, month=2,day=1),
+            start_time  = time(hour=8,minute=0,second=0),
+            end_time = time(hour=10,minute=0,second=0),
             class_size   = 40,
             trainer_name  = "Jane Doe",
             lesson = []

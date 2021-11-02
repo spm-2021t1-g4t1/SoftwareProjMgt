@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from db import db
 
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -13,6 +14,8 @@ class classes(db.Model):
     end_time = db.Column(db.DateTime)
     class_size   = db.Column(db.Integer)
     trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_username'), nullable=True)
+    selfenrol_start = db.Column(db.DateTime)
+    selfenrol_end = db.Column(db.DateTime)
     lesson = db.relationship('lesson', backref='classes', lazy = True)
     
     __table_args__ = (
@@ -61,7 +64,25 @@ class classes(db.Model):
             "end_time": str(self.end_time),
             "class_size": self.class_size,
             "trainer_name": self.trainer_name,
+            "selfenrol_start": str(self.selfenrol_start),
+            "selfenrol_end": str(self.selfenrol_end)
         }
+    
+    
+    def getSelfEnrolDates(self):
+        
+        return {
+            "start": datetime.strftime(self.selfenrol_start, "%Y-%m-%d"), 
+            "end": datetime.strftime(self.selfenrol_end, "%Y-%m-%d")
+        }
+
+    @classmethod
+    def setSelfEnrolDates(cls, data):
+        target = classes.query.filter_by(course_id=data['course_id'], class_no=data['class_no']).first()
+        target.selfenrol_start = data['selfenrol_start']
+        target.selfenrol_end = data['selfenrol_end']
+        db.session.commit()
+        return {"updated": True}
 
     @classmethod
     def get_specificClass(cls,course_id, class_no):
@@ -77,6 +98,11 @@ class classes(db.Model):
     @classmethod
     def get_unassignedClass(cls):
         classesObj = cls.query.filter(cls.trainer_name == None).all()
+        return {'data': [classObj.coursejson() for classObj in classesObj]}
+
+    @classmethod
+    def get_futureClass(cls):
+        classesObj = cls.query.filter(cls.start_date > date.today()).all()
         return {'data': [classObj.coursejson() for classObj in classesObj]}
 
     @classmethod
