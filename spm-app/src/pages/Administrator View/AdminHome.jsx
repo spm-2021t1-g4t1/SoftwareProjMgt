@@ -42,7 +42,7 @@ const AdminHome = ({handleLogout}) => {
               <main className = 'App-body'>
                 {/* <Route path= "/Administrator/Dashboard" compents={Home} exact /> */}
                 <Route path = '/Administrator/Course/unassigned' component = {CourseAssignment} exact/>
-                <Route path = '/Administrator/Course/list' component = {CourseListAdmin} exact/>
+                <Route path = '/Administrator/Course/enroldates' component = {CourseListAdmin} exact/>
                 <Route path = '/Administrator/EngineerList' component = {EngineerDetails} exact/>
                 <Route path = '/Administrator/Enrollment' component = {ApprovalList} exact />
               </main>
