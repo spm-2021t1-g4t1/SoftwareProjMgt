@@ -363,6 +363,30 @@ INSERT INTO `lesson_quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `final_quiz_attempts`
+--
+
+DROP TABLE IF EXISTS `final_quiz_attempts`;
+CREATE TABLE IF NOT EXISTS `final_quiz_attempts` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `staff_username` varchar(255) NOT NULL,
+  `quiz_score` int NOT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`staff_username`,`quiz_score`),
+  KEY `staff_username_fk1` (`staff_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `final_quiz_attempts`
+--
+
+INSERT INTO `final_quiz_attempts` (`course_id`, `class_no`, `staff_username`, `quiz_score`) VALUES
+(2, 1, 'darrelwilde', 89);
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quiz_options`
 --
 
@@ -519,6 +543,13 @@ ALTER TABLE `lesson_materials`
 ALTER TABLE `lesson_quiz_attempts`
   ADD CONSTRAINT `fk8` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
   ADD CONSTRAINT `staff_username_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
+
+--
+-- Constraints for table `final_quiz_attempts`
+--
+ALTER TABLE `final_quiz_attempts`
+  ADD CONSTRAINT `final_quiz_attempt_fk` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`),
+  ADD CONSTRAINT `final_quiz_attempt_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --
 -- Constraints for table `quiz_questions`

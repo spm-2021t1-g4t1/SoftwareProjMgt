@@ -25,13 +25,16 @@ class lesson_quiz_attempts(db.Model):
         }
     @classmethod
     def get_listOfQuizAttemptsByStaff(cls, course_id, class_no, staff_username):
-        attempts = cls.query.filter_by(course_id=course_id, class_no=class_no,staff_username=staff_username).all()
-        return {'data': [one_attempt.json() for one_attempt in attempts]}
-
+        try:
+            attempts = cls.query.filter_by(course_id=course_id, class_no=class_no,staff_username=staff_username).all()
+            return {'data': [one_attempt.json() for one_attempt in attempts], 'code': 200}
+        except:
+            return {'data': None, 'code': 404}
     @classmethod
     def get_specificLessonQuizAttempt(cls, course_id, class_no, lesson_no, staff_username):
-        attempt = cls.query.filter_by(course_id=course_id, class_no=class_no,lesson_no=lesson_no,staff_username=staff_username).first()
-        return {'data': attempt.json()}
-
-
+        try:
+            attempt = cls.query.filter_by(course_id=course_id, class_no=class_no,lesson_no=lesson_no,staff_username=staff_username).first()
+            return {'data': attempt.json(), 'code': 200}
+        except:
+            return {'data': None, 'code': 404}
 
