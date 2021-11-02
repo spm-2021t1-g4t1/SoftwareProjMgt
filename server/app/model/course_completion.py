@@ -28,3 +28,11 @@ class course_completion(db.Model):
         for index, classes in enumerate(ClassListDAO):
             classList['data'][index] = classes.json()
         return classList
+    
+    @classmethod
+    def getCompletionByCourse(cls, course_id):
+        result = cls.query.filter_by(course_id=course_id).all()
+        resultList = []
+        for index, course in enumerate(result):
+            resultList.append({"staff_username": course.json()["staff_username"]})
+        return resultList
