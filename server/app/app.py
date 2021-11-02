@@ -86,7 +86,7 @@ def ApproveEnrolment():
         data['staff_username'], data['course_id'], data['class_no'])
     return data
 
-############# Class Completion ######################################
+############# eligibility ######################################
 
 
 @app.route('/eligiblity/<int:course_id>/<string:staff_username>')
@@ -101,6 +101,19 @@ def getStaffCompletion(course_id, staff_username):
     if len(prereqCourses) == 0:
         return {"eligiblity": True}
     return {"eligiblity": False}
+
+@app.route("/eligibility/final_quiz/<int:course_id>/<int:class_no>/<string:staff_username>")
+def final_quiz_eligiblity(course_id, class_no, staff_username):
+    total_no_of_lesson_for_current_class = len(lesson.get_allLessonByClass(course_id, class_no)['data'])
+    total_no_of_lesson_completed_by_staff = len(lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)['data'])
+    total_no_of_lesson_quiz_attempt_by_staff = len(lesson_quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)['data'])
+    # print(total_no_of_lesson_for_current_class)
+    # print(lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username))
+    # print(total_no_of_lesson_quiz_attempt_by_staff)
+    if total_no_of_lesson_for_current_class == total_no_of_lesson_completed_by_staff and total_no_of_lesson_for_current_class == total_no_of_lesson_quiz_attempt_by_staff:
+        return {"eligiblity": True}
+    else:
+        return {"eligiblity": False}
 
 
 ############# Catalog ######################################
@@ -302,15 +315,7 @@ def exam(course_id, class_no, staff_username):
 #     quizResult = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
 #     return quizResult
 
-@app.route("/final_quiz_eligibility/<int:course_id>/<int:class_no>/<string:staff_username>")
-def final_quiz_eligiblity(course_id, class_no, staff_username):
-    total_no_of_lesson_for_current_class = len(lesson.get_allLessonByClass(course_id, class_no)['data'])
-    total_no_of_lesson_completed_by_staff = len(lesson_completion.get_listOfLessonCompletionByStaff(course_id, class_no, staff_username)['data'])
-    total_no_of_lesson_quiz_attempt_by_staff = len(lesson_quiz_attempts.get_listOfQuizAttemptsByStaff(course_id, class_no, staff_username)['data'])
-    if total_no_of_lesson_for_current_class == total_no_of_lesson_completed_by_staff and total_no_of_lesson_for_current_class == total_no_of_lesson_quiz_attempt_by_staff:
-        return {"data": True}
-    else:
-        return {"data": False}
+############# Quiz ######################################
 
 
 @app.route("/quiz", methods=["POST", "GET"])
