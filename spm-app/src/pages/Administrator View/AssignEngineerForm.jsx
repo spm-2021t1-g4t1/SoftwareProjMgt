@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams ,useHistory } from "react-router-dom"
+import { useParams ,useHistory, Link } from "react-router-dom"
 import { Button, Table, Modal } from 'react-bootstrap';
-import { MdAssignmentTurnedIn} from "react-icons/md";
+import { MdAssignmentTurnedIn, MdArrowBack} from "react-icons/md";
 
 import SearchBox from '../../component/SearchBox';
 
@@ -34,7 +34,7 @@ function AssignEngineerForm(prop) {
     }
 
     function assignTrainer() {
-        const endpoint = `http://127.0.0.1:5000/class/assign`
+        const endpoint = `http://127.0.0.1:5000/class/trainer/modify`
         const data = {
             course_id : courseid,
             class_no : classno,
@@ -51,7 +51,7 @@ function AssignEngineerForm(prop) {
         .then((result) => {
             setModalShow(false)
             prop.statechange()
-            history.push("/Administrator/Course/unassigned")
+            history.goBack()
         })
     }    
 
@@ -81,7 +81,12 @@ function AssignEngineerForm(prop) {
       }
     
     return (
-        <div className="EngineerDetails">
+        <div>
+            <Link to={`/Administrator/Course/unassigned`}>
+                <Button variant ="outline-primary" >
+                    <MdArrowBack />
+                </Button>
+            </Link>
             <h1>Assign Engineer</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 

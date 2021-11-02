@@ -80,7 +80,7 @@ class classes(db.Model):
         return {'data': [classObj.coursejson() for classObj in classesObj]}
 
     @classmethod
-    def assignTrainer(cls, course_id, class_no, staff_username):
+    def modifyTrainer(cls, course_id, class_no, staff_username):
         classobj = cls.query.filter_by(course_id= course_id, class_no = class_no).first()
         classobj.trainer_name = staff_username
         db.session.commit()

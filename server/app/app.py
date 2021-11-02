@@ -185,6 +185,10 @@ def get_specificCourseDetail(course_id, class_no):
     }
     return ClassDetail
 
+@app.route("/course/getList")
+def get_allCourse():
+    return course.get_listOfCourse([])
+
 ############# Classes ######################################
 
 
@@ -194,11 +198,10 @@ def get_unassigned_lessons():
     return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
 
 
-@app.route('/class/assign', methods=['POST'])
-def assign_trainer():
+@app.route('/class/trainer/modify', methods=['POST'])
+def modify_trainer():
     data = request.get_json()
-    response = classes.assignTrainer(
-        data['course_id'], data['class_no'], data['staff_username'])
+    response = classes.modifyTrainer(data['course_id'], data['class_no'], data['staff_username'])
     return response
 
 ############# Lesson ######################################
@@ -302,19 +305,19 @@ def get_all_quiz():
     return Quiz.get_listofQuiz()
 
 
-@app.route("/insert_quiz", methods=["POST", "GET"])
-def insert_quiz():
-    data = request.get_json()
-    addQuiz = Quiz(
-        quiz_id=data["quiz_id"],
-        quiz_name=data["quiz_name"],
-        description=data["description"],
-        uploader=data["uploader"],
-        duration=data["duration"],
-    )
-    db.session.add(addQuiz)
-    db.session.commit()
-    return {"data": {"status": 200, "message": "Quiz is successfully created"}}
+@app.route("/insert_quiz/<int:quiz_id>/<string:staff_username>", methods=["POST", "GET"])
+def insert_quiz(quiz_id, staff_username):
+    try:
+        Quiz.create_quiz(
+            quiz_id,
+            "Untitled",
+            "",
+            uploader=staff_username,
+            duration="00:00:00",
+        )
+        return {"data": {"status": 200, "message": "Quiz is successfully created"}}
+    except:
+        return {"data": {"status": 500, "message": "Quiz is NOT created"}}
 
 
 @app.route("/quiz/<int:quiz_id>", methods=["POST", "GET"])

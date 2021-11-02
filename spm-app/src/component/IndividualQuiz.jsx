@@ -1,8 +1,8 @@
 import { React, useEffect, useState } from 'react'
-import { Button, Stack, Form, Col, Row } from 'react-bootstrap';
+import { Button, Stack, Form, Col, Row, Modal } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import { faPlus, faArrowDown, faArrowUp, faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import QuestionCard from './QuestionCard';
 
 const IndividualQuiz = (props) => {
@@ -15,6 +15,9 @@ const IndividualQuiz = (props) => {
     const [quizName, setQuizName] = useState(props.location.state.quiz_name);
     const [quizDuration, setQuizDuration] = useState(props.location.state.duration);
     const [errMsg, setErrMsg] = useState("");
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         console.log("This is my quiz id", props.location.state.quiz_id)
@@ -126,7 +129,18 @@ const IndividualQuiz = (props) => {
             })
             .catch(err => console.log(err))
     }
-
+    const DeleteQuiz = () => {
+        console.log("hello elvis")
+        // /quiz_delete/<int:quiz_id>
+        fetch(`http://127.0.0.1:5000/quiz_delete/${props.location.state.quiz_id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                history.push("/account");
+                window.location.reload(false);
+            })
+            .catch(err => console.log(err))
+    }
     return (
         <div>
             <h1>{props.location.state.uploader} 's</h1>
@@ -140,8 +154,25 @@ const IndividualQuiz = (props) => {
                     <Form.Label>Quiz Duration</Form.Label>
                     <Form.Control onChange={e => setQuizDuration(e.target.value)} type="text" value={quizDuration} />
                 </Col>
-                <Col sm="4">
+                <Col sm="2">
                     <Button onClick={() => SaveDetails()} className="pull-right" variant="success">Save Quiz</Button>{' '}
+                </Col>
+                <Col sm="2">
+                    <Button onClick={() => handleShow()} variant="danger"> <FontAwesomeIcon icon={faTrash}/> </Button>{' '}
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Delete Quiz?</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to delete this entire quiz?</Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="danger" onClick={() => DeleteQuiz()}>
+                            Confirm Delete
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Col>
             </Row>
             <Row>
