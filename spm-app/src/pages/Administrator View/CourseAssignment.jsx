@@ -15,6 +15,7 @@ function CourseAssignment() {
     const [enrollmentRequest, setEnrollmentRequest] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [stateChange, setStateChange] = useState(0)
+    
     function classChange() {
         setStateChange(stateChange+1)
     }

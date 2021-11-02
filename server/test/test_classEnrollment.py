@@ -48,8 +48,8 @@ class testClassEnrollment(TestApp):
         data = self.client.get(f"/enrolment/{1}/{1}")
         insertedStudents = data.json["data"]
 
-        self.assertEqual(insertedStudents['0']['staff_username'], 'coreyroberts')
-        self.assertEqual(insertedStudents['1']['staff_username'], 'hello')
+        self.assertEqual(insertedStudents[0]['staff_username'], 'coreyroberts')
+        self.assertEqual(insertedStudents[1]['staff_username'], 'hello')
     
 
     def testGetClassNumber(self):

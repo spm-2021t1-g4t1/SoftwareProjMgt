@@ -4,6 +4,8 @@ import Header from '../../component/Header.jsx';
 import ApprovalList from './ApprovalList.jsx';
 import CourseAssignment from './CourseAssignment.jsx';
 import CourseListAdmin from './CourseListAdmin.jsx';
+import AvaliableCourse from "./AvaliableCourse.jsx"
+
 // import '../App.css';
 
 import React, { useEffect, useState } from 'react'
@@ -41,6 +43,7 @@ const AdminHome = ({handleLogout}) => {
                 >
               <main className = 'App-body'>
                 {/* <Route path= "/Administrator/Dashboard" compents={Home} exact /> */}
+                <Route path = '/Administrator/Course/list' component = {AvaliableCourse} exact/>
                 <Route path = '/Administrator/Course/unassigned' component = {CourseAssignment} exact/>
                 <Route path = '/Administrator/Course/enroldates' component = {CourseListAdmin} exact/>
                 <Route path = '/Administrator/EngineerList' component = {EngineerDetails} exact/>
