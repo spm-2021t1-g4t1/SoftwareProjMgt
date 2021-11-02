@@ -46,8 +46,8 @@ const Course = () => {
         <BrowserRouter>
 
             <div>
-                <div className='courseInfo-Banner'>
-                    <h2 className='courseName-Banner'>{courseDetailArr['course_name']}</h2>
+                <div className='container-fluid my-3'>
+                    <h1 className='courseName-Banner'>{courseDetailArr['course_name']}</h1>
                 </div>
                 <div className= 'd-flex justify-content-between row'>
                     <Route path='/course/:courseid/:classno/overview' exact>
