@@ -9,3 +9,4 @@ from model.question import *
 from model.quizoptions import *
 from model.staff import *
 from model.course_completion import *
+from model.final_quiz_attempts import *
