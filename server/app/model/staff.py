@@ -31,7 +31,8 @@ class staff(db.Model):
         # print(staffDAO)
         login_staff = {
             "staff_username": staffDAO.staff_username,
-            "role": staffDAO.role
+            "role": staffDAO.role,
+            "staff_name": staffDAO.staff_name,
         }
         return {'data': login_staff}
 

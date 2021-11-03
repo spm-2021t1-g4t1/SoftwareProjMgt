@@ -23,7 +23,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = configstr
 
 
 @app.route("/login/<string:username>")
-def get_staff_by_username(username):
+def login_staff_by_username(username):
     return staff.get_staff_by_username(username)
 
 
@@ -36,6 +36,10 @@ def list_of_staff():
 @app.route('/staff/engineers')
 def list_of_engineers():
     return staff.get_engineerList()
+
+@app.route('/staff/<string:username>')
+def get_staff_by_username(username):
+    return staff.get_staff_by_username(username)
 
 ############# Class Enrolment ######################################
 
