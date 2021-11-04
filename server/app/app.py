@@ -11,7 +11,7 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 if platform.system() == "Darwin":
     configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -24,7 +24,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = configstr
 
 
 @app.route("/login/<string:username>")
-def get_staff_by_username(username):
+def login_staff_by_username(username):
     return staff.get_staff_by_username(username)
 
 
@@ -38,6 +38,10 @@ def list_of_staff():
 @app.route('/staff/engineers')
 def list_of_engineers():
     return staff.get_engineerList()
+
+@app.route('/staff/<string:username>')
+def get_staff_by_username(username):
+    return staff.get_staff_by_username(username)
 
 ############# Class Enrolment ######################################
 
@@ -86,8 +90,14 @@ def ApproveEnrolment():
         data['staff_username'], data['course_id'], data['class_no'])
     return data
 
-############# eligibility ######################################
 
+@app.route("/enrolment/enrol", methods=["POST"])
+def enrolDirect():
+    data = request.json
+    classEnrolment.enrollToClass(data['staff_username'], data['course_id'], data['class_no'])
+    return data
+
+############# eligibility ######################################
 
 @app.route('/eligiblity/<int:course_id>/<string:staff_username>')
 def getStaffCompletion(course_id, staff_username):
@@ -101,6 +111,33 @@ def getStaffCompletion(course_id, staff_username):
     if len(prereqCourses) == 0:
         return {"eligiblity": True}
     return {"eligiblity": False}
+
+@app.route('/eligibility/<int:course_id>')
+def getEligibleStaff(course_id):
+    prereqCourses = course.get_prerequisite_courses(course_id)['data']
+    result = []
+
+    # get set of students who have completed all prerequisites
+    if len(prereqCourses) > 0:
+        prereq = prereqCourses[0]
+        result = course_completion.getCompletionByCourse(prereq)
+    for prereq in prereqCourses[1:]:
+        studentsCompleted = course_completion.getCompletionByCourse(prereq)
+        result = list(set(result) & set(studentsCompleted))
+
+    # remove students who have completed course, or are already enrolled in a class of this course 
+    alreadyCompleted = course_completion.getCompletionByCourse(course_id)
+    for student in alreadyCompleted:
+        if student in result:
+            result.remove(student)
+    
+    alreadyEnrolled = classEnrolment.getClasslistByCourse(course_id)['data']
+    
+    for student in alreadyEnrolled:
+        if student["staff_username"] in result:
+            result.remove(student["staff_username"])
+
+    return {"data": result}
 
 @app.route("/eligibility/final_quiz/<int:course_id>/<int:class_no>/<string:staff_username>")
 def final_quiz_eligiblity(course_id, class_no, staff_username):
