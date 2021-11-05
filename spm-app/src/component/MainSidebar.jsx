@@ -20,29 +20,33 @@ const MainSidebar = () => {
                 <Menu iconShape="circle">
                     <MenuItem icon={<FaHome />}>
                         Dashboard
-                        <Link to="/" />
+                        <Link to="/Engineer/" />
                     </MenuItem>
                     <SubMenu title="Course" icon={<FaBookReader />}>
                         <MenuItem>
                             Catalog
-                            <Link to="/catalog" />
+                            <Link to="/Engineer/catalog" />
                         </MenuItem>
                         <MenuItem>
-                            Course
-                            <Link to="/course" />
+                            Enrolled course
+                            <Link to="/Engineer/course" />
+                        </MenuItem>
+                        <MenuItem>
+                            Teaching Course
+                            <Link to="/Engineer/trainer" />
                         </MenuItem>
                     </SubMenu>
                     <MenuItem icon={<FaComment />}>
                         Forum
-                        <Link to="/" />
+                        <Link to="/Engineer/" />
                     </MenuItem>
                     <MenuItem icon={<FaUser />}>
                         Account
-                        <Link to="/account" />
+                        <Link to="/Engineer/account" />
                     </MenuItem>
                     <MenuItem icon={<FaCommentDots />}>
                         Mesages
-                        <Link to="/" />
+                        <Link to="/Engineer/" />
                     </MenuItem>
                 </Menu>
             </SidebarContent>

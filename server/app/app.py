@@ -247,13 +247,6 @@ def get_unassigned_lessons():
     unsorted = classes.get_unassignedClass()
     return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
 
-
-
-@app.route('/class/get_futureClass')
-def get_futureClass():
-    unsorted = classes.get_futureClass()
-    return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
-
 @app.route('/class/assign', methods=['POST'])
 def assign_trainer():
     return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
@@ -263,7 +256,6 @@ def get_futureClass():
     unsorted = classes.get_futureClass()
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
 
-
 @app.route('/class/trainer/modify', methods=['POST'])
 def modify_trainer():
     data = request.get_json()
@@ -271,9 +263,9 @@ def modify_trainer():
     return response
 
 @app.route('/class/<string:staff_username>/get_assignedClass')
-def get_unassigned_lessons(staff_username):
+def get_assignedClass(staff_username):
     unsorted = classes.get_trainerAssignedClass(staff_username)
-    return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
+    return {'data': unsorted}
 
 @app.route('/class/setSelfEnrolDates', methods=['POST'])
 def update_classObj():

@@ -5,7 +5,7 @@ import ViewEngineerDetails from './Administrator View/EngineerDetails';
 const Home = () => {
     return (
         <div>
-            <ViewEngineerDetails />
+            DashBoard
         </div>
     )
 }

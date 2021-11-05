@@ -1,14 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Button} from 'react-bootstrap';
-import { useParams, Link } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Table } from 'react-bootstrap';
 import { MdArrowBack} from "react-icons/md";
 
 import SearchBox from '../../component/SearchBox';
 
 function ViewClassList() {
-
+    const history = useHistory()
     const courseid = useParams().courseid
     const classno = useParams().classno
 
@@ -37,11 +37,9 @@ function ViewClassList() {
 
     return (
         <div>
-            <Link to={`/Administrator/Course/list`}>
-                <Button variant ="outline-primary" >
+            <Button onClick = {() => history.goBack()} variant ="outline-primary" >
                     <MdArrowBack />
-                </Button>
-            </Link>
+            </Button>
             <h1>Class List</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
@@ -52,6 +50,7 @@ function ViewClassList() {
                         <th>Role</th>
                         <th>Department</th>
                         <th>Current Designation</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -74,10 +73,8 @@ function ViewClassList() {
                                     <td>{val.role}</td>
                                     <td>{val.department}</td>
                                     <td>{val.current_designation}</td>
-                                    
+                                    <td></td>
                                 </tr>
-
-                            
                         )
                     })
                     :   <tr className = 'table-secondary'>
