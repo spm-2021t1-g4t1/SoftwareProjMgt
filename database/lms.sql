@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `end_time` time NOT NULL,
   `class_size` int NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `selfenrol_start` date DEFAULT NULL,
+  `selfenrol_end` date DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
   KEY `fk_1` (`course_id`),
   KEY `class_fk_2` (`trainer_name`)
@@ -63,19 +65,19 @@ CREATE TABLE IF NOT EXISTS `classes` (
 -- Dumping data for table `classes`
 --
 
-INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`) VALUES
-(1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs'),
-(2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma'),
-(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs'),
-(2, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jackma'),
-(3, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(4, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(5, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(6, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL);
+INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`, `selfenrol_start`,`selfenrol_end`) VALUES
+(1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', NULL, NULL),
+(2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma', NULL, NULL),
+(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, NULL, NULL),
+(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01'),
+(2, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
+(3, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(4, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
+(5, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
+(6, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -363,6 +365,30 @@ INSERT INTO `lesson_quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `final_quiz_attempts`
+--
+
+DROP TABLE IF EXISTS `final_quiz_attempts`;
+CREATE TABLE IF NOT EXISTS `final_quiz_attempts` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `staff_username` varchar(255) NOT NULL,
+  `quiz_score` int NOT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`staff_username`,`quiz_score`),
+  KEY `staff_username_fk1` (`staff_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `final_quiz_attempts`
+--
+
+INSERT INTO `final_quiz_attempts` (`course_id`, `class_no`, `staff_username`, `quiz_score`) VALUES
+(2, 1, 'darrelwilde', 89);
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quiz_options`
 --
 
@@ -519,6 +545,13 @@ ALTER TABLE `lesson_materials`
 ALTER TABLE `lesson_quiz_attempts`
   ADD CONSTRAINT `fk8` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
   ADD CONSTRAINT `staff_username_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
+
+--
+-- Constraints for table `final_quiz_attempts`
+--
+ALTER TABLE `final_quiz_attempts`
+  ADD CONSTRAINT `final_quiz_attempt_fk` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`),
+  ADD CONSTRAINT `final_quiz_attempt_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
 
 --
 -- Constraints for table `quiz_questions`

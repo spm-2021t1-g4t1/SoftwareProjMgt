@@ -9,6 +9,7 @@ const Login = ({setUser}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrMsg("");
         if (!username) return;
         
         try {
@@ -20,10 +21,10 @@ const Login = ({setUser}) => {
                 if (response.data.data) {
                     localStorage.setItem('user', JSON.stringify(response.data.data));
                     setUser(response.data.data)
-                    setErrMsg("");
+                    
                     switch (response.data.data.role) {
-                        case "admin": 
-                            history.push("Administrator");
+                        case "Administrator": 
+                            history.push("/Administrator");
                             break;                        
                         default: history.push("/");
                     }
