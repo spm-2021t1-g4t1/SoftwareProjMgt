@@ -7,13 +7,18 @@ const CourseCard = (prop) => {
     // console.log('prop')
 
     const courseSchema = prop.courseSchema
-    const prerequisiteCourse = courseSchema.prerequisite_courses
+    let hasPrerequisites = false
+    let prerequisiteCourse = []
+    if (courseSchema.prerequisite_courses) {
+        hasPrerequisites = courseSchema.prerequisite_courses.length > 0
+        prerequisiteCourse = courseSchema.prerequisite_courses
+    }
 
     console.log(courseSchema)
 
     const [stateChange, setStateChange] = useState(0)
     const [inQueue, setInQueue] = useState([])
-    const hasPrerequisites = courseSchema.prerequisite_courses.length > 0
+    
     // console.log(hasPrerequisites)
     function classChange() {
         setStateChange(stateChange+1)

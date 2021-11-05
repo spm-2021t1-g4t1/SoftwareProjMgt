@@ -247,13 +247,14 @@ def get_unassigned_lessons():
     unsorted = classes.get_unassignedClass()
     return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
 
-
+@app.route('/class/assign', methods=['POST'])
+def assign_trainer():
+    return {'data': sorted(unsorted['data'], key=lambda x: x['course_id'])}
 
 @app.route('/class/get_futureClass')
 def get_futureClass():
     unsorted = classes.get_futureClass()
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
-
 
 @app.route('/class/trainer/modify', methods=['POST'])
 def modify_trainer():
@@ -261,11 +262,58 @@ def modify_trainer():
     response = classes.modifyTrainer(data['course_id'], data['class_no'], data['staff_username'])
     return response
 
+@app.route('/class/<string:staff_username>/get_assignedClass')
+def get_assignedClass(staff_username):
+    unsorted = classes.get_trainerAssignedClass(staff_username)
+    return {'data': unsorted}
+
 @app.route('/class/setSelfEnrolDates', methods=['POST'])
 def update_classObj():
     data = request.get_json()
     response = classes.setSelfEnrolDates(data)
     return response
+
+############# Class Result ################################
+
+@app.route("/class_result/<int:course_id>/<int:class_no>")
+def class_result(course_id, class_no):
+    returnJSON = {'data': []}
+    list_of_enrolled_students = classEnrolment.getClasslist(course_id, class_no)['data']
+    list_of_lessons = lesson.get_allLessonByClass(course_id, class_no)['data']
+    for each_student in list_of_enrolled_students:
+        staff_username = each_student['staff_username']
+        quiz_results = []
+        for each_lesson in list_of_lessons:
+            lesson_no = each_lesson['lesson_no']
+            quiz_attempt = lesson_quiz_attempts.get_specificLessonQuizAttempt(course_id, class_no, lesson_no, staff_username)
+            if quiz_attempt['code'] == 200:
+                quiz_results.append(
+                    {
+                        "course_id": course_id,
+                        "class_no": class_no,
+                        "lesson_no" : lesson_no,
+                        "quiz_score": quiz_attempt['data']['quiz_score']
+                    }
+                )
+            else:
+                quiz_results.append(
+                    {
+                        "course_id": course_id,
+                        "class_no": class_no,
+                        "lesson_no" : lesson_no,
+                        "quiz_score": None
+                    }
+                )
+            final_quiz_result = final_quiz_attempts.get_specificFinalQuizAttempt(course_id, class_no, staff_username)
+            final_quiz_score = final_quiz_result['data']['quiz_score'] if final_quiz_result['code'] == 200 else None
+        returnJSON['data'].append({
+            "staff_username": staff_username,
+            "lesson_quiz_results": quiz_results,
+            "final_quiz_result": final_quiz_score
+        })
+    return returnJSON
+
+
 
 ############# Lesson ######################################
 
@@ -353,6 +401,7 @@ def exam(course_id, class_no, staff_username):
 #     return quizResult
 
 ############# Quiz ######################################
+
 
 
 @app.route("/quiz", methods=["POST", "GET"])

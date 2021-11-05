@@ -3,7 +3,6 @@ import { BrowserRouter, Route, useHistory, Redirect } from "react-router-dom"
 import LearnerHome from './pages/EngineerView/LearnerHome';
 import Login from './pages/Login';
 import AdminHome from './pages/Administrator View/AdminHome';
-import TrainerHome from './pages/EngineerView/TrainerHome';
 
 import './App.css';
 
