@@ -82,11 +82,9 @@ function AssignEngineerForm(prop) {
     
     return (
         <div>
-            <Link to={`/Administrator/Course/unassigned`}>
-                <Button variant ="outline-primary" >
-                    <MdArrowBack />
-                </Button>
-            </Link>
+            <Button onClick = {() => history.goBack()} variant ="outline-primary" >
+                <MdArrowBack />
+            </Button>
             <h1>Assign Engineer</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
