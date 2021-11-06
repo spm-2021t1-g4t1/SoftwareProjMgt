@@ -16,6 +16,7 @@ class classEnrolment(db.Model):
 
     def json(self):
         return {
+            "staff_name" : self.staff.staff_name,
             "staff_username": self.staff_username,
             "course_id": self.course_id,
             "class_no": self.class_no,
