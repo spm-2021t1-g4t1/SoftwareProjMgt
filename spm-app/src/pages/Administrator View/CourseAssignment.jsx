@@ -15,6 +15,16 @@ function CourseAssignment() {
     const [enrollmentRequest, setEnrollmentRequest] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [stateChange, setStateChange] = useState(0)
+    const [classesByCourse, setClassesByCourse] = useState([])
+
+    const groupBy = key => array =>
+        array.reduce((objectsByKeyValue, obj) => {
+            const value = obj[key];
+            objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+            return objectsByKeyValue;
+        }, {});
+    
+    const groupByCourseid = groupBy('course_id')
     
     function classChange() {
         setStateChange(stateChange+1)
@@ -24,19 +34,33 @@ function CourseAssignment() {
     useEffect(() => {fetch(endpoint).then(
         response => response.json()
         .then(data => {
-            console.log(data)
+            // console.log(data)
             const ERArr = data.data
             setEnrollmentRequest(ERArr)
+
+            // group classes by course_id
+            const classesArr = []
+            const groupedclasses = groupByCourseid(ERArr)
+
+            // foreach object in groupedClasses, push to classesArr
+            Object.keys(groupedclasses).map(function(key) {
+                classesArr.push(groupedclasses[key])
+            })
+            // console.log(classesArr)
+            setClassesByCourse(classesArr)
             
         })
     ).catch()
     }, [stateChange])
+
 
     const assignTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
           Assign
         </Tooltip>
     );
+
+    
 
     return (
         <BrowserRouter>
@@ -48,8 +72,8 @@ function CourseAssignment() {
                 <Table hover responsive hover variant="light" className = 'admin-table' >
                     <thead>
                         <tr>
-                            <th>Course Name</th>
-                            <th>Class No</th>
+                            <th className = 'text-center'>Class No</th>
+                            <th className = 'text-center'>Enrollment Period</th>
                             <th className = 'text-center' >Dates</th>
                             <th className = 'text-center'>Timing</th>
                             <th></th>
@@ -58,42 +82,59 @@ function CourseAssignment() {
 
                     <tbody>
 
-                        {enrollmentRequest.filter((val) => {
-                            if (searchTerm === "") {
-                                return val
-                            } else if (val.course_name.toLowerCase().includes(searchTerm.toLowerCase())) {
-                                return val
-                            }
-                            return null
-                        }).map((val) => {
-                            
-                            const start_time = val.start_time.substring(0, (val.start_time.length - 3))
-                            const end_time = val.end_time.substring(0, (val.end_time.length - 3))
+                        
+                        
+                        {classesByCourse.filter((val) => {
+                                console.log(val[0]['course_name'])
+                                if (searchTerm === "") {
 
-                            return (
-                                <tr>
-                                    <td className = 'align-middle' >{val.course_name}</td>
-                                    <td className = 'align-middle text-center' >{val.class_no}</td>
-                                    <td className = 'text-center'>
-                                        {val.start_date} <br /> - <br /> {val.end_date}
-                                    </td>
-                                    <td className = 'text-center mx-2'>
-                                        {start_time} <br /> - <br /> {end_time}
-                                    </td>
-                                    <td className = 'align-middle' >
-                                    <OverlayTrigger
-                                        placement="left"
-                                        delay={{ show: 100, hide: 400 }}
-                                        overlay={assignTooltip}
-                                    >
-                                        <Link to={`/Administrator/${val.course_id}/${val.class_no}/assign`}><Button className ='mx-1' size="sm" variant = 'outline-primary'>
-                                            <MdAssignment />
-                                        </Button></Link>
-                                    </OverlayTrigger>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                                    console.log(val)
+                                    return val
+                                } else if (val[0]['course_name'].toLowerCase().includes(searchTerm.toLowerCase())) {
+                                    console.log(val)
+
+                                    return val
+                                }
+                                return null
+                            }).map((val) => {
+                                return (
+                                    <React.Fragment>
+                                    <tr className = 'table-secondary'>
+                                        <td className = 'text-center' colSpan="5"><h4>{val[0]['course_name']}</h4></td>
+                                    </tr>
+                                    {val.map(classinfo => {
+                                    console.log(classinfo)
+
+                                    return(
+                                        <tr>
+                                        <td className = 'align-middle text-center'>{classinfo['class_no']}</td>
+                                        <td className = 'text-center'>
+                                            {classinfo['selfenrol_start']} <br /> - <br /> {classinfo['selfenrol_end']}
+                                        </td>
+                                        <td className = 'text-center'>
+                                            {classinfo['start_date']} <br /> - <br /> {classinfo['end_date']}
+                                        </td>
+                                        <td className = 'text-center mx-2'>
+                                        {classinfo['start_time']} <br /> - <br /> {classinfo['end_time']}
+                                        </td>
+                                        <td className = 'align-middle' >
+                                        <OverlayTrigger
+                                            placement="left"
+                                            delay={{ show: 100, hide: 400 }}
+                                            overlay={assignTooltip}
+                                        >
+                                            <Link to={`/Administrator/${classinfo['course_id']}/${classinfo['class_no']}/assign`}><Button className ='mx-1' size="sm" variant = 'outline-primary'>
+                                                <MdAssignment />
+                                            </Button></Link>
+                                        </OverlayTrigger>
+                                        </td>
+                                    </tr>
+                                    )
+                            })}
+                                </React.Fragment>
+                                )
+                            })}
+                
                     </tbody>
                 </Table>
             </div>
