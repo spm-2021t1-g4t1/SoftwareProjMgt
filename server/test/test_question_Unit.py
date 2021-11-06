@@ -15,6 +15,21 @@ class TestApp(flask_testing.TestCase):
 
     def setUp(self):
         db.create_all()
+        q1 = Question(
+            qid=1,
+            ques_id=1,
+            question="How is SPM IS212 doing today for YYC?",
+            question_type="mcq",
+        )
+        q2 = Question(
+            qid=1,
+            ques_id=2,
+            question="SPM TRUUE FALSE CHECKER",
+            question_type="tf",
+        )
+        db.session.add(q1)
+        db.session.add(q2)
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
@@ -23,14 +38,6 @@ class TestApp(flask_testing.TestCase):
 
 class TestQuestionClass(TestApp):
     def test_get_courseQues(self):
-        aQuestion = Question(
-            qid=1,
-            ques_id=1,
-            question="How is SPM IS212 doing today for YYC?",
-            question_type="mcq",
-        )
-        db.session.add(aQuestion)
-        db.session.commit()
         data = Question.get_courseQues(1)
         self.assertEqual(
             data["data"],
@@ -39,30 +46,36 @@ class TestQuestionClass(TestApp):
                     "qid": 1,
                     "ques_id": 1,
                     "question": "How is SPM IS212 doing today for YYC?",
+                    "question_option": [],
                     "question_type": "mcq",
-                }
+                },
+                {
+                    "qid": 1,
+                    "ques_id": 2,
+                    "question": "SPM TRUUE FALSE CHECKER",
+                    "question_option": [],
+                    "question_type": "tf",
+                },
             ],
         )
+        self.assertEqual(len(data["data"]), 2)
 
     def test_add_courseQuestion(self):
-        Question.add_courseQuestion(
-            1, 1, "How is SPM IS212 doing today for YYC?", "mcq"
-        )
-        data = Question.get_a_question(1, 1)
+        Question.add_courseQuestion(1, 3, "xxxx_test", "mcq")
+        data = Question.get_a_question(1, 3)
         self.assertEqual(
             data["data"],
             {
                 "qid": 1,
-                "ques_id": 1,
-                "question": "How is SPM IS212 doing today for YYC?",
+                "ques_id": 3,
+                "question": "xxxx_test",
+                "question_option": [],
                 "question_type": "mcq",
             },
         )
+        self.assertEqual(data["code"], 200)
 
     def test_update_specificQuestion(self):
-        Question.add_courseQuestion(
-            1, 1, "How is SPM IS212 doing today for YYC?", "mcq"
-        )
         Question.update_specificQuestion(
             1, 1, "How do we ensure that the workstation is switched on??"
         )
@@ -73,19 +86,12 @@ class TestQuestionClass(TestApp):
                 "qid": 1,
                 "ques_id": 1,
                 "question": "How do we ensure that the workstation is switched on??",
+                "question_option": [],
                 "question_type": "mcq",
             },
         )
 
     def test_get_a_question(self):
-        aQuestion = Question(
-            qid=1,
-            ques_id=1,
-            question="How is SPM IS212 doing today for YYC?",
-            question_type="mcq",
-        )
-        db.session.add(aQuestion)
-        db.session.commit()
         data = Question.get_a_question(1, 1)
         self.assertEqual(
             data["data"],
@@ -93,12 +99,12 @@ class TestQuestionClass(TestApp):
                 "qid": 1,
                 "ques_id": 1,
                 "question": "How is SPM IS212 doing today for YYC?",
+                "question_option": [],
                 "question_type": "mcq",
             },
         )
         self.assertEqual(data["code"], 200)
 
-    
 
 if __name__ == "__main__":
     unittest.main()

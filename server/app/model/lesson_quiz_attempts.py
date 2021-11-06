@@ -30,6 +30,7 @@ class lesson_quiz_attempts(db.Model):
             return {'data': [one_attempt.json() for one_attempt in attempts], 'code': 200}
         except:
             return {'data': None, 'code': 404}
+
     @classmethod
     def get_specificLessonQuizAttempt(cls, course_id, class_no, lesson_no, staff_username):
         try:
@@ -38,3 +39,25 @@ class lesson_quiz_attempts(db.Model):
         except:
             return {'data': None, 'code': 404}
 
+
+    @classmethod
+    def update_lesson_quizscore(cls, course_id, class_no, lesson_no, staff_username, quiz_score):
+        if(cls.query.filter_by(course_id=course_id, class_no=class_no,lesson_no=lesson_no,staff_username=staff_username).first()):
+            try:
+                row_to_update = cls.query.filter_by(course_id=course_id, class_no=class_no,lesson_no=lesson_no,staff_username=staff_username).first()
+                row_to_update.quiz_score = quiz_score
+                db.session.commit()
+                return {'data': quiz_score, 'code': 200}
+            except:
+                return {'data': None, 'code': 500}
+        else:
+            lesson_quiz_attempts(
+                course_id = course_id,
+                class_no = class_no,
+                lesson_no = lesson_no,
+                staff_username = staff_username,
+                quiz_score = quiz_score
+            )
+            db.session.add(lesson_quiz_attempts)
+            db.session.commit()
+            return {'data': quiz_score, 'code': 200}

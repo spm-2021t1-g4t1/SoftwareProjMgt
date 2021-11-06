@@ -1,4 +1,5 @@
 from db import db
+from json import dumps, loads
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson(db.Model):
@@ -40,6 +41,14 @@ class lesson(db.Model):
         lessonobj = cls.query.filter_by(course_id=course_id,class_no=class_no,lesson_no=lesson_no).first()
         return {'data': lessonobj.json()}
 
+    @classmethod
+    def get_all_lessons(cls):
+        lessons = cls.query.all()
+        return {
+            "data": [loads(dumps(lesson.json(), default=str)) for lesson in lessons],
+            "code": 200,
+        }
+
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson_materials(db.Model):
     __tablename__ = 'lesson_materials'
@@ -48,6 +57,7 @@ class lesson_materials(db.Model):
     lesson_no = db.Column(db.Integer,  primary_key=True)
     course_material_title = db.Column(db.String(255), primary_key=True)
     link = db.Column(db.String(255))
+    quiz_assigned_id = db.Column(db.Integer)
 
     __table_args__ = (
         db.ForeignKeyConstraint(
@@ -61,8 +71,51 @@ class lesson_materials(db.Model):
             'class_no':self.class_no,
             'lesson_no':self.lesson_no,
             'course_material_title':self.course_material_title,
-            'link':self.link
+            'link':self.link,
+            'quiz_assigned_id': self.quiz_assigned_id
         }
+
+    @classmethod
+    def get_lesson_of_quiz(cls, quiz_assigned_id):
+        if(cls.query.filter_by(quiz_assigned_id=quiz_assigned_id).first()):
+            data = cls.query.filter_by(quiz_assigned_id=quiz_assigned_id).first()
+            return {
+                    "data": data.json(),
+                    "code": 200,
+                }
+        else:
+            return {
+                    "data": None,
+                    "code": 200,
+                }
+    @classmethod
+    def get_quiz_for_lesson(cls, course_id, class_no, lesson_no):
+        row_to_take = cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first()
+        return row_to_take.quiz_assigned_id
+                
+
+    @classmethod
+    def save_quiz_to_lesson(cls, course_id, class_no, lesson_no, quiz_assigned_id):
+        if(cls.query.filter_by(quiz_assigned_id=quiz_assigned_id).first()):
+            rows_to_update = cls.query.filter_by(quiz_assigned_id=quiz_assigned_id)
+            for row in rows_to_update:
+                row.quiz_assigned_id = 0
+            lessons_to_update = cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no)
+            for lesson in lessons_to_update:
+                lesson.quiz_assigned_id = quiz_assigned_id
+            db.session.commit()
+            return {
+                "data": cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first().json(),
+                "code": 200,
+            }
+        else:
+            lesson = cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first()
+            lesson.quiz_assigned_id = quiz_assigned_id
+            db.session.commit()
+            return {
+                "data": cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first().json(),
+                "code": 200,
+            }
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson_completion(db.Model):
