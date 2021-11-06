@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Container } from 'react-bootstrap';
+import { useHistory } from "react-router-dom";
 
 const SectionContainer = (props) => {
-    console.log(props.data)
 
     // eslint-disable-next-line
+    const history = useHistory()
     const [sectionArrs, setSectionArrs] = useState(props.data)
     const sectionNumber = props.number
     const [isCompleted, setIsCompleted] = useState(false)
     const [modalShow, setModalShow] = React.useState(false);
-
+    const [secInfo, setssecInfo] = useState("")
 
     // console.log(props.data.lesson_materials)
     function markLessonAsComplete() {
@@ -37,6 +38,24 @@ const SectionContainer = (props) => {
         setIsCompleted(sectionNumber <= props.completedLesson)
     },[props.completedLesson])
 
+    useEffect(() => {
+        console.log(props.data.course_id, props.data.class_no, props.data.lesson_no)
+    },[])
+    // return(
+    //     <Container className='my-2'>
+
+    //     </Container>
+    // )
+
+    const goToQuiz = () => {
+        const goTo = {
+            pathname: "/TakeQuiz" ,
+            state: [props.data.course_id, props.data.class_no, props.data.lesson_no]
+        }
+        history.push(goTo)
+        window.location.reload(false);
+    }
+    
     return (
         <Container className='my-2'>
             <div className="border border-info container-fluid container-bg">
@@ -86,7 +105,7 @@ const SectionContainer = (props) => {
                     </div>
 
                     <div className='my-auto'>
-                        <Button className = 'm-1'varient='primary'>Take Quiz</Button>
+                            <Button onClick={() => goToQuiz()} className = 'm-1'varient='primary'>Take Quiz</Button>
                     </div>
                 </Container>
             </Container>

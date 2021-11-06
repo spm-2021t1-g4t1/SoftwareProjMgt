@@ -318,7 +318,33 @@ def class_result(course_id, class_no):
 
 
 ############# Lesson ######################################
+@app.route("/lesson")
+def get_all_lessons():
+    return lesson.get_all_lessons()
 
+@app.route("/get_lesson_of_quiz/<int:quiz_assigned_id>")
+def get_lesson_of_quiz(quiz_assigned_id):
+    return lesson_materials.get_lesson_of_quiz(quiz_assigned_id)
+
+@app.route("/update_assign_quiz/<int:course_id>/<int:class_no>/<int:lesson_no>/<int:quiz_assigned_id>")
+def assign_quiz_to_lesson(course_id, class_no, lesson_no, quiz_assigned_id):
+    return lesson_materials.save_quiz_to_lesson(course_id, class_no, lesson_no, quiz_assigned_id)
+
+@app.route("/get_assigned_quiz/<int:course_id>/<int:class_no>/<int:lesson_no>")
+def get_quiz_for_lesson(course_id, class_no, lesson_no):
+    print(course_id, class_no, lesson_no)
+    
+    result = lesson_materials.get_quiz_for_lesson(course_id, class_no, lesson_no)
+   
+    quiz_info = Quiz.get_one_quiz(result)
+    quiz_data = quiz_info['data']
+    return {
+            "data": quiz_data,
+            "code": 200
+        }
+@app.route("/update_quiz_score/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>/<int:quiz_score>")
+def update_quiz_score(course_id, class_no, lesson_no, staff_username, quiz_score):
+    return lesson_quiz_attempts.update_lesson_quizscore(course_id, class_no, lesson_no, staff_username, quiz_score)
 
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):
@@ -466,21 +492,21 @@ def update_options(quiz_id, ques_id):
     # Question.query.filter_by(qid=quiz_id, ques_id=ques_id).first()
     for i in optionsList:
         x = QuizOptions.get_specificOption(
-            quiz_id=quiz_id, ques_id=ques_id, opts_id=i["opts_id"]
+            quiz_id, ques_id, i["opts_id"]
         )
-        if x["data"] is not None:
+        print(i)
+        if x["code"] == 200:
             QuizOptions.update_quiz_options(
-                i["quiz_id"], i["ques_id"], i["opts_id"], i["is_right"], i["qopt"]
+                quiz_id, ques_id, i["opts_id"], i["is_right"], i["qopt"]
             )
         else:
             QuizOptions.insert_quiz_options(
-                i["quiz_id"], i["ques_id"], i["opts_id"], i["is_right"], i["qopt"]
+                quiz_id, ques_id, i["opts_id"], i["is_right"], i["qopt"]
             )
     return {
         "data": {
             "status": 200,
-            "message": "Questions and Options updated Successfully!",
-            "data": Question.get_a_question(quiz_id, ques_id),
+            "message": "Questions and Options updated Successfully!"
         }
     }
 
@@ -509,7 +535,7 @@ def delele_quiz(quiz_id):
 @app.route("/ques_delete/<int:quiz_id>/<int:ques_id>", methods=["POST", "GET"])
 def delete_questions(quiz_id, ques_id):
     Question.remove_question(quiz_id, ques_id)
-    QuizOptions.remove_all_opt(quiz_id, ques_id)
+    # QuizOptions.remove_all_opt(quiz_id, ques_id)
     return {"data": {"status": 200, "message": "Question Deleted successful"}}
 
 
@@ -517,7 +543,6 @@ def delete_questions(quiz_id, ques_id):
 def save_quiz(quiz_id):
     try:
         data = request.get_json()
-        print(data["duration"])
         Quiz.save_quizName(
             quiz_id,
             data["quiz_name"]
