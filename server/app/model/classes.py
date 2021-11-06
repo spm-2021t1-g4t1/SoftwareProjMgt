@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import collections
 from db import db
 
 #-----------------------------------------------------------------------------------------------------------------------#
@@ -67,8 +68,7 @@ class classes(db.Model):
             "selfenrol_start": str(self.selfenrol_start),
             "selfenrol_end": str(self.selfenrol_end)
         }
-    
-    
+
     def getSelfEnrolDates(self):
         
         return {
@@ -112,3 +112,18 @@ class classes(db.Model):
         db.session.commit()
         return {"data": "Updated"}
 
+    @classmethod    
+    def get_trainerAssignedClass(cls,staff_username):
+        classesObj = cls.query.filter_by(trainer_name= staff_username).all()
+        Classes = [classObj.coursejson() for classObj in classesObj]
+        dicClass = collections.defaultdict(list)
+        classlist = []
+        for Class in Classes:
+            dicClass[Class['course_name']].append(
+                Class
+            )
+
+        for dickey in dicClass:
+            classlist.append({dickey: dicClass[dickey]})
+
+        return classlist

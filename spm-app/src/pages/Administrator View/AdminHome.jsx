@@ -3,8 +3,8 @@ import EngineerDetails from './EngineerDetails.jsx';
 import Header from '../../component/Header.jsx';
 import ApprovalList from './ApprovalList.jsx';
 import CourseAssignment from './CourseAssignment.jsx';
+import AvaliableCourse from "./AvaliableCourse.jsx";
 import CourseListAdmin from './CourseListAdmin.jsx';
-import AvaliableCourse from "./AvaliableCourse.jsx"
 
 // import '../App.css';
 

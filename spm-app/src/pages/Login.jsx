@@ -26,7 +26,7 @@ const Login = ({setUser}) => {
                         case "Administrator": 
                             history.push("/Administrator");
                             break;                        
-                        default: history.push("/");
+                        default: history.push("/Engineer");
                     }
                     
                 }
@@ -46,7 +46,7 @@ const Login = ({setUser}) => {
             case "admin": 
                 history.push("Administrator");
                 break;
-            default: history.push("/");
+            default: history.push("/Engineer");
         }
 
     } 

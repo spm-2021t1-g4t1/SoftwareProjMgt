@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
-import { BrowserRouter, Route } from "react-router-dom"
+import { Route, useParams, useHistory } from "react-router-dom"
+import { Button } from 'react-bootstrap';
+import {  MdArrowBack} from "react-icons/md";
 
 import CourseInfo from './CourseInfo'
 import CourseSidebar from '../../component/CourseSidebar'
 import CourseDetail from '../../component/CourseDetail'
 import Section from './Section'
+import TrainerClassResult from './TrainerClassResult'
 
-const Course = () => {
-    // pull courseId from url
+
+function TrainerCourse() {
+    const history = useHistory()
     const courseid = useParams().courseid
     const classno = useParams().classno
 
@@ -42,24 +45,29 @@ const Course = () => {
 
     
     return (
-        <BrowserRouter>
 
             <div>
+                <Button onClick = {() => history.replace('/Engineer/trainer')} variant ="outline-primary" >
+                    <MdArrowBack />
+                </Button>
                 <div className='container-fluid my-3'>
                     <h1 className='courseName-Banner'>{courseDetailArr['course_name']}</h1>
                 </div>
                 <div className= 'd-flex justify-content-between row'>
-                    <Route path='/course/:courseid/:classno/overview' exact>
+                    <Route path='/Engineer/teaching/:courseid/:classno/overview' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
-                    <Route path='/course/:courseid/:classno/curriculum' exact>
+                    <Route path='/Engineer/teaching/:courseid/:classno/curriculum' exact>
                         <Section/>
                     </Route>
-                    <Route path='/course/:courseid/:classno/forum' exact>
+                    <Route path='/Engineer/teaching/:courseid/:classno/forum' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
-                    <Route path='/course/:courseid/:classno/quiz' exact>
+                    <Route path='/Engineer/teaching/:courseid/:classno/quiz' exact>
                         <CourseInfo data={courseDetailArr} />
+                    </Route>
+                    <Route path='/Engineer/teaching/:courseid/:classno/result' exact>
+                        <TrainerClassResult />
                     </Route>
 
                     <div className='col col-lg-auto'>
@@ -69,9 +77,8 @@ const Course = () => {
                 </div>
             </div>
 
-        </BrowserRouter>
 
     )
 }
 
-export default Course
+export default TrainerCourse
