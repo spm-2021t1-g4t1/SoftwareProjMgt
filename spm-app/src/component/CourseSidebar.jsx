@@ -5,6 +5,8 @@ import { FaBookReader} from "react-icons/fa";
 
 
 const CourseSidebar = () => {
+    console.log(window.location.href.split('/')[4])
+    const boolTeaching = window.location.href.split('/')[4] == 'teaching'
 
     return (
 
@@ -24,10 +26,22 @@ const CourseSidebar = () => {
                         Course Forum
                         <Link to="./forum" />
                     </MenuItem>
-                    <MenuItem>
+                    {boolTeaching
+                    ?<React.Fragment>
+                        <MenuItem>
+                            Manage Quiz
+                            <Link to="./quiz" />
+                        </MenuItem>
+                        <MenuItem>
+                            Class Result
+                            <Link to="./result" />
+                        </MenuItem>
+                    </React.Fragment>
+                    :<MenuItem>
                         Take Quiz
                         <Link to="./quiz" />
                     </MenuItem>
+                    }       
                 </SubMenu>
             </Menu>
             </SidebarContent>
