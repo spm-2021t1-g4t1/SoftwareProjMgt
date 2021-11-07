@@ -338,11 +338,9 @@ def get_quiz_for_lesson(course_id, class_no, lesson_no):
     print(course_id, class_no, lesson_no)
     
     result = lesson_materials.get_quiz_for_lesson(course_id, class_no, lesson_no)
-    print("quiz", result)
    
     quiz_info = Quiz.get_one_quiz(result)
     quiz_data = quiz_info['data']
-    print("quiz data: ", quiz_data)
     return {
             "data": quiz_data,
             "code": 200
