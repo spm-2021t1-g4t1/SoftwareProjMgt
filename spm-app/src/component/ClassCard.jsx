@@ -12,6 +12,8 @@ const ClassCard = (prop) => {
     const [isEligible, setIsEligible] = useState(true)
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     const today  = new Date();
+    const startEnrol = new Date(classSchema.selfenrol_start)
+    const endEnrol = new Date(classSchema.selfenrol_end)
     const [buttonHTML, setButtonHTML] =useState(<a href = {link}> <Button variant="primary">Enter Course</Button></a>)
 
 
@@ -88,10 +90,15 @@ const ClassCard = (prop) => {
         },[])
     
         useEffect(() => {
+            console.log(`${classSchema.course_id} - ${classSchema.class_no}`)
+            console.log(!classSchema.selfenrol_start)
+            console.log(today > startEnrol)
+            console.log(today < endEnrol)
+
             if (!isEligible) {
                 setButtonHTML(<Button variant="secondary" disabled>Not Eligible</Button>)
             }
-            else if (!classSchema.selfenrol_start) {
+            else if ((!classSchema.selfenrol_start) || today < startEnrol || today > endEnrol) {
                 setButtonHTML(<Button variant="secondary" disabled>Class Unavailable</Button>)
             }
             else if (classNum >= classSchema.class_size) {
