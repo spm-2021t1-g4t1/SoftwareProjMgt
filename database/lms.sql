@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 05, 2021 at 07:37 PM
+-- Generation Time: Nov 07, 2021 at 08:50 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -75,16 +75,16 @@ CREATE TABLE IF NOT EXISTS `classes` (
 INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`, `selfenrol_start`, `selfenrol_end`) VALUES
 (1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', NULL, NULL),
 (2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma', NULL, NULL),
-(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma', NULL, NULL),
-(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
-(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
-(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', NULL, NULL),
+(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', '2021-08-01', '2021-08-31'),
+(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-08-01', '2021-08-31'),
+(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 5, NULL, '2021-08-01', '2021-08-31'),
 (1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01'),
-(2, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
-(3, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
-(4, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
-(5, 2, '2022-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
-(6, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL);
+(2, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
+(3, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01'),
+(4, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(5, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
+(6, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 5, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,12 @@ INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
 ('rojinclark', 2, 1),
 ('sallieeast', 2, 1),
 ('sannahrossi', 2, 1),
-('stevejobs', 2, 1);
+('stevejobs', 2, 1),
+('coreyroberts', 6, 1),
+('jackma', 6, 1),
+('rojinclark', 6, 1),
+('sallieeast', 6, 1),
+('sannahrossi', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -310,18 +315,21 @@ INSERT INTO `lesson_completion` (`course_id`, `class_no`, `lesson_no`, `staff_us
 --
 -- Table structure for table `lesson_materials`
 --
-CREATE TABLE `lesson_materials` (
-  `course_id` int(11) NOT NULL,
-  `class_no` int(11) NOT NULL,
-  `lesson_no` int(11) NOT NULL,
+
+DROP TABLE IF EXISTS `lesson_materials`;
+CREATE TABLE IF NOT EXISTS `lesson_materials` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `lesson_no` int NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `link` text NOT NULL,
-  `quiz_assigned_id` int(255) NOT NULL
+  `quiz_assigned_id` int NOT NULL,
+  KEY `fk9` (`course_id`,`class_no`,`lesson_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Dumping data for table `lesson_materials`
 --
-
 
 INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`, `quiz_assigned_id`) VALUES
 (1, 2, 1, '121A', 'www.121a.com', 0),
