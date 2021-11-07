@@ -11,7 +11,7 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 if platform.system() == "Darwin":
     configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -338,9 +338,11 @@ def get_quiz_for_lesson(course_id, class_no, lesson_no):
     print(course_id, class_no, lesson_no)
     
     result = lesson_materials.get_quiz_for_lesson(course_id, class_no, lesson_no)
+    print("quiz", result)
    
     quiz_info = Quiz.get_one_quiz(result)
     quiz_data = quiz_info['data']
+    print("quiz data: ", quiz_data)
     return {
             "data": quiz_data,
             "code": 200

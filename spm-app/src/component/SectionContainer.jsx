@@ -49,7 +49,7 @@ const SectionContainer = (props) => {
 
     const goToQuiz = () => {
         const goTo = {
-            pathname: "/TakeQuiz" ,
+            pathname: "/Engineer/TakeQuiz" ,
             state: [props.data.course_id, props.data.class_no, props.data.lesson_no]
         }
         history.push(goTo)

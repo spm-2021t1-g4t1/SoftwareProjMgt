@@ -37,7 +37,7 @@ const Account = () => {
             response => response.json()
             .then(data => {
                 console.log(data.data)
-                const goTo = {pathname:"/individualQuiz", state: data.data[0]}
+                const goTo = {pathname:"/Engineer/individualQuiz", state: data.data[0]}
                 history.push(goTo)
                 // window.location.reload(false);
             })

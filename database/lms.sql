@@ -393,7 +393,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 
 INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration`) VALUES
 (1, 'AWS_CP1', 'SECTION 1', 'BAKAYARO', '00:00:00'),
-(2, 'AWS_CP2', 'SECTION 2', 'BAKAYARO', '00:00:00');
+(2, 'AWS_CP2', 'SECTION 2', 'BAKAYARO', '00:00:05');
 
 -- --------------------------------------------------------
 
@@ -427,7 +427,20 @@ INSERT INTO `quiz_options` (`qid`, `ques_id`, `opts_id`, `qopt`, `is_right`) VAL
 (1, 3, 3, 'Key Management', 0),
 (1, 4, 1, 'Archive the file', 0),
 (1, 4, 2, 'Delete the file from S3', 0),
-(1, 4, 3, 'Store it in EBS', 1);
+(1, 4, 3, 'Store it in EBS', 1),
+
+(2, 1, 1, 'Increase service limit from AWS Trusted Advisor before launching new instances', 0),
+(2, 1, 2, 'Submit a service limit increase to AWS Support specifying the instance type and region. ', 1),
+(2, 1, 3, 'BOOOOOP', 0),
+(2, 2, 1, 'Load Balancing', 1),
+(2, 2, 2, 'Auto Scaling', 0),
+(2, 2, 3, 'Not sure', 0),
+(2, 3, 1, 'Not sure', 0),
+(2, 3, 2, 'Security Group', 1),
+(2, 3, 3, 'Key Management', 0),
+(2, 4, 1, 'Archive the file', 0),
+(2, 4, 2, 'Delete the file from S3', 0),
+(2, 4, 3, 'Store it in EBS', 1);
 
 -- --------------------------------------------------------
 
@@ -452,7 +465,12 @@ INSERT INTO `quiz_questions` (`qid`, `ques_id`, `question`, `question_type`) VAL
 (1, 1, 'A Company is migrating an application to its AWS environment. The implementation requires the company to deploy up to 40 m4.4xlarge instances. What should a Cloud engineer do prior to launching the instances? ', 'mcq'),
 (1, 2, 'An organization recently expanded its AWS infrastructure for its public website into two regions. US East (Ohio) and ASIA Pacific (Mumbai), to better serve growing demand in Asia. What should the SysOps administrator implement to ensure that users are consistently directed to the best performing region?', 'mcq'),
 (1, 3, 'A SysOps administrator has an Amazon EC2 instance using IPv6. Which VPC feature allows the instance to communicate with the internet but prevents inbound traffic?', 'mcq'),
-(1, 4, 'An Organization has implemented a file gateway to keep copies of users’ home drives in Amazon S3. Which conducting an analysis, an Administrator notice that most files are no longer accessed after 45 days. What is the BEST way for the Administrator to reduce storage costs while continuing to provide access to the files for the users?', 'mcq');
+(1, 4, 'An Organization has implemented a file gateway to keep copies of users’ home drives in Amazon S3. Which conducting an analysis, an Administrator notice that most files are no longer accessed after 45 days. What is the BEST way for the Administrator to reduce storage costs while continuing to provide access to the files for the users?', 'mcq'),
+
+(2, 1, 'A Company is migrating an application to its AWS environment. The implementation requires the company to deploy up to 40 m4.4xlarge instances. What should a Cloud engineer do prior to launching the instances? ', 'mcq'),
+(2, 2, 'An organization recently expanded its AWS infrastructure for its public website into two regions. US East (Ohio) and ASIA Pacific (Mumbai), to better serve growing demand in Asia. What should the SysOps administrator implement to ensure that users are consistently directed to the best performing region?', 'mcq'),
+(2, 3, 'A SysOps administrator has an Amazon EC2 instance using IPv6. Which VPC feature allows the instance to communicate with the internet but prevents inbound traffic?', 'mcq'),
+(2, 4, 'An Organization has implemented a file gateway to keep copies of users’ home drives in Amazon S3. Which conducting an analysis, an Administrator notice that most files are no longer accessed after 45 days. What is the BEST way for the Administrator to reduce storage costs while continuing to provide access to the files for the users?', 'mcq');
 
 -- --------------------------------------------------------
 

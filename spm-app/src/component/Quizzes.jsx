@@ -23,7 +23,7 @@ const Quizzes = ({ quizzes }) => {
             return(
                 <Dropdown.Item key={quiz.quiz_name}>
                     <Link to={{
-                                pathname: "/IndividualQuiz",
+                                pathname: "/Engineer/IndividualQuiz",
                                 state: quiz 
                             }}>
                     <Button variant="outline-secondary" size='lg'  onClick={() => goToQuizDetails(quiz.quiz_id)}>{quiz.quiz_name}</Button>{' '}
