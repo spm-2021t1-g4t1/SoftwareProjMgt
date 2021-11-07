@@ -14,7 +14,7 @@ const CourseCard = (prop) => {
         prerequisiteCourse = courseSchema.prerequisite_courses
     }
 
-    console.log(courseSchema)
+    // console.log(courseSchema)
 
     const [stateChange, setStateChange] = useState(0)
     const [inQueue, setInQueue] = useState([])
@@ -48,10 +48,10 @@ const CourseCard = (prop) => {
     return(
         <div className= 'my-4' > 
             <div className="border border-info container-fluid container-bg">    
-                <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}
+                <h2 className="m-2">{courseSchema.course_id} - {courseSchema.course_name}
                     {hasPrerequisites 
                     ?   <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
-                            <Button className = 'mx-2 'variant = 'outline-secondary'>Prerequisites</Button>
+                            <Button className = 'mx-2 'variant = 'outline-secondary' size = 'sm'>Prerequisites</Button>
                         </OverlayTrigger>
                     : ""
                     }

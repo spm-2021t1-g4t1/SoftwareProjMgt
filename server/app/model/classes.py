@@ -62,14 +62,14 @@ class classes(db.Model):
             "course_name": self.courses.course_name,
             "course_id": self.course_id,
             "class_no": self.class_no,
-            "start_date": str(self.start_date),
-            "end_date": str(self.end_date),
+            "start_date": self.start_date.date(),
+            "end_date": self.end_date.date(),
             "start_time": str(self.start_time),
             "end_time": str(self.end_time),
             "class_size": self.class_size,
             "trainer_name": self.trainer_name,
-            "selfenrol_start": str(self.selfenrol_start),
-            "selfenrol_end": str(self.selfenrol_end)
+            "selfenrol_start": self.selfenrol_start,
+            "selfenrol_end": self.selfenrol_end
         }
 
     def getSelfEnrolDates(self):

@@ -13,6 +13,7 @@ const Catalog = () => {
     const [course_backup, setcourse_backup] = useState([])
     const [courses, setCourses] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
+    const today = new Date()
     
     useEffect(() => {axios.get(endpoint, {
         headers:
