@@ -161,11 +161,14 @@ def get_all_course(staff_username):
     alreadyEnrolledCourses = classEnrolment.getStaffEnrollment(staff_username)
     alreadyCompletedCourses = course_completion.getStaffCompletion(
         staff_username)
+    teachingCourse = classes.get_trainerAssignedClass(staff_username)
     for courseobj in alreadyEnrolledCourses["data"].values():
         course_list.append(courseobj["course_id"])
     for courseobj in alreadyCompletedCourses["data"].values():
         course_list.append(courseobj["course_id"])
-    # print(course_list)
+    for courseobj in teachingCourse:
+        course_list.append(list(courseobj.values())[0][0]["course_id"])
+    print(course_list)
     return course.get_listOfCourse(course_list)
 
 ############# Queue ######################################

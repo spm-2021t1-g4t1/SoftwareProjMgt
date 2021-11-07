@@ -34,23 +34,22 @@ class TestApp(flask_testing.TestCase):
 class testClasssesObj(TestApp):
     def testGetFutureClasses(self):
         res = classes.get_futureClass()
-        print("res", res)
+        # print("res", res)
         expected = {
             'data': [
-                {
-                    'class_no': 1,
-                    'class_size': 40,
-                    'course_id': 2,
-                    'course_name': 'Test Course 2',
-                    'end_date': (datetime.today().date() +  timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S'),
-                    'end_time': 'None',
-                    'start_date': (datetime.today().date() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S'),
-                    'start_time': 'None',
-                    'trainer_name': 'stevejobs',
-                    'selfenrol_start': 'None',
-                    'selfenrol_end': 'None'
-                }
-            ]}
+                {'course_name': 'Test Course 2', 
+                'course_id': 2, 
+                'class_no': 1, 
+                'start_date': (datetime.today() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0), 
+                'end_date': (datetime.today() +  timedelta(days=2)).replace(hour=0, minute=0, second=0, microsecond=0), 
+                'start_time': 'None', 
+                'end_time': 'None', 
+                'class_size': 40, 
+                'trainer_name': 'stevejobs', 
+                'selfenrol_start': None, 
+                'selfenrol_end': None}
+            ]
+        }
         self.assertEqual(res, expected)
 
     def testSetSelfEnrolDates(self):

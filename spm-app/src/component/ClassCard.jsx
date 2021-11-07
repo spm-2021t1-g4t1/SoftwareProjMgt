@@ -10,6 +10,11 @@ const ClassCard = (prop) => {
     const [modalShow, setModalShow] = useState(false);
     const [classNum, setClassNum] = useState(0)
     const [isEligible, setIsEligible] = useState(true)
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const today  = new Date();
+    const startEnrol = new Date(classSchema.selfenrol_start)
+    const endEnrol = new Date(classSchema.selfenrol_end)
+    const [buttonHTML, setButtonHTML] =useState(<a href = {link}> <Button variant="primary">Enter Course</Button></a>)
 
 
 
@@ -65,6 +70,7 @@ const ClassCard = (prop) => {
                     setClassNum(result.message)
         
                 })
+                
                 if (prop.hasPrereq) {
                     const endpoint1 = `http://127.0.0.1:5000/eligiblity/${classSchema.course_id}/darrelwilde`
                     fetch(endpoint1)
@@ -77,46 +83,69 @@ const ClassCard = (prop) => {
                 }
 
 
+
+
             }
-
-
 
         },[])
     
+        useEffect(() => {
+            console.log(`${classSchema.course_id} - ${classSchema.class_no}`)
+            console.log(!classSchema.selfenrol_start)
+            console.log(today > startEnrol)
+            console.log(today < endEnrol)
 
+            if (!isEligible) {
+                setButtonHTML(<Button variant="secondary" disabled>Not Eligible</Button>)
+            }
+            else if ((!classSchema.selfenrol_start) || today < startEnrol || today > endEnrol) {
+                setButtonHTML(<Button variant="secondary" disabled>Class Unavailable</Button>)
+            }
+            else if (classNum >= classSchema.class_size) {
+                setButtonHTML(<Button variant="secondary" disabled>Class Full</Button>)
+            }
+            else if (prop.inQueue.inQueue) {
+                console.log(`${classSchema.class_no} - Withdraw`)
+                setButtonHTML(<Button variant="danger" onClick={() => setModalShow(true)} >Withdraw enrollment</Button>)
+            }
+            else {
+                console.log(`${classSchema.class_no} - Not Self`)
+                setButtonHTML(<Button variant="primary"  onClick = {enrolClass}>Self Enroll</Button>)
+            }
+        },[isEligible,prop.inQueue.inQueue,classNum])
 
     return(
         <div className="border border-info container-fluid container-bg">
             <div className = 'd-flex justify-content-between'>
                 <h2>Class {classSchema.class_no}</h2>
+                {classSchema.selfenrol_start
+                ?<p>Enrolment period: {(new Date(classSchema.selfenrol_start)).toLocaleDateString("en-US", options)} - {(new Date(classSchema.selfenrol_end)).toLocaleDateString("en-US", options)} </p>
+                :<p>Enrolment period: Not Available </p>
+                }
                 <p className = 'class-text'>Slot: {classNum}/{classSchema.class_size}</p>
+                {prop.inQueue.inQueue 
+                ?<p className = 'text-danger' >Awaiting Confirmation </p>
+                : ""
+                }
             </div>
             
-            <div className = 'd-flex justify-content-around'>
+            <div className = 'd-flex justify-content-between'>
                 <Container>
-                    <p className = 'm-1'>Start date: {classSchema.start_date}</p>
-                    <p className = 'm-1'>End date: {classSchema.end_date}</p>
+                    <p className = 'm-1'>Start date: {(new Date(classSchema.start_date)).toLocaleDateString("en-US", options)}</p>
+                    <p className = 'm-1'>End date: {(new Date(classSchema.end_date)).toLocaleDateString("en-US", options)}</p>
                 </Container>  
 
                 <Container>
                     <p className = 'm-1'>Start Time: {classSchema.start_time}</p>
                     <p className = 'm-1'>End Time: {classSchema.end_time}</p>
                 </Container>
-                <Container className = 'my-auto'>
+                <Container className = 'my-auto text-center'>
                     {isCatalog 
-                    ? isEligible
-                        ? prop.inQueue.inQueue 
-                            ? (<p className = 'text-danger' >Awaiting Confirmation </p>)
-                            : (<Button variant="primary"  onClick = {enrolClass}>Self Enroll</Button>)
-                        : (<Button variant="secondary" disabled>Not Eligible</Button>)
+                    ? buttonHTML
                     : (<a href = {link}> <Button variant="primary">Enter Course</Button></a>)}
                 </Container>
+                
             </div>
-            {prop.inQueue.inQueue 
-                ? ( <Container className="d-flex justify-content-end pb-2">
-                    <Button variant="danger" onClick={() => setModalShow(true)} >Withdraw enrollment</Button>
-                </Container>
-                ):''}
             
             <DoubleCheck
                 show={modalShow}
