@@ -20,6 +20,7 @@ class classes(db.Model):
     trainer_name  = db.Column(db.String(255), db.ForeignKey('staff.staff_username'), nullable=True)
     selfenrol_start = db.Column(db.DateTime)
     selfenrol_end = db.Column(db.DateTime)
+    finalquiz_id  = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
     lesson = db.relationship('lesson', backref='classes', lazy = True)
     
     __table_args__ = (
@@ -78,6 +79,16 @@ class classes(db.Model):
             "start": datetime.strftime(self.selfenrol_start, "%Y-%m-%d"), 
             "end": datetime.strftime(self.selfenrol_end, "%Y-%m-%d")
         }
+    
+    def setFinalQuiz(self, qid):
+        self.finalquiz_id = qid
+    
+    @classmethod 
+    def getAllClasses(cls):
+        clslist = cls.query.all()
+        return [
+            a_class.coursejson()
+         for a_class in clslist]
 
     @classmethod
     def setSelfEnrolDates(cls, data):

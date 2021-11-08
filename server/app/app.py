@@ -244,6 +244,14 @@ def get_allCourse():
 
 ############# Classes ######################################
 
+@app.route("/class")
+def get_all_classes():
+    clslist = classes.getAllClasses()
+    return {'data': [{
+        "course_id": cls["course_id"], 
+        "course_name": cls["course_name"],
+        "class_no": cls["class_no"]
+    } for cls in clslist]}
 
 @app.route('/class/get_unassignedClass')
 def get_unassigned_lessons():
@@ -332,6 +340,23 @@ def get_lesson_of_quiz(quiz_assigned_id):
 @app.route("/update_assign_quiz/<int:course_id>/<int:class_no>/<int:lesson_no>/<int:quiz_assigned_id>")
 def assign_quiz_to_lesson(course_id, class_no, lesson_no, quiz_assigned_id):
     return lesson_materials.save_quiz_to_lesson(course_id, class_no, lesson_no, quiz_assigned_id)
+
+@app.route("/update_assign_finalquiz", methods=["POST"])
+def assign_finalquiz_to_course():
+    req = request.get_json()
+    # course_id = req["course_id"]
+    # class_no = req["class_no"]
+    # qid = req["qid"]
+    course_id, class_no, qid = req.values()
+    
+    cls = classes.query.filter_by(course_id=course_id, class_no=class_no).first()
+    
+    try:
+        cls.setFinalQuiz(qid)
+    except:
+        return "Quiz not updated.", 500
+    return {"data": {"course_id": course_id, "class_no": class_no, "qid": qid, "message": "Quiz assigned successfully."}, "code": 200}
+    
 
 @app.route("/get_assigned_quiz/<int:course_id>/<int:class_no>/<int:lesson_no>")
 def get_quiz_for_lesson(course_id, class_no, lesson_no):
@@ -446,6 +471,7 @@ def insert_quiz(quiz_id, staff_username):
         return {"data": {"status": 200, "message": "Quiz is successfully created"}}
     except:
         return {"data": {"status": 500, "message": "Quiz is NOT created"}}
+
 
 
 @app.route("/quiz/<int:quiz_id>", methods=["POST", "GET"])
