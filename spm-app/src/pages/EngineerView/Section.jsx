@@ -10,7 +10,7 @@ import SectionContainer from '../../component/SectionContainer'
 const Section = () => {
     const courseid = useParams().courseid
     const classno = useParams().classno
-    const staffusername = 'darrelwilde'
+    const staffusername = localStorage.getItem('user');
 
 
     //useState
@@ -54,7 +54,7 @@ const Section = () => {
     }, [stateChange])
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:5000/exam//${courseid}/${classno}/${staffusername}`)
+        fetch(`http://127.0.0.1:5000/exam/${courseid}/${classno}/${staffusername}`)
         .then(res => res.json())
         .then(
             (result) => {
