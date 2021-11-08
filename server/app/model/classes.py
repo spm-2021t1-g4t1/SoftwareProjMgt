@@ -80,6 +80,9 @@ class classes(db.Model):
             "end": datetime.strftime(self.selfenrol_end, "%Y-%m-%d")
         }
     
+    def getFinalQuiz(self):
+        return self.finalquiz_id
+    
     def setFinalQuiz(self, qid):
         self.finalquiz_id = qid
     

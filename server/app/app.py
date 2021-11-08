@@ -356,7 +356,17 @@ def assign_finalquiz_to_course():
     except:
         return "Quiz not updated.", 500
     return {"data": {"course_id": course_id, "class_no": class_no, "qid": qid, "message": "Quiz assigned successfully."}, "code": 200}
+
+@app.route('/final_quiz/<int:course_id>/<int:class_no>')
+def get_finalquiz_for_class(course_id, class_no):
+    cls = classes.query.filter_by(course_id=course_id, class_no=class_no).first()
+    qid = cls.getFinalQuiz()
     
+    quiz_info = Quiz.get_one_quiz(qid)
+    return {
+            "data": quiz_info["data"],
+            "code": 200
+        }
 
 @app.route("/get_assigned_quiz/<int:course_id>/<int:class_no>/<int:lesson_no>")
 def get_quiz_for_lesson(course_id, class_no, lesson_no):
@@ -373,6 +383,11 @@ def get_quiz_for_lesson(course_id, class_no, lesson_no):
 @app.route("/update_quiz_score/<int:course_id>/<int:class_no>/<int:lesson_no>/<string:staff_username>/<int:quiz_score>")
 def update_quiz_score(course_id, class_no, lesson_no, staff_username, quiz_score):
     return lesson_quiz_attempts.update_lesson_quizscore(course_id, class_no, lesson_no, staff_username, quiz_score)
+
+@app.route("/update_finalquiz_score/<int:course_id>/<int:class_no>/<string:staff_username>/<int:quiz_score>")
+# this and the above function need to be post requests, but there's no time to change them all now, too bad!
+def update_finalquizscore(course_id, class_no, staff_username, quiz_score):
+    return final_quiz_attempts.update_finalquizscore(course_id, class_no, staff_username, quiz_score)
 
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):

@@ -51,13 +51,13 @@ class lesson_quiz_attempts(db.Model):
             except:
                 return {'data': None, 'code': 500}
         else:
-            lesson_quiz_attempts(
+            attempt = lesson_quiz_attempts(
                 course_id = course_id,
                 class_no = class_no,
                 lesson_no = lesson_no,
                 staff_username = staff_username,
                 quiz_score = quiz_score
             )
-            db.session.add(lesson_quiz_attempts)
+            db.session.add(attempt)
             db.session.commit()
             return {'data': quiz_score, 'code': 200}
