@@ -19,7 +19,9 @@ const IndividualQuiz = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [courseSec, setCourseSec] = useState([]);
+    const [classList, setClassList] = useState([]);
     const [assignQuizName, setassignQuizName] = useState("");
+    const [assignFinalQuizName, setassignFinalQuizName] = useState("Assign this quiz as a Final Exam of a course");
 
     useEffect(() => {
         console.log("This is my quiz id", props.location.state.quiz_id)
@@ -30,7 +32,7 @@ const IndividualQuiz = (props) => {
             .catch(err => {
                 setassignQuizName("Assign a Quiz")
             })
-        
+
     }, [])
 
 
@@ -157,33 +159,66 @@ const IndividualQuiz = (props) => {
     }
 
     useEffect(() => {
+        // get list of lessons and populate assignquiz dropdown 
         fetch("http://127.0.0.1:5000/lesson")
-        .then(response => response.json())
-        .then(lesson_data => {
+            .then(response => response.json())
+            .then(lesson_data => {
                 // console.log(data.data)
                 const data = lesson_data.data
                 // console.log(data)
                 setCourseSec(data)
                 // console.log(quizDetails)
             }).catch()
+
+        // get list of courses and populate assignFinalQuiz Dropdown
+        fetch("http://127.0.0.1:5000/class")
+            .then(response => response.json())
+            .then(res => {
+                const data = res.data;
+                setClassList(data);
+            }).catch()
     }, [])
+
 
     const assignQuiz = (course_id, class_no, lesson_no, quiz_assigned_id) => {
         // console.log(course_id, class_no, lesson_no, quiz_assigned_id)
         fetch(`http://127.0.0.1:5000/update_assign_quiz/${course_id}/${class_no}/${lesson_no}/${quiz_assigned_id}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.code)
-            if(data.code === 200){
-                // console.log("testing")
-                setassignQuizName(`You have assigned this quiz to Course_ID ${data.data.course_id}, Class No: ${data.data.class_no} and Lesson No: ${data.data.lesson_no}`)
-            } 
-            console.log(data)
-        
-        })
-        .catch()
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.code)
+                if (data.code === 200) {
+                    // console.log("testing")
+                    setassignQuizName(`You have assigned this quiz to Course_ID ${data.data.course_id}, Class No: ${data.data.class_no} and Lesson No: ${data.data.lesson_no}`)
+                }
+                console.log(data)
+
+            })
+            .catch()
     }
-    
+    const assignFinalQuiz = (course_id, class_no, qid) => {
+        // console.log(course_id, class_no, lesson_no, quiz_assigned_id)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ "course_id": course_id, "class_no": class_no, "qid": qid })
+        };
+        fetch(`http://127.0.0.1:5000/update_assign_finalquiz`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                else throw new Error("Error - Quiz not updated successfully.");
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    console.log(data);
+                    setassignFinalQuizName(`You have assigned this quiz to Course_ID ${data.data.course_id}, Class No: ${data.data.class_no}`)
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+
     return (
         <div>
             <h1>{props.location.state.uploader} 's</h1>
@@ -198,43 +233,58 @@ const IndividualQuiz = (props) => {
                     <Form.Control onChange={e => setQuizDuration(e.target.value)} type="text" value={quizDuration} />
                 </Col>
                 <Col sm='2'>
-                <Dropdown>
+                    <Dropdown>
                         <Dropdown.Toggle variant="info" id="dropdown-basic">
                             {assignQuizName}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
 
-                        {courseSec.map(singleSec => {
-                        return(
-                            <div key={singleSec.lesson_name}>
-                            <Dropdown.Item onClick={() => assignQuiz(singleSec.course_id, singleSec.class_no, singleSec.lesson_no, props.location.state.quiz_id)}>
-                                {singleSec.lesson_name}
-                            </Dropdown.Item>
-                            </div>
-                            )
-                        })}
+                            {courseSec.map(singleSec => {
+                                return (
+                                    <div key={singleSec.lesson_name}>
+                                        <Dropdown.Item onClick={() => assignQuiz(singleSec.course_id, singleSec.class_no, singleSec.lesson_no, props.location.state.quiz_id)}>
+                                            {singleSec.lesson_name}
+                                        </Dropdown.Item>
+                                    </div>
+                                )
+                            })}
                         </Dropdown.Menu>
-                        
-            </Dropdown>
+
+                    </Dropdown>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="info" id="dropdown-basic" className="mt-2">
+                            {assignFinalQuizName}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {classList.map(cls =>
+                                <div key={"" + cls.course_id + cls.class_no}>
+                                    <Dropdown.Item onClick={() => assignFinalQuiz(cls.course_id, cls.class_no, props.location.state.quiz_id)}>
+                                        {cls.course_name}
+                                    </Dropdown.Item>
+                                </div>)}
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Col>
+                </Row>
+                <Row>
                 <Col sm="2">
                     <Button onClick={() => SaveDetails()} className="pull-right" variant="success">Save Quiz</Button>{' '}
                 </Col>
                 <Col sm="2">
-                    <Button onClick={() => handleShow()} variant="danger"> <FontAwesomeIcon icon={faTrash}/> </Button>{' '}
+                    <Button onClick={() => handleShow()} variant="danger"> <FontAwesomeIcon icon={faTrash} /> </Button>{' '}
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>Delete Quiz?</Modal.Title>
+                            <Modal.Title>Delete Quiz?</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>Are you sure you want to delete this entire quiz?</Modal.Body>
                         <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="danger" onClick={() => DeleteQuiz()}>
-                            Confirm Delete
-                        </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button variant="danger" onClick={() => DeleteQuiz()}>
+                                Confirm Delete
+                            </Button>
                         </Modal.Footer>
                     </Modal>
                 </Col>

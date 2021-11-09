@@ -49,7 +49,7 @@ const SectionContainer = (props) => {
 
     const goToQuiz = () => {
         const goTo = {
-            pathname: "/TakeQuiz" ,
+            pathname: "/Engineer/TakeQuiz" ,
             state: [props.data.course_id, props.data.class_no, props.data.lesson_no]
         }
         history.push(goTo)
@@ -98,7 +98,7 @@ const SectionContainer = (props) => {
                 <Container className='d-flex justify-content-between container-md flex-wrap my-2'>
                     <div className="align-middle">
                         <h3 className="my-3">Quiz Score: {
-                        props.data.quiz_score
+                        props.data.quiz_score !== null
                         ? props.data.quiz_score + "/100"
                         : "Unattempted"
                         }</h3>

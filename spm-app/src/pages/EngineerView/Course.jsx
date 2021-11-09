@@ -49,16 +49,16 @@ const Course = () => {
                     <h1 className='courseName-Banner'>{courseDetailArr['course_name']}</h1>
                 </div>
                 <div className= 'd-flex justify-content-between row'>
-                    <Route path='/course/:courseid/:classno/overview' exact>
+                    <Route path='/Engineer/course/:courseid/:classno/overview' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
-                    <Route path='/course/:courseid/:classno/curriculum' exact>
+                    <Route path='/Engineer/course/:courseid/:classno/curriculum' exact>
                         <Section/>
                     </Route>
-                    <Route path='/course/:courseid/:classno/forum' exact>
+                    <Route path='/Engineer/course/:courseid/:classno/forum' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
-                    <Route path='/course/:courseid/:classno/quiz' exact>
+                    <Route path='/Engineer/course/:courseid/:classno/quiz' exact>
                         <CourseInfo data={courseDetailArr} />
                     </Route>
 

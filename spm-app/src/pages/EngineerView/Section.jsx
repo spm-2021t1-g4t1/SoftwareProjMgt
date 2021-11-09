@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Button } from 'react-bootstrap'
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 
 
 import SectionContainer from '../../component/SectionContainer'
@@ -10,7 +10,7 @@ import SectionContainer from '../../component/SectionContainer'
 const Section = () => {
     const courseid = useParams().courseid
     const classno = useParams().classno
-    const staffusername = 'darrelwilde'
+    const staffusername = JSON.parse(localStorage.getItem('user')).staff_username;
 
 
     //useState
@@ -19,7 +19,7 @@ const Section = () => {
     const [stateChange, setStateChange] = useState(0)
     const [boolFinals, setboolFinals] = useState(false)
     const [noAttempted, setNoAttempted] = useState(false)
-
+    const history = useHistory();
     function classChange() {
         setStateChange(stateChange+1)
     }
@@ -54,7 +54,7 @@ const Section = () => {
     }, [stateChange])
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:5000/exam//${courseid}/${classno}/${staffusername}`)
+        fetch(`http://127.0.0.1:5000/exam/${courseid}/${classno}/${staffusername}`)
         .then(res => res.json())
         .then(
             (result) => {
@@ -64,6 +64,14 @@ const Section = () => {
         )
     },[boolFinals])
 
+    const gotoFinalQuiz = () => {
+        const goTo = {
+            pathname: "/Engineer/TakeFinalQuiz" ,
+            state: [courseid, classno]
+        }
+        history.push(goTo)
+        window.location.reload(false);
+    }
 
     return (
         <div className = 'col col-lg-9 col-md-8'>
@@ -82,7 +90,8 @@ const Section = () => {
                         ?<h4>Score: {noAttempted.quiz_score}/100</h4>
                         :<h4 className = "text-danger">Not Attempted</h4>
                         }
-                        <Button>Take Exam</Button>
+                        <Button onClick={gotoFinalQuiz}>Take Exam</Button>
+                        {/* TODO (Sprint 5): Check whether final quiz is passed */}
                         
                     </Container>
                 </div>

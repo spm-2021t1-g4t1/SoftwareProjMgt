@@ -8,6 +8,7 @@ import Header from '../../component/Header.jsx';
 import IndividualQuiz from '../../component/IndividualQuiz.jsx';
 import TrainerCourseList from './TrainerCourseList.jsx';
 import TakeQuiz from '../../component/TakeQuiz.jsx';
+import TakeFinalQuiz from '../../component/TakeFinalQuiz.jsx'
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter ,Route, useHistory } from "react-router-dom"
 import { CSSTransition } from 'react-transition-group' 
@@ -49,7 +50,7 @@ function LearnerHome({handleLogout}) {
               classNames="slider-body"
               timeout={{ enter: 1000, exit: 1000 }}
               >
-            <main className = 'App-body'>\
+            <main className = 'App-body'>
             {/* <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
@@ -65,6 +66,7 @@ function LearnerHome({handleLogout}) {
               <Route path = '/Engineer/account' component = {Account} exact/>
               <Route path = '/Engineer/IndividualQuiz' component = {IndividualQuiz} exact/>
               <Route path = '/Engineer/TakeQuiz' component = {TakeQuiz} exact/>
+              <Route path = '/Engineer/TakeFinalQuiz' component = {TakeFinalQuiz} exact/>
             </main>
           </CSSTransition>
       </div>
