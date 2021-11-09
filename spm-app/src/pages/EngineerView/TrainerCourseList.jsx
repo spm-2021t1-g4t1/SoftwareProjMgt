@@ -52,7 +52,7 @@ function TrainerCourseList() {
                                 <th className = 'text-center' >Dates</th>
                                 <th className = 'text-center'>Timing</th>
                                 <th className = 'text-center'>Total Capacity</th>
-                                <th></th>
+                                <th className = 'text-center'>Actions</th>
                             </tr>
                         </thead>
 
