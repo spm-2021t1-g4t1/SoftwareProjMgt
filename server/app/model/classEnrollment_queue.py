@@ -1,4 +1,5 @@
 from db import db
+from sqlalchemy import tuple_
 
 class classEnrolmentQueue(db.Model):
     __tablename__ = 'classenrollment_queue'
@@ -41,9 +42,9 @@ class classEnrolmentQueue(db.Model):
         return data
 
     @classmethod
-    def getStaffRequest(cls):
+    def getStaffRequest(cls,classobj):
         SRobj = {'data': []}
-        StaffRequests = cls.query.all()
+        StaffRequests = cls.query.filter(tuple_(cls.course_id, cls.class_no).in_(classobj))
         for SR in StaffRequests:
             SRobj['data'].append(SR.approvejson())
         return SRobj

@@ -43,6 +43,19 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 class testClassEnrollment(TestApp):
+    def test_json(self):
+        staff1 = staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
+        enrollment = classEnrolment(staff_username = 'coreyroberts', course_id = 1, class_no = 1, staff = staff1)
+
+        expected = {
+            "staff_name" : 'Corey Roberts',
+            "staff_username": 'coreyroberts',
+            "course_id": 1,
+            "class_no": 1
+        }
+
+        self.assertEqual(enrollment.json(), expected)
+
     def testGetClassList(self):
 
         data = self.client.get(f"/enrolment/{1}/{1}")

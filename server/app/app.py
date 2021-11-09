@@ -147,8 +147,12 @@ def withdraw_classQueue():
 # New function (probably no test yet)
 @app.route('/queue/getList/')
 def get_enrollmentRequest():
-    return classEnrolmentQueue.getStaffRequest()
-    
+    classobj = []
+    futureClass = classes.get_futureClass()
+    for FC in futureClass['data']:
+        classobj.append((FC["course_id"],FC["class_no"]))
+    return classEnrolmentQueue.getStaffRequest(classobj)
+
 ############# Course ######################################
 
 
