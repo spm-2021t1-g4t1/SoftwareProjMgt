@@ -2,11 +2,10 @@ import React, { useState, useEffect} from 'react'
 import { Modal, Button, Container, Card, InputGroup,FormControl, Form } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 
-const TakeQuiz = (props) => {
+const TakeFinalQuiz = (props) => {
 
     const course_id = props.location.state[0]
     const class_no = props.location.state[1] 
-    const lesson_no = props.location.state[2]
     const user = JSON.parse(localStorage.getItem('user'))
     const history = useHistory()
     const [getQuiz_data, setgetQuiz_data] = useState([]);
@@ -18,7 +17,7 @@ const TakeQuiz = (props) => {
     const [quizEndTime, setQuizEndTime] = useState(null);
     useEffect(() => {
         // let retlist = quizDetails
-        fetch(`http://127.0.0.1:5000/get_assigned_quiz/${course_id}/${class_no}/${lesson_no}`)
+        fetch(`http://127.0.0.1:5000/final_quiz/${course_id}/${class_no}`)
             .then(response => response.json())
             .then(data => {
                 const quiz_data = data.data;
@@ -45,7 +44,6 @@ const TakeQuiz = (props) => {
                 setgetDuration(calculateTimeRemainingStr(now));
             }, 1000)
         }
-
     }, [getDuration])
 
     const parseTimeToMilliseconds = (timeStr) => {
@@ -71,8 +69,8 @@ const TakeQuiz = (props) => {
         for(let key in getOptVal){
             total = total + getOptVal[key]
         }
-        console.log( course_id, class_no, lesson_no, user.staff_username, total )
-        fetch(`http://127.0.0.1:5000/update_quiz_score/${course_id}/${class_no}/${lesson_no}/${user.staff_username}/${total}`)
+        console.log( course_id, class_no, user.staff_username, total )
+        fetch(`http://127.0.0.1:5000/update_finalquiz_score/${course_id}/${class_no}/${user.staff_username}/${total}`)
             .then(response => response.json())
             .then(data => {
                 if(data.code === 200){
@@ -161,4 +159,4 @@ const TakeQuiz = (props) => {
         </div>
         )
     }
-export default TakeQuiz
+export default TakeFinalQuiz
