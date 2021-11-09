@@ -36,6 +36,7 @@ class TestApp(flask_testing.TestCase):
 class testStaff(TestApp):
     def testGetStaffList(self):
         data = self.client.get(f"/staff")
+        self.assert200(data)
         insertedStaff = data.json["data"][0]
 
         self.assertEqual(insertedStaff["staff_username"], 'coreyroberts')
@@ -46,12 +47,14 @@ class testStaff(TestApp):
     
     def testGetStaffByUsername(self):
         data = self.client.get(f"/login/darrelwilde")
+        self.assert200(data)
         insertedStaff = data.json['data']['staff_username']
 
         self.assertEqual(insertedStaff, 'darrelwilde')
     
     def testGetEngineerList(self):
         data = self.client.get(f"/staff/engineers")
+        self.assert200(data)
         engineersList = data.json['data']
         # print(data.json['data'])
         

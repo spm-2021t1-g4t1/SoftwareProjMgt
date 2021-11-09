@@ -48,6 +48,7 @@ class testClassEnrollment(TestApp):
     def testGetClassList(self):
 
         data = self.client.get(f"/enrolment/{1}/{1}")
+        self.assert200(data)
         insertedStudents = data.json["data"]
 
         self.assertEqual(insertedStudents[0]['staff_username'], 'coreyroberts')
@@ -56,6 +57,7 @@ class testClassEnrollment(TestApp):
 
     def testGetClassNumber(self):
         data = self.client.get(f"/enrolment/{1}/{1}/length")
+        self.assert200(data)
         numStudents = data.json['message']
 
         self.assertEqual(numStudents, 2)
@@ -64,6 +66,7 @@ class testClassEnrollment(TestApp):
     def testGetStaffEnrollment(self):
 
         data = self.client.get(f"/enrolment/coreyroberts")
+        self.assert200(data)
 
         course_id1 = data.json['data'][0]['course_id']
         class_no1 = data.json['data'][0]['classes'][0]['class_no']
@@ -86,6 +89,7 @@ class testClassEnrollment(TestApp):
             data = json.dumps(request_body),
             content_type = 'application/json'
         )
+        self.assert200(response)
         dataObj = response.json
         self.assertEqual(dataObj, 
         {'class_no': 1, 'course_id': 2, 'staff_username': 'testing'}
@@ -107,6 +111,7 @@ class testClassEnrollment(TestApp):
             data = json.dumps(request_body),
             content_type = "application/json"
         )
+        self.assert200(response)
         dataObj = response.json
         self.assertEqual(dataObj, {'class_no': 1, 'course_id': 1, 'staff_username': 'testing'})
         
