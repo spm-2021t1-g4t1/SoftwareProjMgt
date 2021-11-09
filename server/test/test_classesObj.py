@@ -36,13 +36,29 @@ class testClasssesObj(TestApp):
         res = classes.getAllClasses()
         print(res)
         expected = [
-            {'course_name': 'Test Course 1', 'course_id': 1, 'class_no': 1, 'start_date': datetime(2021, 11, 6, 0, 0), 
-            'end_date': datetime(2021, 11, 7, 0, 0), 'start_time': 'None', 'end_time': 'None', 'class_size': 40, 'trainer_name': 'stevejobs', 
-            'selfenrol_start': None, 'selfenrol_end': None}, 
+            {'course_name': 'Test Course 1', 
+            'course_id': 1, 
+            'class_no': 1, 
+            'start_date': (datetime.today() + timedelta(days=-2)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'end_date': (datetime.today() +  timedelta(days=-1)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'start_time': 'None', 
+            'end_time': 'None', 
+            'class_size': 40, 
+            'trainer_name': 'stevejobs', 
+            'selfenrol_start': None, 
+            'selfenrol_end': None}, 
 
-            {'course_name': 'Test Course 2', 'course_id': 2, 'class_no': 1, 'start_date': datetime(2021, 11, 9, 0, 0), 
-            'end_date': datetime(2021, 11, 10, 0, 0), 'start_time': 'None', 'end_time': 'None', 'class_size': 40, 'trainer_name': 'stevejobs', 
-            'selfenrol_start': None, 'selfenrol_end': None}
+            {'course_name': 'Test Course 2', 
+            'course_id': 2, 
+            'class_no': 1, 
+            'start_date': (datetime.today() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'end_date': (datetime.today() +  timedelta(days=2)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'start_time': 'None', 
+            'end_time': 'None', 
+            'class_size': 40, 
+            'trainer_name': 'stevejobs', 
+            'selfenrol_start': None, 
+            'selfenrol_end': None}
             ]
         self.assertEqual(expected, res)
 
