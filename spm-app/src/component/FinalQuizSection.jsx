@@ -1,61 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Container } from 'react-bootstrap';
-import { useHistory } from "react-router-dom";
 
 const SectionContainer = (props) => {
+    console.log(props.data)
 
-    // eslint-disable-next-line
-    const history = useHistory()
-    const [sectionArrs, setSectionArrs] = useState(props.data)
-    const sectionNumber = props.number
-    const [isCompleted, setIsCompleted] = useState(false)
-    const [modalShow, setModalShow] = React.useState(false);
-    const [secInfo, setssecInfo] = useState("")
 
-    // console.log(props.data.lesson_materials)
-    function markLessonAsComplete() {
-        const endpoint = `http://localhost:5000/lesson_completion/mark_complete`
-        const data = { course_id: props.data.course_id, class_no: props.data.class_no, lesson_no: props.data.lesson_no, staff_username: 'darrelwilde' }
-        // console.log(data)
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then((res) => res.json())
-            .then((result) => {
-                // console.log(result)
-                setIsCompleted(true)
-                setModalShow(false)
-                props.classChange()
 
-            })
-    }
 
-    useEffect(() => {
-        setIsCompleted(sectionNumber <= props.completedLesson)
-    },[props.completedLesson])
-
-    useEffect(() => {
-        console.log(props.data.course_id, props.data.class_no, props.data.lesson_no)
-    },[])
-    // return(
-    //     <Container className='my-2'>
-
-    //     </Container>
-    // )
-
-    const goToQuiz = () => {
-        const goTo = {
-            pathname: "/TakeQuiz" ,
-            state: [props.data.course_id, props.data.class_no, props.data.lesson_no]
-        }
-        history.push(goTo)
-        window.location.reload(false);
-    }
-    
     return (
         <Container className='my-2'>
             <div className="border border-info container-fluid container-bg">
@@ -105,7 +56,7 @@ const SectionContainer = (props) => {
                     </div>
 
                     <div className='my-auto'>
-                            <Button onClick={() => goToQuiz()} className = 'm-1'varient='primary'>Take Quiz</Button>
+                        <Button className = 'm-1'varient='primary'>Take Quiz</Button>
                     </div>
                 </Container>
             </Container>

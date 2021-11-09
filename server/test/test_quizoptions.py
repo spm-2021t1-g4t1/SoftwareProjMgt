@@ -15,6 +15,58 @@ class TestApp(flask_testing.TestCase):
 
     def setUp(self):
         db.create_all()
+        q1 = Question(
+            qid=1,
+            ques_id=1,
+            question="How is SPM IS212 doing today for YYC?",
+            question_type="mcq",
+        )
+        q2 = Question(
+            qid=1,
+            ques_id=2,
+            question="SPM TRUUE FALSE CHECKER",
+            question_type="tf",
+        )
+        db.session.add(q1)
+        for i in range(1, 4):
+            db.session.add(
+                QuizOptions(
+                    qid=1,
+                    ques_id=1,
+                    opts_id=i,
+                    is_right=0,
+                    qopt="testing " + str(i),
+                )
+            )
+        db.session.add(
+            QuizOptions(
+                qid=1,
+                ques_id=1,
+                opts_id=4,
+                is_right=1,
+                qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
+            )
+        )
+        db.session.add(q2)
+        db.session.add(
+            QuizOptions(
+                qid=1,
+                ques_id=2,
+                opts_id=1,
+                is_right=1,
+                qopt="True",
+            )
+        )
+        db.session.add(
+            QuizOptions(
+                qid=1,
+                ques_id=2,
+                opts_id=2,
+                is_right=0,
+                qopt="False",
+            )
+        )
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
@@ -23,61 +75,24 @@ class TestApp(flask_testing.TestCase):
 
 class TestQuizOptionsClass(TestApp):
     def test_getQuesOpt(self):
-        anOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=1,
-            is_right=1,
-            qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
-        )
-        db.session.add(anOption)
-        db.session.commit()
         data = QuizOptions.get_QuesOpt(1, 1)
-        self.assertEqual(
-            data["data"],
-            [
-                {
-                    "quiz_id": 1,
-                    "ques_id": 1,
-                    "opts_id": 1,
-                    "is_right": 1,
-                    "qopt": "Press the On button for the Workstation, clean the nozzle and restart the machine",
-                }
-            ],
-        )
+        self.assertEqual(len(data["data"]), 4)
 
     def test_get_specificOption(self):
-        anOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=1,
-            is_right=1,
-            qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
-        )
-        db.session.add(anOption)
-        db.session.commit()
-        data = QuizOptions.get_specificOption(1, 1, 1)
+        data = QuizOptions.get_specificOption(1, 1, 4)
+        print(data["data"])
         self.assertEqual(
             data["data"],
             {
-                "quiz_id": 1,
+                "qid": 1,
                 "ques_id": 1,
-                "opts_id": 1,
+                "opts_id": 4,
                 "is_right": 1,
                 "qopt": "Press the On button for the Workstation, clean the nozzle and restart the machine",
             },
         )
 
     def test_remove_opt(self):
-        anOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=1,
-            is_right=1,
-            qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
-        )
-        db.session.add(anOption)
-        db.session.commit()
         QuizOptions.remove_opt(1, 1, 1)
         data = QuizOptions.get_specificOption(1, 1, 1)
         self.assertEqual(
@@ -90,23 +105,14 @@ class TestQuizOptionsClass(TestApp):
         )
 
     def test_update_quiz_options(self):
-        anOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=1,
-            is_right=1,
-            qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
-        )
-        db.session.add(anOption)
-        db.session.commit()
-        QuizOptions.update_quiz_options(1, 1, 1, 0, "Restart the machine")
-        data = QuizOptions.get_specificOption(1, 1, 1)
+        QuizOptions.update_quiz_options(1, 1, 4, 0, "Restart the machine")
+        data = QuizOptions.get_specificOption(1, 1, 4)
         self.assertEqual(
             data["data"],
             {
-                "quiz_id": 1,
+                "qid": 1,
                 "ques_id": 1,
-                "opts_id": 1,
+                "opts_id": 4,
                 "is_right": 0,
                 "qopt": "Restart the machine",
             },
@@ -114,37 +120,21 @@ class TestQuizOptionsClass(TestApp):
         self.assertEqual(data["code"], 200)
 
     def test_insert_quiz_options(self):
-        QuizOptions.insert_quiz_options(1, 1, 1, 1, "Restart the machine")
-        data = QuizOptions.get_specificOption(1, 1, 1)
+        QuizOptions.insert_quiz_options(1, 1, 5, 0, "Restart the machine")
+        data = QuizOptions.get_specificOption(1, 1, 5)
         self.assertEqual(
             data["data"],
             {
-                "quiz_id": 1,
+                "qid": 1,
                 "ques_id": 1,
-                "opts_id": 1,
-                "is_right": 1,
+                "opts_id": 5,
+                "is_right": 0,
                 "qopt": "Restart the machine",
             },
         )
+        self.assertEqual(data["code"], 200)
 
     def test_remove_all_opt(self):
-        anOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=1,
-            is_right=1,
-            qopt="Press the On button for the Workstation, clean the nozzle and restart the machine",
-        )
-        abOption = QuizOptions(
-            quiz_id=1,
-            ques_id=1,
-            opts_id=2,
-            is_right=0,
-            qopt="Clean the nozzle and restart the machine",
-        )
-        db.session.add(anOption)
-        db.session.add(abOption)
-        db.session.commit()
         data = QuizOptions.remove_all_opt(1, 1)
         self.assertEqual(data["data"], "Removed")
         response = QuizOptions.get_QuesOpt(1, 1)

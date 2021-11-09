@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 28, 2021 at 12:22 AM
+-- Generation Time: Nov 07, 2021 at 08:50 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -38,6 +38,13 @@ CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
   KEY `CE_Queue_fk_1` (`course_id`,`class_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `classenrollment_queue`
+--
+
+INSERT INTO `classenrollment_queue` (`staff_username`, `course_id`, `class_no`) VALUES
+('sallieeast', 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -54,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `end_time` time NOT NULL,
   `class_size` int NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `selfenrol_start` date DEFAULT NULL,
+  `selfenrol_end` date DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
   KEY `fk_1` (`course_id`),
   KEY `class_fk_2` (`trainer_name`)
@@ -63,19 +72,19 @@ CREATE TABLE IF NOT EXISTS `classes` (
 -- Dumping data for table `classes`
 --
 
-INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`) VALUES
-(1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs'),
-(2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma'),
-(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL),
-(1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs'),
-(2, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'jackma'),
-(3, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(4, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(5, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL),
-(6, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, NULL);
+INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `trainer_name`, `selfenrol_start`, `selfenrol_end`) VALUES
+(1, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', NULL, NULL),
+(2, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'jackma', NULL, NULL),
+(3, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', NULL, NULL),
+(4, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, 'stevejobs', '2021-08-01', '2021-08-31'),
+(5, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 40, NULL, '2021-08-01', '2021-08-31'),
+(6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 5, NULL, '2021-08-01', '2021-08-31'),
+(1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01'),
+(2, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01'),
+(3, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01'),
+(4, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, '2021-11-01', '2021-12-01'),
+(5, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL),
+(6, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 5, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -112,7 +121,12 @@ INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
 ('rojinclark', 2, 1),
 ('sallieeast', 2, 1),
 ('sannahrossi', 2, 1),
-('stevejobs', 2, 1);
+('stevejobs', 2, 1),
+('coreyroberts', 6, 1),
+('jackma', 6, 1),
+('rojinclark', 6, 1),
+('sallieeast', 6, 1),
+('sannahrossi', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -186,6 +200,22 @@ INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
 (4, 3),
 (5, 3),
 (5, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `final_quiz_attempts`
+--
+
+DROP TABLE IF EXISTS `final_quiz_attempts`;
+CREATE TABLE IF NOT EXISTS `final_quiz_attempts` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `staff_username` varchar(255) NOT NULL,
+  `quiz_score` int NOT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`staff_username`,`quiz_score`),
+  KEY `staff_username_fk1` (`staff_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -276,7 +306,9 @@ CREATE TABLE IF NOT EXISTS `lesson_completion` (
 --
 
 INSERT INTO `lesson_completion` (`course_id`, `class_no`, `lesson_no`, `staff_username`) VALUES
-(2, 1, 1, 'darrelwilde');
+(2, 1, 1, 'darrelwilde'),
+(2, 1, 2, 'darrelwilde'),
+(2, 1, 3, 'darrelwilde');
 
 -- --------------------------------------------------------
 
@@ -291,26 +323,53 @@ CREATE TABLE IF NOT EXISTS `lesson_materials` (
   `lesson_no` int NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `link` text NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`course_material_title`)
+  `quiz_assigned_id` int NOT NULL,
+  KEY `fk9` (`course_id`,`class_no`,`lesson_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `lesson_materials`
 --
 
-INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`) VALUES
-(1, 2, 1, '121A', 'www.121a.com'),
-(1, 2, 1, '121B', 'www.121b.com'),
-(1, 2, 2, '122A', 'www.122a.com'),
-(1, 2, 2, '122B', 'www.122b.com'),
-(1, 2, 2, '123A', 'www.123a.com'),
-(1, 2, 2, '123B', 'www.123b.com'),
-(2, 1, 1, '211A', 'www.google.com'),
-(2, 1, 1, '211B', 'www.yahoo.com'),
-(2, 1, 2, '212A', 'www.youtube.com'),
-(2, 1, 2, '212B', 'www.amazon.com'),
-(2, 1, 3, '213A', 'www.hardwarezone.com'),
-(2, 1, 3, '213B', 'www.reddit.com');
+INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`, `quiz_assigned_id`) VALUES
+(1, 2, 1, '121A', 'www.121a.com', 0),
+(1, 2, 1, '121B', 'www.121b.com', 0),
+(1, 2, 2, '122A', 'www.122a.com', 0),
+(1, 2, 2, '122B', 'www.122b.com', 0),
+(1, 2, 2, '123A', 'www.123a.com', 0),
+(1, 2, 2, '123B', 'www.123b.com', 0),
+(2, 1, 1, '211A', 'www.google.com', 2),
+(2, 1, 1, '211B', 'www.yahoo.com', 2),
+(2, 1, 2, '212A', 'www.youtube.com', 0),
+(2, 1, 2, '212B', 'www.amazon.com', 0),
+(2, 1, 3, '213A', 'www.hardwarezone.com', 0),
+(2, 1, 3, '213B', 'www.reddit.com', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lesson_quiz_attempts`
+--
+
+DROP TABLE IF EXISTS `lesson_quiz_attempts`;
+CREATE TABLE IF NOT EXISTS `lesson_quiz_attempts` (
+  `course_id` int NOT NULL,
+  `class_no` int NOT NULL,
+  `lesson_no` int NOT NULL,
+  `staff_username` varchar(255) NOT NULL,
+  `quiz_score` int NOT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`),
+  KEY `staff_username_fk1` (`staff_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `lesson_quiz_attempts`
+--
+
+INSERT INTO `lesson_quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff_username`, `quiz_score`) VALUES
+(2, 1, 1, 'darrelwilde', 89),
+(2, 1, 2, 'darrelwilde', 89),
+(2, 1, 3, 'darrelwilde', 89);
 
 -- --------------------------------------------------------
 
@@ -339,48 +398,24 @@ INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quiz_attempts`
---
-
-DROP TABLE IF EXISTS `quiz_attempts`;
-CREATE TABLE IF NOT EXISTS `quiz_attempts` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
-  `staff_username` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`),
-  KEY `staff_username_fk1` (`staff_username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `quiz_attempts`
---
-
-INSERT INTO `quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff_username`, `quiz_score`) VALUES
-(2, 1, 1, 'darrelwilde', 89);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `quiz_options`
 --
 
 DROP TABLE IF EXISTS `quiz_options`;
 CREATE TABLE IF NOT EXISTS `quiz_options` (
-  `quiz_id` int NOT NULL,
+  `qid` int NOT NULL,
   `ques_id` int NOT NULL,
   `opts_id` int NOT NULL,
   `qopt` text NOT NULL,
   `is_right` tinyint(1) NOT NULL,
-  PRIMARY KEY (`quiz_id`,`ques_id`,`opts_id`)
+  PRIMARY KEY (`qid`,`ques_id`,`opts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `quiz_options`
 --
 
-INSERT INTO `quiz_options` (`quiz_id`, `ques_id`, `opts_id`, `qopt`, `is_right`) VALUES
+INSERT INTO `quiz_options` (`qid`, `ques_id`, `opts_id`, `qopt`, `is_right`) VALUES
 (1, 1, 1, 'Increase service limit from AWS Trusted Advisor before launching new instances', 0),
 (1, 1, 2, 'Submit a service limit increase to AWS Support specifying the instance type and region. ', 1),
 (1, 1, 3, 'BOOOOOP', 0),
@@ -489,6 +524,13 @@ ALTER TABLE `course_prerequisite`
   ADD CONSTRAINT `course_prerequisite_fk2` FOREIGN KEY (`prerequisite_course_id`) REFERENCES `course` (`course_id`);
 
 --
+-- Constraints for table `final_quiz_attempts`
+--
+ALTER TABLE `final_quiz_attempts`
+  ADD CONSTRAINT `final_quiz_attempt_fk` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`),
+  ADD CONSTRAINT `final_quiz_attempt_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
+
+--
 -- Constraints for table `learning_objective`
 --
 ALTER TABLE `learning_objective`
@@ -514,11 +556,17 @@ ALTER TABLE `lesson_materials`
   ADD CONSTRAINT `fk9` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`);
 
 --
--- Constraints for table `quiz_attempts`
+-- Constraints for table `lesson_quiz_attempts`
 --
-ALTER TABLE `quiz_attempts`
+ALTER TABLE `lesson_quiz_attempts`
   ADD CONSTRAINT `fk8` FOREIGN KEY (`course_id`,`class_no`,`lesson_no`) REFERENCES `lesson` (`course_id`, `class_no`, `lesson_no`),
   ADD CONSTRAINT `staff_username_fk1` FOREIGN KEY (`staff_username`) REFERENCES `staff` (`staff_username`);
+
+--
+-- Constraints for table `quiz_options`
+--
+ALTER TABLE `quiz_options`
+  ADD CONSTRAINT `quiz_option` FOREIGN KEY (`qid`,`ques_id`) REFERENCES `quiz_questions` (`qid`, `ques_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `quiz_questions`

@@ -10,6 +10,7 @@ class Quiz(db.Model):
     description = db.Column("description", db.String(255))
     uploader = db.Column("uploader", db.String(255))
     duration = db.Column("duration", db.String(255))
+    question =  db.relationship('Question', backref='Quiz', lazy = True, cascade='all, delete-orphan')
 
     def __init__(
         self, quiz_id="", quiz_name="", description="", uploader="", duration=""
@@ -35,15 +36,29 @@ class Quiz(db.Model):
     def getDuration(self):
         return self.duration
 
+    # def viewjson(self):
+    #     return {
+    #         "quiz_id": self.quiz_id,
+    #         "quiz_name": self.quiz_name,
+    #         "description": self.description,
+    #         "uploader": self.uploader,
+    #         "duration": self.duration,
+    #     }
+
     def viewjson(self):
+        questionlist = []
+        for quesObj in self.question:
+            questionlist.append(quesObj.viewjson())
+
         return {
             "quiz_id": self.quiz_id,
             "quiz_name": self.quiz_name,
             "description": self.description,
             "uploader": self.uploader,
             "duration": self.duration,
+            "question": questionlist
         }
-
+        
     @classmethod
     def get_listofQuiz(cls):
         quizzes = cls.query.all()
@@ -75,26 +90,48 @@ class Quiz(db.Model):
                 "data": None,
                 "code": 500,
             }
-
     @classmethod
     def delete_quiz(cls, quiz_id):
         row_to_delete = cls.query.filter_by(quiz_id=quiz_id).first()
         db.session.delete(row_to_delete)
         db.session.commit()
-        return True
+        return {
+                "data": None,
+                "code": 200,
+            }
 
     @classmethod
-    def save_quiz(cls, quiz_id, quiz_name, description, uploader, duration):
+    def save_quizName(cls, quiz_id, quiz_name):
         quiz = cls.query.filter_by(quiz_id=quiz_id).first()
+        print(quiz)
         quiz.quiz_name = quiz_name
-        quiz.description = description
-        quiz.duration = duration
-        quiz.uploader = uploader
         db.session.commit()
         return {
-            "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+            "data": quiz.quiz_name,
             "code": 200,
         }
+
+    @classmethod
+    def save_quizDuration(cls, quiz_id, duration):
+        quiz = cls.query.filter_by(quiz_id=quiz_id).first()
+        quiz.duration = duration
+        db.session.commit()
+        return {
+            "data": quiz.duration,
+            "code": 200,
+        }
+
+    # @classmethod
+    # def save_quiz(cls, quiz_id, quiz_name, uploader, duration):
+    #     quiz = cls.query.filter_by(quiz_id=quiz_id).first()
+    #     quiz.quiz_name = quiz_name
+    #     quiz.duration = duration
+    #     quiz.uploader = uploader
+    #     db.session.commit()
+    #     return {
+    #         "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+    #         "code": 200,
+    #     }
 
     @classmethod
     def create_quiz(cls, quiz_id, quiz_name, description, uploader, duration):
@@ -108,6 +145,6 @@ class Quiz(db.Model):
         db.session.add(aQuiz)
         db.session.commit()
         return {
-            "data": cls.query.filter_by(quiz_id=quiz_id).first(),
+            "data": cls.query.filter_by(quiz_id=quiz_id).first().viewjson(),
             "code": 200,
         }

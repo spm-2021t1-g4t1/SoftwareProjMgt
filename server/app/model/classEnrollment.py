@@ -16,6 +16,7 @@ class classEnrolment(db.Model):
 
     def json(self):
         return {
+            "staff_name" : self.staff.staff_name,
             "staff_username": self.staff_username,
             "course_id": self.course_id,
             "class_no": self.class_no,
@@ -24,9 +25,17 @@ class classEnrolment(db.Model):
     @classmethod
     def getClasslist(cls,course_id, class_no):
         ClassListDAO = cls.query.filter_by(course_id = course_id, class_no = class_no).all()
-        classList = {'data':{}}
+        classList = {'data':[]}
         for index, Student in enumerate(ClassListDAO):
-            classList['data'][index] = Student.staff.viewjson()
+            classList['data'].append(Student.staff.viewjson())
+        return classList
+
+    @classmethod
+    def getClasslistByCourse(cls,course_id):
+        ClassListDAO = cls.query.filter_by(course_id = course_id).all()
+        classList = {'data':[]}
+        for index, Student in enumerate(ClassListDAO):
+            classList['data'].append(Student.staff.viewjson())
         return classList
 
 

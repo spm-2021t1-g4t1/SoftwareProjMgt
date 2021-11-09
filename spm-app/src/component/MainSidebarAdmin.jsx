@@ -33,6 +33,14 @@ const MainSidebarAdmin = () => {
                             Avaliable Course
                             <Link to="/Administrator/Course/list" />
                         </MenuItem>
+                        <MenuItem>
+                            Unassigned Course
+                            <Link to="/Administrator/Course/unassigned" />
+                        </MenuItem>
+                        <MenuItem>
+                            Assign self-enrol dates
+                            <Link to="/Administrator/Course/enroldates" />
+                        </MenuItem>
                     </SubMenu>
                     <SubMenu title="Engineers" icon={<BsFillPeopleFill />}>
                         <MenuItem>

@@ -2,20 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { OverlayTrigger, Popover, Button } from 'react-bootstrap';
 
 import ClassCard from './ClassCard';
-
 const CourseCard = (prop) => {
 
     // console.log('prop')
 
     const courseSchema = prop.courseSchema
-    const prerequisiteCourse = courseSchema.prerequisite_courses
+    let hasPrerequisites = false
+    let prerequisiteCourse = []
+    if (courseSchema.prerequisite_courses) {
+        hasPrerequisites = courseSchema.prerequisite_courses.length > 0
+        prerequisiteCourse = courseSchema.prerequisite_courses
+    }
 
-    console.log(courseSchema.prerequisite_courses)
+    // console.log(courseSchema)
 
     const [stateChange, setStateChange] = useState(0)
     const [inQueue, setInQueue] = useState([])
-    const hasPrerequisites = courseSchema.prerequisite_courses.length > 0
-    console.log(hasPrerequisites)
+    
+    // console.log(hasPrerequisites)
     function classChange() {
         setStateChange(stateChange+1)
     }
@@ -43,11 +47,11 @@ const CourseCard = (prop) => {
 
     return(
         <div className= 'my-4' > 
-            <div class Name="border border-info container-fluid container-bg">    
-                <h2 className="p-1">{courseSchema.course_id} - {courseSchema.course_name}
+            <div className="border border-info container-fluid container-bg">    
+                <h2 className="m-2">{courseSchema.course_id} - {courseSchema.course_name}
                     {hasPrerequisites 
                     ?   <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
-                            <Button className = 'mx-2 'variant = 'outline-secondary'>Prerequisites</Button>
+                            <Button className = 'mx-2 'variant = 'outline-secondary' size = 'sm'>Prerequisites</Button>
                         </OverlayTrigger>
                     : ""
                     }

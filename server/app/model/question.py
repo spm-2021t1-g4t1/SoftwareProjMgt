@@ -8,6 +8,7 @@ class Question(db.Model):
     ques_id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(1000))
     question_type = db.Column(db.String(255))
+    question_option = db.relationship('QuizOptions', primaryjoin="and_(Question.qid==QuizOptions.qid, Question.ques_id==QuizOptions.ques_id)", lazy='dynamic', cascade='all, delete-orphan')
 
     def getQid(self):
         return self.qid
@@ -21,13 +22,27 @@ class Question(db.Model):
     def getQuestion_type(self):
         return self.question_type
 
+    # def viewjson(self):
+    #     return {
+    #         "qid": self.qid,
+    #         "ques_id": self.ques_id,
+    #         "question": self.question,
+    #         "question_type": self.question_type,
+    #     }
+
     def viewjson(self):
+        questionlist = []
+        for quesObj in self.question_option:
+            questionlist.append(quesObj.viewjson())
+
         return {
             "qid": self.qid,
             "ques_id": self.ques_id,
             "question": self.question,
             "question_type": self.question_type,
+            "question_option" : questionlist
         }
+
 
     @classmethod
     def get_courseQues(cls, qzid):
@@ -45,6 +60,7 @@ class Question(db.Model):
             qid=q_id,
             ques_id=quezid,
             question=quez,
+            question_option=[],
             question_type=quez_type,
         )
         db.session.add(ques)

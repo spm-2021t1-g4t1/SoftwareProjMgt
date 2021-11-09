@@ -111,18 +111,21 @@ class TestCourse_DB(TestApp):
                 'course_name': 'Test Course 1', 
                 'description': 'Test Description 1', 
                 'learning_objective': ['Learning Objective 1', 'Learning Objective 2'], 
+                'prerequisite_courses': [],
                 'classes': [
-                    {'course_id': 1, 
+                    {'course_name': 'Test Course 1',
+                    'course_id': 1, 
                     'class_no': 1, 
-                    'start_date': '2021-09-01 00:00:00', 
-                    'end_date': '2021-09-02 00:00:00', 
+                    'start_date': (datetime(2021,9,1).replace(hour=0, minute=0, second=0, microsecond=0)), 
+                    'end_date': (datetime(2021,9,2).replace(hour=0, minute=0, second=0, microsecond=0)), 
                     'start_time': 'None', 
                     'end_time': 'None', 
                     'class_size': 15, 
                     'trainer_name': None, 
-                    'lesson': []
-                    }],
-                'prerequisite_courses': []
+                    'selfenrol_start': None, 
+                    'selfenrol_end': None
+                    }]
+                
             }, 
             {
                 'course_id': 2, 

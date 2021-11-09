@@ -32,6 +32,29 @@ class course(db.Model):
             "classes": all_classes,
         }
     
+    def view_catalog_json(self):
+        learn_obj = []
+        for index,learning in enumerate(self.learning_objective):
+            learn_obj.append(learning.viewstring())
+        
+        all_classes = []
+        for one_class in self.classes:
+            all_classes.append(one_class.coursejson())
+
+        prerequisite_courses = []
+        for prereq_course in self.prerequisite_courses:
+            prerequisite_courses.append(prereq_course.json())
+
+        return {
+            "course_id": self.course_id,
+            "course_name": self.course_name,
+            "description": self.description,
+            "learning_objective": learn_obj,
+            "prerequisite_courses": prerequisite_courses,
+            "classes": all_classes,
+        }
+
+    
     def json(self):
         learn_obj = []
         for index,learning in enumerate(self.learning_objective):
@@ -52,7 +75,7 @@ class course(db.Model):
     @classmethod
     def get_listOfCourse(cls,course_list):
         courses = cls.query.filter(cls.course_id.notin_(course_list))
-        return {'data': [one_course.view_all_json() for one_course in courses]}
+        return {'data': [one_course.view_catalog_json() for one_course in courses]}
 
     @classmethod
     def get_specificCourse(cls,course_id):

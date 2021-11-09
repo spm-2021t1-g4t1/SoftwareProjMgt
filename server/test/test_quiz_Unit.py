@@ -15,6 +15,15 @@ class TestApp(flask_testing.TestCase):
 
     def setUp(self):
         db.create_all()
+        q1 = Quiz(
+            quiz_id=1,
+            quiz_name="Fundamentals of Xerox WorkCentre 7845",
+            description="SECTION 1 of Xerox WorkCentre 7845",
+            uploader="james_smith",
+            duration="00:30:43",
+        )
+        db.session.add(q1)
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
@@ -23,15 +32,6 @@ class TestApp(flask_testing.TestCase):
 
 class TestQuizClass(TestApp):
     def test_get_listofQuiz(self):
-        aQuiz = Quiz(
-            quiz_id=1,
-            quiz_name="Fundamentals of Xerox WorkCentre 7845",
-            description="SECTION 1 of Xerox WorkCentre 7845",
-            uploader="James Smith",
-            duration="00:30:43",
-        )
-        db.session.add(aQuiz)
-        db.session.commit()
         data = Quiz.get_listofQuiz()
         self.assertEqual(data["code"], 200)
         self.assertEqual(
@@ -41,22 +41,15 @@ class TestQuizClass(TestApp):
                     "quiz_id": 1,
                     "quiz_name": "Fundamentals of Xerox WorkCentre 7845",
                     "description": "SECTION 1 of Xerox WorkCentre 7845",
-                    "uploader": "James Smith",
+                    "uploader": "james_smith",
+                    "question": [],
                     "duration": "00:30:43",
                 }
             ],
         )
+        self.assertEqual(len(data["data"]), 1)
 
     def test_get_quiz_details(self):
-        aQuiz = Quiz(
-            quiz_id=1,
-            quiz_name="Fundamentals of Xerox WorkCentre 7845",
-            description="SECTION 1 of Xerox WorkCentre 7845",
-            uploader="James Smith",
-            duration="00:30:43",
-        )
-        db.session.add(aQuiz)
-        db.session.commit()
         data = Quiz.get_quiz_details(1)
         self.assertEqual(data["code"], 200)
         self.assertEqual(
@@ -66,61 +59,51 @@ class TestQuizClass(TestApp):
                     "quiz_id": 1,
                     "quiz_name": "Fundamentals of Xerox WorkCentre 7845",
                     "description": "SECTION 1 of Xerox WorkCentre 7845",
-                    "uploader": "James Smith",
+                    "uploader": "james_smith",
+                    "question": [],
                     "duration": "00:30:43",
                 }
             ],
         )
 
     def test_delete_quiz(self):
-        aQuiz = Quiz(
-            quiz_id=1,
-            quiz_name="Fundamentals of Xerox WorkCentre 7845",
-            description="SECTION 1 of Xerox WorkCentre 7845",
-            uploader="James Smith",
-            duration="00:30:43",
-        )
-        db.session.add(aQuiz)
         Quiz.delete_quiz(1)
-        db.session.commit()
         self.assertEqual(Quiz.get_one_quiz(1)["code"], 500)
         self.assertEqual(Quiz.get_one_quiz(1)["data"], None)
+        data = Quiz.get_quiz_details(1)
+        self.assertEqual(data["data"], [])
 
-    def test_save_quiz(self):
-        aQuiz = Quiz(
-            quiz_id=1,
-            quiz_name="Fundx WorkCentre 7845",
-            description="SECTIOre 7845",
-            uploader="Jath",
-            duration="00:00:00",
-        )
-        db.session.add(aQuiz)
-        saved_quiz = Quiz.save_quiz(
+    def test_save_quizDuration(self):
+        saved_quiz = Quiz.save_quizDuration(1, "00:50:00")
+        self.assertEqual(saved_quiz["code"], 200)
+        self.assertEqual(saved_quiz["data"], "00:50:00")
+
+    def test_saveQuizName(self):
+        saved_quiz = Quiz.save_quizName(
             1,
-            "Fundamentals of Xerox WorkCentre 7845",
-            "SECTION 1 of Xerox WorkCentre 7845",
-            "James Smith",
-            "00:30:43",
+            "Boop",
         )
         self.assertEqual(saved_quiz["code"], 200)
+        self.assertEqual(saved_quiz["data"], "Boop")
 
     def test_create_quiz(self):
-        Quiz.create_quiz(
-            1,
-            "Fundamentals of Xerox WorkCentre 7845",
-            "SECTION 1 of Xerox WorkCentre 7845",
-            "James Smith",
-            "00:30:43",
+        test_create = Quiz.create_quiz(
+            2,
+            "TEST_SPM_2",
+            "TEST_SPM_2",
+            "james_smith",
+            "00:45:00",
         )
-        chk_quiz = Quiz.get_one_quiz(1)
+        self.assertEqual(test_create["code"], 200)
         self.assertEqual(
-            chk_quiz["data"],
+            test_create["data"],
             {
-                "quiz_id": 1,
-                "quiz_name": "Fundamentals of Xerox WorkCentre 7845",
-                "description": "SECTION 1 of Xerox WorkCentre 7845",
-                "uploader": "James Smith",
-                "duration": "00:30:43",
+                "quiz_id": 2,
+                "quiz_name": "TEST_SPM_2",
+                "description": "TEST_SPM_2",
+                "uploader": "james_smith",
+                "question": [],
+                "duration": "00:45:00",
             },
         )
 

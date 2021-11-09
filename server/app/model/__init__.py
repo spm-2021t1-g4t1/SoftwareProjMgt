@@ -3,9 +3,10 @@ from model.classEnrollment import *
 from model.classes import *
 from model.course import *
 from model.lesson import *
-from model.quiz_attempts import *
+from model.lesson_quiz_attempts import *
 from model.quiz import *
 from model.question import *
 from model.quizoptions import *
 from model.staff import *
 from model.course_completion import *
+from model.final_quiz_attempts import *
