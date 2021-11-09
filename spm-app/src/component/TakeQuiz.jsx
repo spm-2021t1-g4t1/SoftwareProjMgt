@@ -15,20 +15,61 @@ const TakeQuiz = (props) => {
     const [getquizName, setgetquizName] = useState([]);
     const [getOptVal, setgetOptVal] = useState({});
     const [show, setShow] = useState(false);
+    const [quizEndTime, setQuizEndTime] = useState(null);
     useEffect(() => {
         // let retlist = quizDetails
         fetch(`http://127.0.0.1:5000/get_assigned_quiz/${course_id}/${class_no}/${lesson_no}`)
             .then(response => response.json())
             .then(data => {
-                const quiz_data = data.data
-                setgetQuiz_data(quiz_data)
-                setgetDuration(quiz_data.duration)
-                setgetQuestions(quiz_data.question)
-                setgetquizName(quiz_data.quiz_name)
-                
+                const quiz_data = data.data;
+                setgetQuiz_data(quiz_data);
+                setgetDuration(quiz_data.duration);
+                setgetQuestions(quiz_data.question);
+                setgetquizName(quiz_data.quiz_name);
+                const now = Date.now();
+                const quizEndTime = new
+                setQuizEndTime()
+
+                // general idea - convert to seconds, then use t.setSeconds(t.getSeconds() + numSecs)
+                setQuizEndTime(now + parseTimeToMilliseconds(quiz_data.duration));
             })
             .catch(err => console.log(err))
     }, [])
+
+    // timer stuff
+    useEffect(() => {
+        const now = Date.now();
+        if (quizEndTime && now > quizEndTime) {
+            alert("Time's up! Your quiz will be submitted now.");
+            tabulateMarks();
+
+        }
+        else {
+            const timer = setTimeout(() => {
+                setgetDuration(calculateTimeRemainingStr(now));
+            }, 1000)
+        }
+
+    }, [getDuration])
+
+    const parseTimeToMilliseconds = (timeStr) => {
+        const [h, m, s] = timeStr.split(":").map((val) => parseInt(val, 10));
+        return (h * 60 * 60 + m * 60 + s) * 1000;
+    }
+
+    
+    const calculateTimeRemainingStr = (now) => {
+        const msRemaining = quizEndTime - now;
+        if (msRemaining && quizEndTime) {
+            const date = new Date(msRemaining);
+            const h = date.getUTCHours();
+            const m = "0" + date.getMinutes();
+            const s = "0" + date.getSeconds();
+            return h + ':' + m.substr(-2) + ':' + s.substr(-2);
+        }
+        return getDuration;
+    }
+    
     const tabulateMarks = () => {
         let total = 0
         for(let key in getOptVal){
@@ -71,11 +112,11 @@ const TakeQuiz = (props) => {
     return (
         <div className= 'my-4' > 
             <div className="border border-dark container-fluid container-bg">    
-                <h2 className="p-1">Time Left: {getDuration} </h2>
+                <h2 className="p-1 sticky-top bg-light">Time Left: {getDuration} </h2>
                 <Form onSubmit={(e)=>handleShow(e)}>
                 {
                     getQuestions.map(ques => {
-                        console.log(ques)
+                        // console.log(ques)
                         return (
                             
                         <Card>
@@ -88,7 +129,7 @@ const TakeQuiz = (props) => {
                             
                                 {
                                     ques.question_option.map(option => {
-                                        console.log(option)
+                                        // console.log(option)
                                         return (
                                             <Form.Group controlId={option.ques_id}>
                                                 <InputGroup>

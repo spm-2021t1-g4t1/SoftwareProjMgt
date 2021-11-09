@@ -49,7 +49,7 @@ function LearnerHome({handleLogout}) {
               classNames="slider-body"
               timeout={{ enter: 1000, exit: 1000 }}
               >
-            <main className = 'App-body'>\
+            <main className = 'App-body'>
             {/* <Route path = '/' component = {Home} exact/>
               <Route path = '/course' component = {CourseList} exact/>
               <Route path = '/catalog' component = {Catalog} exact/>
