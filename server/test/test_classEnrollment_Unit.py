@@ -44,6 +44,20 @@ class TestApp(flask_testing.TestCase):
 
 class testClassEnrollment(TestApp):
 
+    # got error
+    def test_json(self):
+        # staff1 = staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
+        enrollment = classEnrolment(staff_username = 'coreyroberts', course_id = 1, class_no = 1)
+
+        expected = {
+            "staff_name" : 'Corey Roberts',
+            "staff_username": 'coreyroberts',
+            "course_id": 1,
+            "class_no": 1
+        }
+
+        self.assertEqual(enrollment.json(), expected)
+
     def testGetClasslist(self):
         data = classEnrolment.getClasslist(1, 1)
         self.assertEqual(data['data'],
