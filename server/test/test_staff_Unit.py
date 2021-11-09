@@ -50,19 +50,41 @@ class testStaff(TestApp):
     def test_getStaffList(self):
         data = staff.get_staffList()
         self.assertEqual(data['data'], 
-        [{'staff_username': 'coreyroberts', 'staff_name': 'Corey Roberts', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 'staff_name': 'Darrel Wilde', 'role': 'Learner', 'department': 'Development', 'current_designation': 'Engineer'}, {'staff_username': 'hananhyde', 'staff_name': 'Hanan Hyde', 'role': 'Administrator', 'department': 'Human Resources', 'current_designation': 'Executive'}]
+        [{'staff_username': 'coreyroberts', 
+        'staff_name': 'Corey Roberts', 
+        'role': 'Learner', 
+        'department': 'Operation', 
+        'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 
+        'staff_name': 'Darrel Wilde', 
+        'role': 'Learner', 
+        'department': 'Development', 
+        'current_designation': 'Engineer'}, {'staff_username': 'hananhyde', 
+        'staff_name': 'Hanan Hyde', 
+        'role': 'Administrator', 
+        'department': 'Human Resources', 
+        'current_designation': 'Executive'}]
         )
 
     def test_getStaffByUsername(self):
         data = staff.get_staff_by_username('coreyroberts')
         self.assertEqual(data['data'],
-        {'staff_username': 'coreyroberts', 'role': 'Learner', 'staff_name': 'Corey Roberts'}
+        {'staff_username': 'coreyroberts', 
+        'role': 'Learner', 
+        'staff_name': 'Corey Roberts'}
         )
 
     def test_getEngineerList(self):
         data = staff.get_engineerList()
         self.assertEqual(data['data'],
-        [{'staff_username': 'coreyroberts', 'staff_name': 'Corey Roberts', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 'staff_name': 'Darrel Wilde', 'role': 'Learner', 'department': 'Development', 'current_designation': 'Engineer'}]
+        [{'staff_username': 'coreyroberts', 
+        'staff_name': 'Corey Roberts', 
+        'role': 'Learner', 
+        'department': 'Operation', 
+        'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 
+        'staff_name': 'Darrel Wilde', 
+        'role': 'Learner', 
+        'department': 'Development', 
+        'current_designation': 'Engineer'}]
         )
 
 

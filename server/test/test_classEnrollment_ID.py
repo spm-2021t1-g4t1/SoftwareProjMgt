@@ -97,7 +97,15 @@ class testClassEnrollment(TestApp):
         classList = self.client.get(f"/enrolment/{2}/{1}")
         insertedStudents = classList.json["data"]
         self.assertEqual(insertedStudents, 
-        [{'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Corey Roberts', 'staff_username': 'coreyroberts'}, {'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Tes Ting', 'staff_username': 'testing'}]
+        [{'current_designation': 'Engineer', 
+        'department': 'Operation', 
+        'role': 'Learner', 
+        'staff_name': 'Corey Roberts', 
+        'staff_username': 'coreyroberts'}, {'current_designation': 'Engineer', 
+        'department': 'Operation', 
+        'role': 'Learner', 
+        'staff_name': 'Tes Ting', 
+        'staff_username': 'testing'}]
         )
 
     def testEnrolDirect(self):
@@ -118,7 +126,21 @@ class testClassEnrollment(TestApp):
         data = self.client.get(f"/enrolment/{1}/{1}")
         insertedStudents = data.json["data"]
         self.assertEqual(insertedStudents,
-        [{'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Corey Roberts', 'staff_username': 'coreyroberts'}, {'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'hello', 'staff_username': 'hello'}, {'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Tes Ting', 'staff_username': 'testing'}]
+        [{'current_designation': 'Engineer', 
+        'department': 'Operation', 
+        'role': 'Learner', 
+        'staff_name': 'Corey Roberts', 
+        'staff_username': 'coreyroberts'}, 
+        {'current_designation': 'Engineer', 
+        'department': 'Operation', 
+        'role': 'Learner', 
+        'staff_name': 'hello', 
+        'staff_username': 'hello'}, 
+        {'current_designation': 'Engineer', 
+        'department': 'Operation', 
+        'role': 'Learner', 
+        'staff_name': 'Tes Ting', 
+        'staff_username': 'testing'}]
         )
     
     

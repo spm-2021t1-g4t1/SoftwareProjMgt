@@ -85,6 +85,38 @@ class TestCourse_DB(TestApp):
         }
         self.assertEqual(c.view_all_json(), expected)
 
+    def test_view_all_json(self):
+        one_class = classes(course_id=3, class_no=1, start_date='2021-09-01', end_date='2021-09-01', class_size=15)
+        c = course(
+            course_id = 3,
+            course_name = "Test Course 3",
+            description = "Test Description 3",
+            learning_objective = [learningObjective(course_id=3, learning_objective="Learning Objective 3"), learningObjective(course_id=3, learning_objective="Learning Objective 4")],
+            classes = [one_class],
+            prerequisite_courses = []
+        )
+
+        expected = {
+            'course_id': 3, 
+            'course_name': 'Test Course 3', 
+            'description': 'Test Description 3', 
+            'learning_objective': ['Learning Objective 3', 'Learning Objective 4'], 
+            'classes': [
+                {'course_id': 3, 
+                'class_no': 1, 
+                'start_date': '2021-09-01', 
+                'end_date': '2021-09-01', 
+                'start_time': 'None', 
+                'end_time': 'None', 
+                'class_size': 15, 
+                'trainer_name': None, 
+                'lesson': []
+                }
+            ],
+            'prerequisite_courses': []
+        }
+        self.assertEqual(c.view_all_json(), expected)
+
     def test_json(self):
         c = course(
             course_id = 3,
