@@ -24,6 +24,7 @@ class TestApp(flask_testing.TestCase):
         Objects = [
             staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
             staff(staff_username = 'hello', staff_name = 'hello', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
+            staff(staff_username = 'testing', staff_name = 'Tes Ting', role = 'Learner', department = 'Operation', current_designation = 'Engineer'),
             course(course_id = 1, course_name = "Test Course 1", description = "Test Description 1" ),
             course(course_id = 2, course_name = "Test Course 2", description = "Test Description 2"),
             classes(course_id = 1, class_no = 1, start_date = datetime(2021,9,1), end_date = datetime(2021,9,2), class_size = 40, trainer_name = 'stevejobs'),
@@ -31,7 +32,7 @@ class TestApp(flask_testing.TestCase):
             classEnrolment(staff_username = 'coreyroberts', course_id = 1, class_no = 1),
             classEnrolment(staff_username = 'hello', course_id = 1, class_no = 1),
             classEnrolment(staff_username = 'coreyroberts', course_id = 2, class_no = 1),
-            staff(staff_username = 'testing', staff_name = 'Tes Ting', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
+            classEnrolmentQueue(staff_username = 'testing', course_id = 2, class_no = 1)
         ]
         
         db.session.bulk_save_objects(Objects)
@@ -73,6 +74,27 @@ class testClassEnrollment(TestApp):
         self.assertEqual(course_id2, 2)
         self.assertEqual(class_no1, 1)
         self.assertEqual(class_no2, 1)
+
+    def testApproveEnrolment(self):
+        request_body = {
+            'staff_username': 'testing',
+            'course_id': 2,
+            'class_no': 1
+        }
+        response = self.client.post(
+            f"/enrolment/approve",
+            data = json.dumps(request_body),
+            content_type = 'application/json'
+        )
+        dataObj = response.json
+        self.assertEqual(dataObj, 
+        {'class_no': 1, 'course_id': 2, 'staff_username': 'testing'}
+        )
+        classList = self.client.get(f"/enrolment/{2}/{1}")
+        insertedStudents = classList.json["data"]
+        self.assertEqual(insertedStudents, 
+        [{'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Corey Roberts', 'staff_username': 'coreyroberts'}, {'current_designation': 'Engineer', 'department': 'Operation', 'role': 'Learner', 'staff_name': 'Tes Ting', 'staff_username': 'testing'}]
+        )
 
     def testEnrolDirect(self):
         request_body = {
