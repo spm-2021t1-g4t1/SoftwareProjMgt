@@ -34,6 +34,19 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 class testStaff(TestApp):
+    def test_viewjson(self):
+        staff1 = staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
+
+        expected = {
+            'staff_username': 'coreyroberts',
+            'staff_name': 'Corey Roberts', 
+            'role': 'Learner',
+            'department': 'Operation',
+            'current_designation': 'Engineer'
+        }
+
+        self.assertEqual(staff1.viewjson(), expected)
+
     def test_getStaffList(self):
         data = staff.get_staffList()
         self.assertEqual(data['data'], 
