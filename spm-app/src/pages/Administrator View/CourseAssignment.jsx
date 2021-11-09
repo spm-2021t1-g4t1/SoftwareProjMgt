@@ -16,6 +16,8 @@ function CourseAssignment() {
     const [searchTerm, setSearchTerm] = useState('')
     const [stateChange, setStateChange] = useState(0)
     const [classesByCourse, setClassesByCourse] = useState([])
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+
 
     const groupBy = key => array =>
         array.reduce((objectsByKeyValue, obj) => {
@@ -66,17 +68,19 @@ function CourseAssignment() {
         <BrowserRouter>
         <Route path='/Administrator/Course/unassigned' exact>
             <div>
-                <h1>Course Assignment</h1>
+                <h1>Courses Without Trainers</h1>
                 <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
                 <Table hover responsive hover variant="light" className = 'admin-table' >
                     <thead>
                         <tr>
-                            <th className = 'text-center'>Class No</th>
-                            <th className = 'text-center'>Enrollment Period</th>
-                            <th className = 'text-center' >Dates</th>
-                            <th className = 'text-center'>Timing</th>
-                            <th></th>
+                            <th className = 'text-center'>Class No.</th>
+                            <th className = 'text-center'>Start Date</th>
+                            <th className = 'text-center'>End Date</th>
+                            <th className = 'text-center'>Start Time</th>
+                            <th className = 'text-center'>End Time</th>
+                            <th className = 'text-center'>Class Size</th>
+                            <th className = 'text-center'>Actions</th>
                         </tr>
                     </thead>
 
@@ -100,23 +104,28 @@ function CourseAssignment() {
                                 return (
                                     <React.Fragment>
                                     <tr className = 'table-secondary'>
-                                        <td className = 'text-center' colSpan="5"><h4>{val[0]['course_name']}</h4></td>
+                                        <td className = 'text-center' colSpan="7"><h4>{val[0]['course_name']}</h4></td>
                                     </tr>
                                     {val.map(classinfo => {
-                                    console.log(classinfo)
 
                                     return(
                                         <tr>
-                                        <td className = 'align-middle text-center'>{classinfo['class_no']}</td>
-                                        <td className = 'text-center'>
-                                            {classinfo['selfenrol_start']} <br /> - <br /> {classinfo['selfenrol_end']}
-                                        </td>
-                                        <td className = 'text-center'>
-                                            {classinfo['start_date']} <br /> - <br /> {classinfo['end_date']}
-                                        </td>
-                                        <td className = 'text-center mx-2'>
-                                        {classinfo['start_time']} <br /> - <br /> {classinfo['end_time']}
-                                        </td>
+                                            <td className = 'text-center'>{classinfo['class_no']}</td>
+                                            <td className = 'text-center'>
+                                                {(new Date(classinfo['start_date'])).toLocaleDateString("en-US", options)}
+                                            </td>
+                                            <td className = 'text-center'>
+                                                {(new Date(classinfo['end_date'])).toLocaleDateString("en-US", options)}
+                                            </td>
+                                            <td className = 'text-center mx-2'>
+                                                {classinfo['start_time']}
+                                            </td>
+                                            <td className = 'text-center mx-2'>
+                                                {classinfo['end_time']}
+                                            </td>
+                                            <td className = 'text-center'>
+                                                {classinfo['class_size']}
+                                            </td>
                                         <td className = 'align-middle' >
                                         <OverlayTrigger
                                             placement="left"

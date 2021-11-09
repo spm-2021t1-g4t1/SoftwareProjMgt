@@ -5,7 +5,6 @@ import { BiMessageRoundedDots} from "react-icons/bi";
 import { FaEdit, FaTrash} from "react-icons/fa";
 
 import SearchBox from '../../component/SearchBox';
-import ViewUnassignedCourses from './UnassignedCourses';
 
 
 function ViewEngineerDetails() {
@@ -76,9 +75,6 @@ function ViewEngineerDetails() {
                     })}
                 </tbody>
             </Table>
-            
-            
-            <ViewUnassignedCourses/>
         </div>
     );
 }

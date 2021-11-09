@@ -18,6 +18,8 @@ function AvaliableCourse() {
     const [courseList, setCourseList] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [stateChange, setStateChange] = useState(0)
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+
     function classChange() {
         setStateChange(stateChange+1)
     }
@@ -82,17 +84,20 @@ function AvaliableCourse() {
         <BrowserRouter>
         <Route path='/Administrator/Course/list' exact>
             <div>
-                <h1>Course Assignment</h1>
+                <h1>List of avaliable courses</h1>
                 <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
                 <Table hover responsive hover variant="light" className = 'admin-table' >
                     <thead>
                         <tr>
-                            <th className = 'text-center'>Class No</th>
-                            <th className = 'text-center' >Dates</th>
-                            <th className = 'text-center'>Timing</th>
-                            <th>Trainer</th>
-                            <th></th>
+                            <th>Class No.</th>
+                            <th className = 'text-center'>Start Date</th>
+                            <th className = 'text-center'>End Date</th>
+                            <th className = 'text-center'>Start Time</th>
+                            <th className = 'text-center'>End Time</th>
+                            <th className = 'text-center'>Trainer</th>
+                            <th className = 'text-center'>Class Size</th>
+                            <th className = 'text-center'>Actions</th>
                         </tr>
                     </thead>
 
@@ -114,22 +119,31 @@ function AvaliableCourse() {
                             return (
                                 <React.Fragment>
                                     <tr className = 'table-secondary'>
-                                        <td className = 'text-center' colSpan="5"><h4>{val.course_name}</h4></td>
+                                        <td className = 'text-center' colSpan="8"><h4>{val.course_name}</h4></td>
                                     </tr>
                                     {classList.map((classesObj) => {
                                        return (
                                             <tr className = "align-middle" >
                                                 <td className = 'text-center'>{classesObj.class_no}</td>
                                                 <td className = 'text-center'>
-                                                    {classesObj.start_date} <br /> - <br /> {classesObj.end_date}
+                                                    {(new Date(classesObj.start_date)).toLocaleDateString("en-US", options)}
                                                 </td>
                                                 <td className = 'text-center'>
-                                                    {classesObj.start_time} <br /> - <br /> {classesObj.end_date}
+                                                    {(new Date(classesObj.end_date)).toLocaleDateString("en-US", options)}
+                                                </td>
+                                                <td className = 'text-center mx-2'>
+                                                    {classesObj.start_time}
+                                                </td>
+                                                <td className = 'text-center mx-2'>
+                                                    {classesObj.end_time}
                                                 </td>
                                                 <td>
                                                     {classesObj.trainer_name
                                                     ?classesObj.trainer_name
                                                     :"Not Assigned"}
+                                                </td>
+                                                <td className = 'text-center'>
+                                                    {classesObj.class_size}
                                                 </td>
                                                 <td>
                                                 <OverlayTrigger
