@@ -43,9 +43,11 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 class testClassEnrollment(TestApp):
+
     def test_json(self):
         staff1 = staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
         enrollment = classEnrolment(staff_username = 'coreyroberts', course_id = 1, class_no = 1, staff = staff1)
+        
 
         expected = {
             "staff_name" : 'Corey Roberts',
@@ -56,44 +58,33 @@ class testClassEnrollment(TestApp):
 
         self.assertEqual(enrollment.json(), expected)
 
-    def testGetClassList(self):
-
-        data = self.client.get(f"/enrolment/{1}/{1}")
-        insertedStudents = data.json["data"]
-
-        self.assertEqual(insertedStudents[0]['staff_username'], 'coreyroberts')
-        self.assertEqual(insertedStudents[1]['staff_username'], 'hello')
+    def testGetClasslist(self):
+        data = classEnrolment.getClasslist(1, 1)
+        self.assertEqual(data['data'],
+        [{'staff_username': 'coreyroberts', 'staff_name': 'Corey Roberts', 'role': 'Learner', 'department': 'Operation', 'current_designation': 
+        'Engineer'}, {'staff_username': 'hello', 'staff_name': 'hello', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}]
+        )
     
+    def testGetClasslistByCourse(self):
+        data = classEnrolment.getClasslistByCourse(1)
+        self.assertEqual(data['data'], 
+        [{'staff_username': 'coreyroberts', 'staff_name': 'Corey Roberts', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}, {'staff_username': 'hello', 'staff_name': 'hello', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}]
+        )
 
-    def testGetClassNumber(self):
-        data = self.client.get(f"/enrolment/{1}/{1}/length")
-        numStudents = data.json['message']
-
-        self.assertEqual(numStudents, 2)
-
-    
     def testGetStaffEnrollment(self):
+        data = classEnrolment.getStaffEnrollment('coreyroberts')
+        self.assertEqual(data['data'],
+        {0: {'staff_name': 'Corey Roberts', 'staff_username': 'coreyroberts', 'course_id': 1, 'class_no': 1}, 1: {'staff_name': 'Corey Roberts', 'staff_username': 'coreyroberts', 'course_id': 2, 'class_no': 1}}
+        )
 
-        data = self.client.get(f"/enrolment/coreyroberts")
-
-        course_id1 = data.json['data'][0]['course_id']
-        class_no1 = data.json['data'][0]['classes'][0]['class_no']
-        course_id2 = data.json['data'][1]['course_id']
-        class_no2 = data.json['data'][1]['classes'][0]['class_no']
+    def testEnrollToClass(self):
+        data = classEnrolment.enrollToClass('hello', 2, 1)
         
-        self.assertEqual(course_id1, 1)
-        self.assertEqual(course_id2, 2)
-        self.assertEqual(class_no1, 1)
-        self.assertEqual(class_no2, 1)
-    
-    # def testApproveEnrolment(self):
-    #     data = self.client.get(f"/enrolment/approve")
-
-
-
+        self.assertEqual(data['data'], 'Added')
+        classList = classEnrolment.getClasslist(2, 1)
+        self.assertEqual(classList['data'], 
+        [{'staff_username': 'coreyroberts', 'staff_name': 'Corey Roberts', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}, {'staff_username': 'hello', 'staff_name': 'hello', 'role': 'Learner', 'department': 'Operation', 'current_designation': 'Engineer'}])
 
 
 if __name__ == "__main__":
     unittest.main()
-
-

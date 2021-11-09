@@ -34,33 +34,58 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 class testStaff(TestApp):
-    def testGetStaffList(self):
-        data = self.client.get(f"/staff")
-        insertedStaff = data.json["data"][0]
+    def test_viewjson(self):
+        staff1 = staff(staff_username = 'coreyroberts', staff_name = 'Corey Roberts', role = 'Learner', department = 'Operation', current_designation = 'Engineer')
 
-        self.assertEqual(insertedStaff["staff_username"], 'coreyroberts')
-        self.assertEqual(insertedStaff["staff_name"], 'Corey Roberts')
-        self.assertEqual(insertedStaff["role"], 'Learner')
-        self.assertEqual(insertedStaff["department"], 'Operation')
-        self.assertEqual(insertedStaff["current_designation"], 'Engineer')
-    
-    def testGetStaffByUsername(self):
-        data = self.client.get(f"/login/darrelwilde")
-        insertedStaff = data.json['data']['staff_username']
+        expected = {
+            'staff_username': 'coreyroberts',
+            'staff_name': 'Corey Roberts', 
+            'role': 'Learner',
+            'department': 'Operation',
+            'current_designation': 'Engineer'
+        }
 
-        self.assertEqual(insertedStaff, 'darrelwilde')
-    
-    def testGetEngineerList(self):
-        data = self.client.get(f"/staff/engineers")
-        engineersList = data.json['data']
-        # print(data.json['data'])
-        
-        self.assertEqual(engineersList[0]['staff_username'], 'coreyroberts')
-        self.assertEqual(engineersList[0]['current_designation'], 'Engineer')
-        self.assertEqual(engineersList[1]['staff_username'], 'darrelwilde')
-        self.assertEqual(engineersList[1]['current_designation'], 'Engineer')
+        self.assertEqual(staff1.viewjson(), expected)
 
+    def test_getStaffList(self):
+        data = staff.get_staffList()
+        self.assertEqual(data['data'], 
+        [{'staff_username': 'coreyroberts', 
+        'staff_name': 'Corey Roberts', 
+        'role': 'Learner', 
+        'department': 'Operation', 
+        'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 
+        'staff_name': 'Darrel Wilde', 
+        'role': 'Learner', 
+        'department': 'Development', 
+        'current_designation': 'Engineer'}, {'staff_username': 'hananhyde', 
+        'staff_name': 'Hanan Hyde', 
+        'role': 'Administrator', 
+        'department': 'Human Resources', 
+        'current_designation': 'Executive'}]
+        )
 
+    def test_getStaffByUsername(self):
+        data = staff.get_staff_by_username('coreyroberts')
+        self.assertEqual(data['data'],
+        {'staff_username': 'coreyroberts', 
+        'role': 'Learner', 
+        'staff_name': 'Corey Roberts'}
+        )
+
+    def test_getEngineerList(self):
+        data = staff.get_engineerList()
+        self.assertEqual(data['data'],
+        [{'staff_username': 'coreyroberts', 
+        'staff_name': 'Corey Roberts', 
+        'role': 'Learner', 
+        'department': 'Operation', 
+        'current_designation': 'Engineer'}, {'staff_username': 'darrelwilde', 
+        'staff_name': 'Darrel Wilde', 
+        'role': 'Learner', 
+        'department': 'Development', 
+        'current_designation': 'Engineer'}]
+        )
 
 
 
