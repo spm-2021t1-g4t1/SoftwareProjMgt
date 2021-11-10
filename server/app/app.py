@@ -269,6 +269,7 @@ def assign_trainer():
 @app.route('/class/get_futureClass')
 def get_futureClass():
     unsorted = classes.get_futureClass()
+    print(unsorted)
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
 
 @app.route('/class/trainer/modify', methods=['POST'])
