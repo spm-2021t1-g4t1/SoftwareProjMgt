@@ -36,14 +36,6 @@ class Quiz(db.Model):
     def getDuration(self):
         return self.duration
 
-    # def viewjson(self):
-    #     return {
-    #         "quiz_id": self.quiz_id,
-    #         "quiz_name": self.quiz_name,
-    #         "description": self.description,
-    #         "uploader": self.uploader,
-    #         "duration": self.duration,
-    #     }
 
     def viewjson(self):
         questionlist = []

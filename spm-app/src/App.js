@@ -21,7 +21,6 @@ const App = () => {
   const history = useHistory();
   // TODO: set username into context once logged in so child components can access it
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-  console.log(user)
 
   return (
     <BrowserRouter>

@@ -11,9 +11,7 @@ from model import *
 app = Flask(__name__)
 CORS(app)
 
-configstr = "mysql+mysqlconnector://root@localhost:3306/lms"
-if platform.system() == "Darwin":
-    configstr = "mysql+mysqlconnector://root:root@localhost:3306/lms"
+configstr = "mysql+mysqlconnector://admin:Cbasdf1234%@database-1.caeirjmmwril.ap-southeast-1.rds.amazonaws.com/lms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_size": 100, "pool_recycle": 280}
@@ -282,6 +280,7 @@ def get_assignedClass(staff_username):
 @app.route('/class/setSelfEnrolDates', methods=['POST'])
 def update_classObj():
     data = request.get_json()
+    print(data)
     response = classes.setSelfEnrolDates(data)
     return response
 

@@ -1,14 +1,10 @@
+# Done by Trisha
 import unittest
 import flask_testing
 import json
 from helper import *
 from app import *
 from datetime import datetime
-# from app.model import staff
-# from app import app, db
-
-# staff.py
-# do for classenrollment too
 
 class TestApp(flask_testing.TestCase):
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"

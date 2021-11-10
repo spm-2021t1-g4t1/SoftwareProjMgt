@@ -1,3 +1,4 @@
+# Done by Chuen Kai
 import unittest
 import json
 import flask_testing
@@ -142,24 +143,6 @@ class testSetSelfEnrolDates(TestApp):
         updated = classes.query.filter_by(course_id=1, class_no=1).first()
         self.assertEqual(updated.getSelfEnrolDates(), expected)
     
-    # def testPostRoute(self):
-    #     date1 = datetime.now()
-    #     date2 = datetime.now()
-        
-    #     body = {
-    #             "class_no": 1,
-    #             "course_id": 1,
-    #             "staff_username": 'jackma',
-    #             "selfenrol_start": 'Mon, 01 Nov 2021 00:00:00 GMT',
-    #             "selfenrol_end": 'Wed, 01 Dec 2021 00:00:00 GMT'
-    #     }
-    #     print(body)
-    #     response = self.client.post(
-    #         f"/class/setSelfEnrolDates",
-    #         data=json.dumps(body),
-    #         content_type="application/json",
-    #     )
-    #     self.assert200(response)
 
 class testGet_unassignedClass(TestApp):
     def testMethods(self):
