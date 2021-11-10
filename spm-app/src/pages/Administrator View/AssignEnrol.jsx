@@ -72,7 +72,7 @@ const AssignEnrol = () => {
                 </thead>
 
                 <tbody>
-                    {engineers.map(engineer =>
+                    {engineers.length ? engineers.map(engineer =>
                         <tr>
                             <td>{engineer.staff_name}</td>
                             <td>{engineer.role}</td>
@@ -82,7 +82,9 @@ const AssignEnrol = () => {
                                 </Button>
                             </td>
                         </tr>
-                    )}
+                    )
+                    :
+                    <h4 className="mt-4">No eligible learners</h4>}
                 </tbody>
 
             </Table>
