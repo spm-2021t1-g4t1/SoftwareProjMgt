@@ -41,7 +41,7 @@ Running the application locally
 3. MySQL is a relational database management system used to store our data.
 
 
-### Functionalities
+## Functionalities (RELEASE 1)
 
 #### Learner
 View Course Catalogue - Learners have the ability to browse the course catalogue to view the various course offerings the learning management system provides.
