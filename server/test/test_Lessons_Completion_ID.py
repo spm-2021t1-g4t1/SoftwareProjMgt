@@ -178,3 +178,75 @@ class TestGetLessons(TestApp):
         response = self.client.get(f"/lesson/2/1/darrelwilde")
         self.assertEqual(len(response.json['data']), 4)
 
+class TestMark_lesson_as_complete(TestApp):
+    def testMethod(self):
+        lesson_completion_object = lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=1,
+            staff_username='darrelwilde'
+        )
+        
+        res = lesson_completion.mark_lesson_completed(lesson_completion_object)
+        expected = {'code': 200, 'message': 'Lesson marked as complete'}
+        self.assertEqual(res, expected)
+
+    def testPostRoute(self):
+        body = {
+                "class_no": 1,
+                "course_id": 2,
+                "lesson_no": 1,
+                "staff_username": "darrelwilde" 
+        }
+
+        response = self.client.post(
+            f"/lesson_completion/mark_complete",
+            data=json.dumps(body),
+            content_type="application/json",
+        )
+        self.assert200(response)
+
+class TestGet_lessonCompletion(TestApp):
+    def testMethod(self):
+        objects = [
+            lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=1,
+            staff_username='darrelwilde'
+            ),
+            
+            lesson_completion(
+            course_id=2,
+            class_no=1,
+            lesson_no=2,
+            staff_username='darrelwilde'
+            )
+        ]
+    
+        db.session.bulk_save_objects(objects)
+        db.session.commit()
+
+        res = lesson_completion.get_listOfLessonCompletionByStaff(2,1,'darrelwilde')
+        expected = {
+            'data': [
+                {
+                    'course_id': 2, 
+                    'class_no': 1, 
+                    'lesson_no': 1, 
+                    'staff_username': 'darrelwilde'
+                }, 
+                {
+                    'course_id': 2, 
+                    'class_no': 1, 
+                    'lesson_no': 2, 
+                    'staff_username': 'darrelwilde'}]}
+
+        self.assertEqual(res,expected)
+    
+    def testGetRoute(self):
+        data = self.client.get(f"/lesson/2/1/darrelwilde")
+        self.assert200(data)
+        
+if __name__ == "__main__":
+    unittest.main()

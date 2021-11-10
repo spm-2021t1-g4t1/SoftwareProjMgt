@@ -57,52 +57,7 @@ class TestApp(flask_testing.TestCase):
         db.session.remove()
         db.drop_all()
 
-class testClasssesObj(TestApp):
-    def testGetAllClasses(self):
-        res = classes.getAllClasses()
-        expected = [
-            {'course_name': 'Test Course 1', 
-            'course_id': 1, 
-            'class_no': 1, 
-            'start_date': (datetime.today() + timedelta(days=-2)).replace(hour=0, minute=0, second=0, microsecond=0), 
-            'end_date': (datetime.today() +  timedelta(days=-1)).replace(hour=0, minute=0, second=0, microsecond=0), 
-            'start_time': 'None',
-            'end_time':'None', 
-            'class_size': 40, 
-            'trainer_name': 'stevejobs', 
-            'selfenrol_start': None, 
-            'selfenrol_end': None}, 
-
-            {'course_name': 'Test Course 2', 
-            'course_id': 2, 
-            'class_no': 1, 
-            'start_date': (datetime.today() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0), 
-            'end_date': (datetime.today() +  timedelta(days=2)).replace(hour=0, minute=0, second=0, microsecond=0), 
-            'start_time': 'None', 
-            'end_time': 'None', 
-            'class_size': 40, 
-            'trainer_name': None, 
-            'selfenrol_start': None, 
-            'selfenrol_end': None}
-            ]
-        self.assertEqual(expected, res)
-
-    def testSetSelfEnrolDates(self):
-        classes.setSelfEnrolDates({
-            "course_id": 1, 
-            "class_no": 1,
-            "selfenrol_start": datetime.strptime("2021-12-01", "%Y-%m-%d").date(),
-            "selfenrol_end": datetime.strptime("2021-12-30", "%Y-%m-%d").date()
-            })
-        
-        expected = {
-            "start": "2021-12-01", 
-            "end": "2021-12-30"
-        }
-
-        updated = classes.query.filter_by(course_id=1, class_no=1).first()
-        self.assertEqual(updated.getSelfEnrolDates(), expected)
-
+class testGet_specificClass(TestApp):
     def testGet_specificClass(self):
         expected = {
             "data": {
@@ -136,7 +91,78 @@ class testClasssesObj(TestApp):
         }
         self.assertEqual(classes.get_specificClassDetail(2, 1), expected)
 
-    def testget_unassignedClass(self):
+class testGetAllClasses(TestApp):
+    def testMethods(self):
+        res = classes.getAllClasses()
+        expected = [
+            {'course_name': 'Test Course 1', 
+            'course_id': 1, 
+            'class_no': 1, 
+            'start_date': (datetime.today() + timedelta(days=-2)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'end_date': (datetime.today() +  timedelta(days=-1)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'start_time': 'None',
+            'end_time':'None', 
+            'class_size': 40, 
+            'trainer_name': 'stevejobs', 
+            'selfenrol_start': None, 
+            'selfenrol_end': None}, 
+
+            {'course_name': 'Test Course 2', 
+            'course_id': 2, 
+            'class_no': 1, 
+            'start_date': (datetime.today() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'end_date': (datetime.today() +  timedelta(days=2)).replace(hour=0, minute=0, second=0, microsecond=0), 
+            'start_time': 'None', 
+            'end_time': 'None', 
+            'class_size': 40, 
+            'trainer_name': None, 
+            'selfenrol_start': None, 
+            'selfenrol_end': None}
+            ]
+        self.assertEqual(expected, res)
+    
+    def getRoute(self):
+        data = self.client.get(f"/class")
+        self.assert200(data)
+
+class testSetSelfEnrolDates(TestApp):
+    def testMethods(self):
+        classes.setSelfEnrolDates({
+            "course_id": 1, 
+            "class_no": 1,
+            "selfenrol_start": datetime.strptime("2021-12-01", "%Y-%m-%d").date(),
+            "selfenrol_end": datetime.strptime("2021-12-30", "%Y-%m-%d").date()
+            })
+        
+        expected = {
+            "start": "2021-12-01", 
+            "end": "2021-12-30"
+        }
+
+        updated = classes.query.filter_by(course_id=1, class_no=1).first()
+        self.assertEqual(updated.getSelfEnrolDates(), expected)
+    
+    # def testPostRoute(self):
+    #     date1 = datetime.now()
+    #     date2 = datetime.now()
+        
+    #     body = {
+    #             "class_no": 1,
+    #             "course_id": 1,
+    #             "staff_username": 'jackma',
+    #             "selfenrol_start": 'Mon, 01 Nov 2021 00:00:00 GMT',
+    #             "selfenrol_end": 'Wed, 01 Dec 2021 00:00:00 GMT'
+    #     }
+    #     print(body)
+    #     response = self.client.post(
+    #         f"/class/setSelfEnrolDates",
+    #         data=json.dumps(body),
+    #         content_type="application/json",
+    #     )
+    #     self.assert200(response)
+
+class testGet_unassignedClass(TestApp):
+    def testMethods(self):
         expected = {
             'data': [
                 {   
@@ -155,8 +181,13 @@ class testClasssesObj(TestApp):
             ]
         }
         self.assertEqual(classes.get_unassignedClass(), expected)
+    
+    def testGetRoute(self):
+        data = self.client.get(f"/class/get_unassignedClass")
+        self.assert200(data)
 
-    def testGetFutureClasses(self):
+class testGetFutureClasses(TestApp):
+    def testMethods(self):
         res = classes.get_futureClass()
         expected = {
             'data': [
@@ -175,7 +206,12 @@ class testClasssesObj(TestApp):
         }
         self.assertEqual(res, expected)
 
-    def testModifyTrainer(self):
+    def testGetRoute(self):
+        data = self.client.get(f"/class/get_futureClass")
+        self.assert200(data)
+
+class testModifyTrainer(TestApp):
+    def testMethods(self):
         res = classes.modifyTrainer(2,1,'jackma')
         self.assertEqual(res, {'data': 'Updated'})
 
@@ -193,8 +229,23 @@ class testClasssesObj(TestApp):
             }
         }
         self.assertEqual(res1, expected1)
+    
+    def testPostRoute(self):
+        body = {
+                "class_no": 1,
+                "course_id": 2,
+                "staff_username": 'jackma'    
+        }
+        response = self.client.post(
+            f"/class/trainer/modify",
+            data=json.dumps(body, default=str),
+            content_type="application/json",
+        )
+        self.assert200(response)
+        
 
-    def testGet_get_trainerAssignedClass(self):
+class testGet_trainerAssignedClass(TestApp):
+    def testGet_trainerAssignedClass(self):
         res = classes.get_trainerAssignedClass("stevejobs")
         expected = [{
                 'Test Course 1': 
@@ -211,6 +262,13 @@ class testClasssesObj(TestApp):
                     'selfenrol_end': None}]
             }]
         self.assertEqual(res, expected)
+
+    def testGetRoute(self):
+        data = self.client.get(f"/class/stevejobs/get_assignedClass")
+        self.assert200(data)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()

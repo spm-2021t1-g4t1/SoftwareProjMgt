@@ -3,6 +3,7 @@ from model.classEnrollment import *
 from model.classes import *
 from model.course import *
 from model.lesson import *
+from model.lesson_completion import *
 from model.lesson_quiz_attempts import *
 from model.quiz import *
 from model.question import *

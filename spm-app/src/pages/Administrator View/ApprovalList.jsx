@@ -40,7 +40,7 @@ function ApprovalList() {
 
     return (
         <div>
-            <h1>Engineer Details</h1>
+            <h1>Approve self-enrolment</h1>
             <SearchBox placeholder = 'Enter Name' handleChange = {(e) => setSearchTerm(e.target.value)}/>
 
             <Table hover responsive hover variant="light" className = 'admin-table' >

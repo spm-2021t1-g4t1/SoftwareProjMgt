@@ -227,6 +227,16 @@ class Test_API(TestApp):
         # print(res.json["data"])
         self.assertEqual(res.json["data"], expected)
 
+    def test_Get_Prerequisite_Courses(self):
+        db.session.add(course_prerequisite(
+            course_id=2, 
+            prerequisite_course_id = 1))
+        db.session.commit()
+
+        res = course.get_prerequisite_courses(2)
+        expected = {'data': [1]}
+        self.assertEqual(res, expected)
+
 
 if __name__ == "__main__":
     unittest.main()
