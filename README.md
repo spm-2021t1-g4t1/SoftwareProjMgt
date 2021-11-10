@@ -8,10 +8,10 @@ You need to have certain tools and packages installed in order to run the applic
 Following the steps below from the prerequisites till the end of the installation guide is necessary in order for the application to run smoothly.
 
 ### Prerequisites
-Python 3.9 or later (https://www.python.org/downloads/)
-Node.js (https://nodejs.org/en/download/)
-WampServer (https://www.wampserver.com/en/)
-Visual Studio Code (https://code.visualstudio.com/download)
+- Python 3.9 or later (https://www.python.org/downloads/)
+- Node.js (https://nodejs.org/en/download/)
+- WampServer (https://www.wampserver.com/en/)
+- Visual Studio Code (https://code.visualstudio.com/download)
 
 ### Setting up
 
