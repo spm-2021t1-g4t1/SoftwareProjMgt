@@ -10,6 +10,7 @@ class lesson(db.Model):
     lesson_name = db.Column(db.String(255))
     lesson_description = db.Column(db.String(255))
     lesson_materials = db.relationship('lesson_materials', backref='lesson', lazy = True)
+    quiz_assigned_id = db.Column(db.Integer)
 
     __table_args__ = (
         db.ForeignKeyConstraint(
@@ -28,7 +29,9 @@ class lesson(db.Model):
             'lesson_no':self.lesson_no,
             'lesson_name': self.lesson_name,
             'lesson_description':self.lesson_description,
-            'lesson_materials': lesson_mat_obj
+            'lesson_materials': lesson_mat_obj,
+            'quiz_assigned_id': self.quiz_assigned_id
+
         }
     
     @classmethod
@@ -47,32 +50,6 @@ class lesson(db.Model):
         return {
             "data": [loads(dumps(lesson.json(), default=str)) for lesson in lessons],
             "code": 200,
-        }
-
-#-----------------------------------------------------------------------------------------------------------------------#
-class lesson_materials(db.Model):
-    __tablename__ = 'lesson_materials'
-    course_id = db.Column(db.Integer, primary_key=True)
-    class_no = db.Column(db.Integer, primary_key=True)
-    lesson_no = db.Column(db.Integer,  primary_key=True)
-    course_material_title = db.Column(db.String(255), primary_key=True)
-    link = db.Column(db.String(255))
-    quiz_assigned_id = db.Column(db.Integer)
-
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            ['course_id', 'class_no', "lesson_no"], ["lesson.course_id",'lesson.class_no', "lesson.lesson_no"]
-        ),
-    )
-
-    def json(self):
-        return {
-            'course_id':self.course_id,
-            'class_no':self.class_no,
-            'lesson_no':self.lesson_no,
-            'course_material_title':self.course_material_title,
-            'link':self.link,
-            'quiz_assigned_id': self.quiz_assigned_id
         }
 
     @classmethod
@@ -116,6 +93,33 @@ class lesson_materials(db.Model):
                 "data": cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first().json(),
                 "code": 200,
             }
+
+#-----------------------------------------------------------------------------------------------------------------------#
+class lesson_materials(db.Model):
+    __tablename__ = 'lesson_materials'
+    course_id = db.Column(db.Integer, primary_key=True)
+    class_no = db.Column(db.Integer, primary_key=True)
+    lesson_no = db.Column(db.Integer,  primary_key=True)
+    course_material_title = db.Column(db.String(255), primary_key=True)
+    link = db.Column(db.String(255))
+
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ['course_id', 'class_no', "lesson_no"], ["lesson.course_id",'lesson.class_no', "lesson.lesson_no"]
+        ),
+    )
+
+    def json(self):
+        return {
+            'course_id':self.course_id,
+            'class_no':self.class_no,
+            'lesson_no':self.lesson_no,
+            'course_material_title':self.course_material_title,
+            'link':self.link,
+        }
+
+
 
 #-----------------------------------------------------------------------------------------------------------------------#
 class lesson_completion(db.Model):

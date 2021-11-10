@@ -74,7 +74,6 @@ class classes(db.Model):
         }
 
     def getSelfEnrolDates(self):
-        
         return {
             "start": datetime.strftime(self.selfenrol_start, "%Y-%m-%d"), 
             "end": datetime.strftime(self.selfenrol_end, "%Y-%m-%d")
@@ -85,6 +84,8 @@ class classes(db.Model):
     
     def setFinalQuiz(self, qid):
         self.finalquiz_id = qid
+    
+    
     
     @classmethod 
     def getAllClasses(cls):

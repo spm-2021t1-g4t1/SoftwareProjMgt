@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 07, 2021 at 08:50 AM
+-- Generation Time: Nov 09, 2021 at 03:26 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -83,7 +83,7 @@ INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start
 (6, 1, '2021-09-01', '2021-09-30', '08:00:00', '11:00:00', 5, NULL, '2021-08-01', '2021-08-31', 2),
 (1, 2, '2021-09-01', '2021-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01', 2),
 (2, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'jackma', '2021-11-01', '2021-12-01', 2),
-(3, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, 'stevejobs', '2021-11-01', '2021-12-01', 2),
+(3, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, '2021-11-01', '2021-12-01', 2),
 (4, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, '2021-11-01', '2021-12-01', 2),
 (5, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 40, NULL, NULL, NULL, 2),
 (6, 2, '2022-09-01', '2022-09-30', '12:00:00', '15:00:00', 5, NULL, NULL, NULL, 2);
@@ -272,6 +272,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `lesson_no` int NOT NULL,
   `lesson_name` varchar(255) NOT NULL,
   `lesson_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `quiz_assigned_id` int NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -279,13 +280,13 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 -- Dumping data for table `lesson`
 --
 
-INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`) VALUES
-(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.'),
-(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. '),
-(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. '),
-(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration'),
-(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration'),
-(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration');
+INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`, `quiz_assigned_id`) VALUES
+(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.', 0),
+(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. ', 0),
+(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. ', 0),
+(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0),
+(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0),
+(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0);
 
 -- --------------------------------------------------------
 
@@ -325,7 +326,6 @@ CREATE TABLE IF NOT EXISTS `lesson_materials` (
   `lesson_no` int NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `link` text NOT NULL,
-  `quiz_assigned_id` int NOT NULL,
   KEY `fk9` (`course_id`,`class_no`,`lesson_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -333,19 +333,19 @@ CREATE TABLE IF NOT EXISTS `lesson_materials` (
 -- Dumping data for table `lesson_materials`
 --
 
-INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`, `quiz_assigned_id`) VALUES
-(1, 2, 1, '121A', 'www.121a.com', 0),
-(1, 2, 1, '121B', 'www.121b.com', 0),
-(1, 2, 2, '122A', 'www.122a.com', 0),
-(1, 2, 2, '122B', 'www.122b.com', 0),
-(1, 2, 2, '123A', 'www.123a.com', 0),
-(1, 2, 2, '123B', 'www.123b.com', 0),
-(2, 1, 1, '211A', 'www.google.com', 2),
-(2, 1, 1, '211B', 'www.yahoo.com', 2),
-(2, 1, 2, '212A', 'www.youtube.com', 0),
-(2, 1, 2, '212B', 'www.amazon.com', 0),
-(2, 1, 3, '213A', 'www.hardwarezone.com', 0),
-(2, 1, 3, '213B', 'www.reddit.com', 0);
+INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_material_title`, `link`) VALUES
+(1, 2, 1, '121A', 'www.121a.com'),
+(1, 2, 1, '121B', 'www.121b.com'),
+(1, 2, 2, '122A', 'www.122a.com'),
+(1, 2, 2, '122B', 'www.122b.com'),
+(1, 2, 2, '123A', 'www.123a.com'),
+(1, 2, 2, '123B', 'www.123b.com'),
+(2, 1, 1, '211A', 'www.google.com'),
+(2, 1, 1, '211B', 'www.yahoo.com'),
+(2, 1, 2, '212A', 'www.youtube.com'),
+(2, 1, 2, '212B', 'www.amazon.com'),
+(2, 1, 3, '213A', 'www.hardwarezone.com'),
+(2, 1, 3, '213B', 'www.reddit.com');
 
 -- --------------------------------------------------------
 
@@ -430,7 +430,6 @@ INSERT INTO `quiz_options` (`qid`, `ques_id`, `opts_id`, `qopt`, `is_right`) VAL
 (1, 4, 1, 'Archive the file', 0),
 (1, 4, 2, 'Delete the file from S3', 0),
 (1, 4, 3, 'Store it in EBS', 1),
-
 (2, 1, 1, 'Increase service limit from AWS Trusted Advisor before launching new instances', 0),
 (2, 1, 2, 'Submit a service limit increase to AWS Support specifying the instance type and region. ', 1),
 (2, 1, 3, 'BOOOOOP', 0),
@@ -468,7 +467,6 @@ INSERT INTO `quiz_questions` (`qid`, `ques_id`, `question`, `question_type`) VAL
 (1, 2, 'An organization recently expanded its AWS infrastructure for its public website into two regions. US East (Ohio) and ASIA Pacific (Mumbai), to better serve growing demand in Asia. What should the SysOps administrator implement to ensure that users are consistently directed to the best performing region?', 'mcq'),
 (1, 3, 'A SysOps administrator has an Amazon EC2 instance using IPv6. Which VPC feature allows the instance to communicate with the internet but prevents inbound traffic?', 'mcq'),
 (1, 4, 'An Organization has implemented a file gateway to keep copies of users’ home drives in Amazon S3. Which conducting an analysis, an Administrator notice that most files are no longer accessed after 45 days. What is the BEST way for the Administrator to reduce storage costs while continuing to provide access to the files for the users?', 'mcq'),
-
 (2, 1, 'A Company is migrating an application to its AWS environment. The implementation requires the company to deploy up to 40 m4.4xlarge instances. What should a Cloud engineer do prior to launching the instances? ', 'mcq'),
 (2, 2, 'An organization recently expanded its AWS infrastructure for its public website into two regions. US East (Ohio) and ASIA Pacific (Mumbai), to better serve growing demand in Asia. What should the SysOps administrator implement to ensure that users are consistently directed to the best performing region?', 'mcq'),
 (2, 3, 'A SysOps administrator has an Amazon EC2 instance using IPv6. Which VPC feature allows the instance to communicate with the internet but prevents inbound traffic?', 'mcq'),
