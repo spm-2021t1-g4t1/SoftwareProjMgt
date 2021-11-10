@@ -91,32 +91,3 @@ class course(db.Model):
         
         return {"data": prerequisite_courses}
 
-#-----------------------------------------------------------------------------------------------------------------------#
-
-class learningObjective(db.Model):
-    __tablename__ ="learning_objective"
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
-    learning_objective = db.Column(db.String(255),  primary_key=True)
-
-    def viewstring(self):
-        return self.learning_objective
-
-#-----------------------------------------------------------------------------------------------------------------------#
-
-class course_prerequisite(db.Model):
-    __tablename__ = "course_prerequisite"
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
-    prerequisite_course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
-    prerequisite_course_name = db.relationship('course', foreign_keys=[prerequisite_course_id])
-
-
-
-    def json(self):
-        # print()
-        return {
-            "course_id": self.course_id,
-            "prerequisite_course_id": self.prerequisite_course_id,
-            "prerequisite_course_name":self.prerequisite_course_name.json()['course_name']
-        }
-
-
