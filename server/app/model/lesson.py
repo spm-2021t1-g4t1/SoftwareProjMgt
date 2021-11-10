@@ -10,7 +10,7 @@ class lesson(db.Model):
     lesson_name = db.Column(db.String(255))
     lesson_description = db.Column(db.String(255))
     lesson_materials = db.relationship('lesson_materials', backref='lesson', lazy = True)
-    quiz_assigned_id = db.Column(db.Integer)
+    quiz_assigned_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
 
     __table_args__ = (
         db.ForeignKeyConstraint(

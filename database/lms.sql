@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 09, 2021 at 03:26 PM
--- Server version: 8.0.21
--- PHP Version: 7.3.21
+-- Generation Time: Nov 10, 2021 at 05:43 AM
+-- Server version: 8.0.18
+-- PHP Version: 7.4.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -32,8 +33,8 @@ USE `lms`;
 DROP TABLE IF EXISTS `classenrollment_queue`;
 CREATE TABLE IF NOT EXISTS `classenrollment_queue` (
   `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
   KEY `CE_Queue_fk_1` (`course_id`,`class_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -53,17 +54,17 @@ INSERT INTO `classenrollment_queue` (`staff_username`, `course_id`, `class_no`) 
 
 DROP TABLE IF EXISTS `classes`;
 CREATE TABLE IF NOT EXISTS `classes` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL AUTO_INCREMENT,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
-  `class_size` int NOT NULL,
+  `class_size` int(11) NOT NULL,
   `trainer_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `selfenrol_start` date DEFAULT NULL,
   `selfenrol_end` date DEFAULT NULL,
-  `finalquiz_id` int DEFAULT NULL,
+  `finalquiz_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`class_no`,`course_id`) USING BTREE,
   KEY `fk_1` (`course_id`),
   KEY `class_fk_2` (`trainer_name`),
@@ -97,8 +98,8 @@ INSERT INTO `classes` (`course_id`, `class_no`, `start_date`, `end_date`, `start
 DROP TABLE IF EXISTS `class_enrolment`;
 CREATE TABLE IF NOT EXISTS `class_enrolment` (
   `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   PRIMARY KEY (`staff_username`,`course_id`,`class_no`),
   KEY `staff_email` (`staff_username`),
   KEY `fk4` (`class_no`,`course_id`)
@@ -138,7 +139,7 @@ INSERT INTO `class_enrolment` (`staff_username`, `course_id`, `class_no`) VALUES
 
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE IF NOT EXISTS `course` (
-  `course_id` int NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_name` text NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`course_id`)
@@ -164,7 +165,7 @@ INSERT INTO `course` (`course_id`, `course_name`, `description`) VALUES
 
 DROP TABLE IF EXISTS `course_completion`;
 CREATE TABLE IF NOT EXISTS `course_completion` (
-  `course_id` int NOT NULL,
+  `course_id` int(11) NOT NULL,
   `staff_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`course_id`,`staff_username`),
   KEY `course_completion_fk2` (`staff_username`)
@@ -186,8 +187,8 @@ INSERT INTO `course_completion` (`course_id`, `staff_username`) VALUES
 
 DROP TABLE IF EXISTS `course_prerequisite`;
 CREATE TABLE IF NOT EXISTS `course_prerequisite` (
-  `course_id` int NOT NULL,
-  `prerequisite_course_id` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `prerequisite_course_id` int(11) NOT NULL,
   PRIMARY KEY (`course_id`,`prerequisite_course_id`),
   KEY `course_prerequisite_fk2` (`prerequisite_course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -211,10 +212,10 @@ INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
 
 DROP TABLE IF EXISTS `final_quiz_attempts`;
 CREATE TABLE IF NOT EXISTS `final_quiz_attempts` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
+  `quiz_score` int(11) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`staff_username`,`quiz_score`),
   KEY `staff_username_fk1` (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -227,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `final_quiz_attempts` (
 
 DROP TABLE IF EXISTS `learning_objective`;
 CREATE TABLE IF NOT EXISTS `learning_objective` (
-  `course_id` int NOT NULL,
+  `course_id` int(11) NOT NULL,
   `learning_objective` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`course_id`,`learning_objective`),
   KEY `fk6` (`course_id`)
@@ -267,13 +268,14 @@ INSERT INTO `learning_objective` (`course_id`, `learning_objective`) VALUES
 
 DROP TABLE IF EXISTS `lesson`;
 CREATE TABLE IF NOT EXISTS `lesson` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `lesson_name` varchar(255) NOT NULL,
   `lesson_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `quiz_assigned_id` int NOT NULL,
-  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`)
+  `quiz_assigned_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`course_id`,`class_no`,`lesson_no`),
+  KEY `quiz_assigned_index` (`quiz_assigned_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -281,12 +283,12 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 --
 
 INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`, `quiz_assigned_id`) VALUES
-(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.', 0),
-(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. ', 0),
-(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. ', 0),
-(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0),
-(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0),
-(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 0);
+(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.', NULL),
+(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. ', NULL),
+(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. ', NULL),
+(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL),
+(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL),
+(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL);
 
 -- --------------------------------------------------------
 
@@ -296,9 +298,9 @@ INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `less
 
 DROP TABLE IF EXISTS `lesson_completion`;
 CREATE TABLE IF NOT EXISTS `lesson_completion` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`),
   KEY `fk11` (`staff_username`)
@@ -321,9 +323,9 @@ INSERT INTO `lesson_completion` (`course_id`, `class_no`, `lesson_no`, `staff_us
 
 DROP TABLE IF EXISTS `lesson_materials`;
 CREATE TABLE IF NOT EXISTS `lesson_materials` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `course_material_title` varchar(255) NOT NULL,
   `link` text NOT NULL,
   KEY `fk9` (`course_id`,`class_no`,`lesson_no`)
@@ -355,11 +357,11 @@ INSERT INTO `lesson_materials` (`course_id`, `class_no`, `lesson_no`, `course_ma
 
 DROP TABLE IF EXISTS `lesson_quiz_attempts`;
 CREATE TABLE IF NOT EXISTS `lesson_quiz_attempts` (
-  `course_id` int NOT NULL,
-  `class_no` int NOT NULL,
-  `lesson_no` int NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `class_no` int(11) NOT NULL,
+  `lesson_no` int(11) NOT NULL,
   `staff_username` varchar(255) NOT NULL,
-  `quiz_score` int NOT NULL,
+  `quiz_score` int(11) NOT NULL,
   PRIMARY KEY (`course_id`,`class_no`,`lesson_no`,`staff_username`,`quiz_score`),
   KEY `staff_username_fk1` (`staff_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -381,7 +383,7 @@ INSERT INTO `lesson_quiz_attempts` (`course_id`, `class_no`, `lesson_no`, `staff
 
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE IF NOT EXISTS `quiz` (
-  `quiz_id` int NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_name` varchar(255) NOT NULL DEFAULT 'Untitiled',
   `description` text NOT NULL,
   `uploader` varchar(255) NOT NULL,
@@ -405,9 +407,9 @@ INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration
 
 DROP TABLE IF EXISTS `quiz_options`;
 CREATE TABLE IF NOT EXISTS `quiz_options` (
-  `qid` int NOT NULL,
-  `ques_id` int NOT NULL,
-  `opts_id` int NOT NULL,
+  `qid` int(11) NOT NULL,
+  `ques_id` int(11) NOT NULL,
+  `opts_id` int(11) NOT NULL,
   `qopt` text NOT NULL,
   `is_right` tinyint(1) NOT NULL,
   PRIMARY KEY (`qid`,`ques_id`,`opts_id`)
@@ -451,8 +453,8 @@ INSERT INTO `quiz_options` (`qid`, `ques_id`, `opts_id`, `qopt`, `is_right`) VAL
 
 DROP TABLE IF EXISTS `quiz_questions`;
 CREATE TABLE IF NOT EXISTS `quiz_questions` (
-  `qid` int NOT NULL,
-  `ques_id` int NOT NULL,
+  `qid` int(11) NOT NULL,
+  `ques_id` int(11) NOT NULL,
   `question` text NOT NULL,
   `question_type` varchar(255) NOT NULL,
   PRIMARY KEY (`qid`,`ques_id`)
@@ -518,7 +520,8 @@ ALTER TABLE `classenrollment_queue`
 --
 ALTER TABLE `classes`
   ADD CONSTRAINT `classes_fk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `classes_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `classes_fk_2` FOREIGN KEY (`trainer_name`) REFERENCES `staff` (`staff_username`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `classes_fk_3` FOREIGN KEY (`finalquiz_id`) REFERENCES `quiz` (`quiz_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `class_enrolment`
@@ -558,7 +561,8 @@ ALTER TABLE `learning_objective`
 -- Constraints for table `lesson`
 --
 ALTER TABLE `lesson`
-  ADD CONSTRAINT `lesson_fk1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `lesson_fk1` FOREIGN KEY (`course_id`,`class_no`) REFERENCES `classes` (`course_id`, `class_no`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `lesson_fk2` FOREIGN KEY (`quiz_assigned_id`) REFERENCES `quiz` (`quiz_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `lesson_completion`
