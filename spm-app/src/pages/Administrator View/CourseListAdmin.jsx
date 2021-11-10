@@ -15,7 +15,6 @@ function CourseListAdmin() {
 
     console.log(courseList);
 
-
     return (
         <div>
             <div className="border border-info container-fluid container-bg">
@@ -35,10 +34,20 @@ function CourseListAdmin() {
 }
 
 const ClassEnrolDateCard = ({ course }) => {
-    const [selfEnrolStart, setSelfEnrolStart] = useState(course.selfenrol_start);
-    const [selfEnrolEnd, setSelfEnrolEnd] = useState(course.selfenrol_end);
+    const [selfEnrolStart, setSelfEnrolStart] = useState(null);
+    const [selfEnrolEnd, setSelfEnrolEnd] = useState(null);
     const [ freshlySaved, setFreshlySaved ] = useState(false);
     const endpoint = "http://127.0.0.1:5000/class/setSelfEnrolDates"
+
+    useEffect(() => {
+        if (course.selfenrol_start) setSelfEnrolStart((new Date(course.selfenrol_start)).toISOString().substring(0,10));
+        if (course.selfenrol_end) setSelfEnrolEnd((new Date(course.selfenrol_end)).toISOString().substring(0,10));
+        
+    }, [])
+    
+    const parseDatesBadly = (dateStr) => {
+
+    }
 
     const handleSubmit = () => {
         const data = {
