@@ -283,12 +283,12 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 --
 
 INSERT INTO `lesson` (`course_id`, `class_no`, `lesson_no`, `lesson_name`, `lesson_description`, `quiz_assigned_id`) VALUES
-(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.', NULL),
-(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. ', NULL),
-(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. ', NULL),
-(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL),
-(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL),
-(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration', NULL);
+(1, 2, 1, 'The beginning - Fundamentals of Xerox WorkCentre 784', 'The first lesson of Fundamentals of Xerox WorkCentre 784.', 2),
+(1, 2, 2, 'The advanced - Fundamentals of Xerox WorkCentre 784', 'The second lesson of Fundamentals of Xerox WorkCentre 784. ', 2),
+(1, 2, 3, 'Putting it together - Fundamentals of Xerox WorkCentre 784', 'The final lesson of Fundamentals of Xerox WorkCentre 784. ', 2),
+(2, 1, 1, 'The beginning - Programming for Xerox WorkCentre with CardAccess and Integration', 'The first lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 2),
+(2, 1, 2, 'The advanced - Programming for Xerox WorkCentre with CardAccess and Integration', 'The second lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 2),
+(2, 1, 3, 'Putting it together - Programming for Xerox WorkCentre with CardAccess and Integration', 'The last lesson of Programming for Xerox WorkCentre with CardAccess and Integration', 2);
 
 -- --------------------------------------------------------
 
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 
 INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `description`, `uploader`, `duration`) VALUES
 (1, 'AWS_CP1', 'SECTION 1', 'BAKAYARO', '00:00:00'),
-(2, 'AWS_CP2', 'SECTION 2', 'BAKAYARO', '00:00:05');
+(2, 'AWS_CP2', 'SECTION 2', 'BAKAYARO', '01:01:05');
 
 -- --------------------------------------------------------
 

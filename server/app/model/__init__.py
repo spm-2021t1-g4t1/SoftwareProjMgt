@@ -11,3 +11,7 @@ from model.quizoptions import *
 from model.staff import *
 from model.course_completion import *
 from model.final_quiz_attempts import *
+from model.course_prerequisite import *
+from model.learning_objective import *
+from model.lesson_completion import *
+from model.lesson_materials import *

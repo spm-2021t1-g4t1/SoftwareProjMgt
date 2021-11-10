@@ -265,6 +265,7 @@ def get_unassigned_lessons():
 @app.route('/class/get_futureClass')
 def get_futureClass():
     unsorted = classes.get_futureClass()
+    print(unsorted)
     return {'data' : sorted(unsorted['data'], key=lambda x:x['course_id']) }
 
 @app.route('/class/trainer/modify', methods=['POST'])
@@ -375,7 +376,6 @@ def get_quiz_for_lesson(course_id, class_no, lesson_no):
             "data": quiz_data,
             "code": 200
     }
-
 
 @app.route("/lesson/<int:course_id>/<int:class_no>/<string:staff_username>")
 def get_lessons(course_id, class_no, staff_username):
