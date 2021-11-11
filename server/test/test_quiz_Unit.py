@@ -1,4 +1,5 @@
-# Done by Yao Cong
+# Done by Yeo Yao Cong
+# Email: ycyeo.2019
 import unittest
 import flask_testing
 import json
@@ -108,6 +109,20 @@ class TestQuizClass(TestApp):
             },
         )
 
+    def test_get_one_quiz(self):
+        data = Quiz.get_one_quiz(1)
+        self.assertEqual(data["code"], 200)
+        self.assertEqual(
+            data["data"],
+            {
+                "quiz_id": 1,
+                "quiz_name": "Fundamentals of Xerox WorkCentre 7845",
+                "description": "SECTION 1 of Xerox WorkCentre 7845",
+                "uploader": "james_smith",
+                "question": [],
+                "duration": "00:30:43",
+            },
+        )
 
 if __name__ == "__main__":
     unittest.main()
