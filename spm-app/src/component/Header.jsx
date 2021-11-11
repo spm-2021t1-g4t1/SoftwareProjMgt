@@ -16,7 +16,7 @@ const Header = (prop) => {
                     height="30"
                     className="d-inline-block align-top"
                     />{' '}
-                Owl Learning Management System
+                One Stop Learning Management System
                 </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text className = 'mx-1'>
