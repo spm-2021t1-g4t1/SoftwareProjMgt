@@ -38,6 +38,7 @@ class TestApp(flask_testing.TestCase):
 
 
 class TestQuestionClass(TestApp):
+
     def test_get_courseQues(self):
         data = Question.get_courseQues(1)
         self.assertEqual(
@@ -105,6 +106,16 @@ class TestQuestionClass(TestApp):
             },
         )
         self.assertEqual(data["code"], 200)
+
+    def test_remove_question(self):
+        Question.remove_question(1, 2)
+        data = Question.get_courseQues(1)
+        
+        self.assertEqual(data['data'],
+        [{'qid': 1, 'ques_id': 1, 'question': 'How is SPM IS212 doing today for YYC?', 'question_type': 'mcq', 'question_option': []}]
+        )
+        self.assertEqual(data['code'], 200)
+        
 
 
 if __name__ == "__main__":
