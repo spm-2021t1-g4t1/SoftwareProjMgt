@@ -84,6 +84,49 @@ class TestQuestion(TestApp):
         self.assertEqual(len(dataObj["data"][1]["question_option"]), 2)
         # self.assertEqual(dataObj['data'], 2)
 
+    def test_get_specific_ques(self):
+        response = self.client.get(f"/get_spec_quiz_ques/1/1")
+        dataObj = response.json
+        self.assertEqual(dataObj['data'], 
+        {'qid': 1, 
+        'ques_id': 1, 
+        'question': 'How is SPM IS212 doing today for YYC?', 
+        'question_option': [
+            {'is_right': 0, 
+            'opts_id': 1, 
+            'qid': 1, 
+            'qopt': 
+            'testing 1', 
+            'ques_id': 1}, 
+            {'is_right': 0, 
+            'opts_id': 2, 
+            'qid': 1, 
+            'qopt': 'testing 2', 
+            'ques_id': 1}, 
+            {'is_right': 0, 
+            'opts_id': 3, 
+            'qid': 1, 
+            'qopt': 'testing 3', 
+            'ques_id': 1}, 
+            {'is_right': 1, 
+            'opts_id': 4, 
+            'qid': 1, 
+            'qopt': 'Press the On button for the Workstation, clean the nozzle and restart the machine', 
+            'ques_id': 1}], 
+        'question_type': 'mcq'}
+        )
+        self.assertEqual(dataObj['code'], 200)
+
+    def test_get_the_options(self):
+        response = self.client.get(f"/ques_opt/1/2")
+        dataObj = response.json
+        self.assertEqual(dataObj['data'],
+        [{'is_right': 1, 'opts_id': 1, 'qid': 1, 'qopt': 'True', 'ques_id': 2}, 
+        {'is_right': 0, 'opts_id': 2, 'qid': 1, 'qopt': 'False', 'ques_id': 2}]
+        )
+        self.assertEqual(dataObj['code'], 200)
+        self.assertEqual(len(dataObj["data"]), 2)
+
     def test_addQuestion_negative(self):
         # CANNOT ADD WHEN QUES ID EXIST
         request_body = {
@@ -124,7 +167,6 @@ class TestQuestion(TestApp):
         self.assertEqual(response.json["data"]["status"], 200)
         checkEntry = self.client.get(f"/quiz_ques/{1}")
         data = checkEntry.json
-        print(data)
         self.assertEqual(len(data["data"]), 1)
 
 
