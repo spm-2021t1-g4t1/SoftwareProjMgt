@@ -38,5 +38,4 @@ class lesson_completion(db.Model):
     @classmethod
     def get_listOfLessonCompletionByStaff(cls, course_id, class_no, staff_username):
         lesson_completion_list = cls.query.filter_by(course_id=course_id, class_no=class_no, staff_username=staff_username).all()
-        print({'data': [one_lesson_completion.json() for one_lesson_completion in lesson_completion_list]})
         return {'data': [one_lesson_completion.json() for one_lesson_completion in lesson_completion_list]}

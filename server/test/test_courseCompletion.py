@@ -1,3 +1,4 @@
+# Done by Chuen Kai
 import unittest
 import flask_testing
 import json
@@ -46,7 +47,7 @@ class TestApp(flask_testing.TestCase):
 
         db.session.add(course_completion(
             course_id = 1,
-            staff_username = "Staff 1"
+            staff_username = "Staff1"
         ))
 
         db.session.commit()
@@ -60,9 +61,24 @@ class TestApp(flask_testing.TestCase):
 class TestCourseCompletion(TestApp):
     def test_getCompletionByCourse(self):
         res = course_completion.getCompletionByCourse(1)
-        expected = ["Staff 1"]
-        print("res", res)
+        expected = ["Staff1"]
         self.assertEqual(res, expected)
+    
+    def test_insert_course_completion(self):
+        CC1 = course_completion(
+            course_id = 1,
+            staff_username = "Staff2"
+        )
+        res = course_completion.insert_course_completion(CC1)
+        self.assertEqual(res,{"code": 200, "message": "Course marked as complete"})
+    
+    def test_insert_course_completion(self):
+        res = course_completion.getStaffCompletion('Staff1')
+
+        expected = {'data': 
+                        {0: {'course_id': 1, 'staff_username': 'Staff1'}}
+                    }
+        self.assertEqual(res,expected)
     
 
 if __name__ == "__main__":

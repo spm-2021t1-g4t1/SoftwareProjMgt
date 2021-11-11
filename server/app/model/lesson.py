@@ -57,14 +57,15 @@ class lesson(db.Model):
         if(cls.query.filter_by(quiz_assigned_id=quiz_assigned_id).first()):
             data = cls.query.filter_by(quiz_assigned_id=quiz_assigned_id).first()
             return {
-                    "data": data.json(),
-                    "code": 200,
-                }
+                "data": data.json(),
+                "code": 200,
+            }
         else:
             return {
-                    "data": None,
-                    "code": 200,
-                }
+                "data": None,
+                "code": 200,
+            }
+    
     @classmethod
     def get_quiz_for_lesson(cls, course_id, class_no, lesson_no):
         row_to_take = cls.query.filter_by(course_id=course_id, class_no=class_no, lesson_no=lesson_no).first()
